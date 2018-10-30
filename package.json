@@ -1,0 +1,38 @@
+{
+  "name": "register-a-food-business-collections-service",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/app.js",
+  "scripts": {
+    "test": "jest ./src --coverage",
+    "test:component": "jest ./tests/component",
+    "start": "node src/app.js",
+    "lint": "eslint ./src",
+    "format:verify": "prettier --list-different '{src,tests}/**/*.js'",
+    "format": "prettier --write '{src,tests}/**/*.js'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FoodStandardsAgency/register-a-food-business-collections-service.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/FoodStandardsAgency/register-a-food-business-collections-service/issues"
+  },
+  "homepage": "https://github.com/FoodStandardsAgency/register-a-food-business-collections-service#readme",
+  "dependencies": {
+    "express": "4.16.4",
+    "helmet": "3.14.0",
+    "request": "2.88.0",
+    "request-promise-native": "^1.0.5",
+    "winston": "3.1.0"
+  },
+  "devDependencies": {
+    "eslint": "5.8.0",
+    "eslint-config-prettier": "3.1.0",
+    "eslint-plugin-prettier": "3.0.0",
+    "jest": "23.6.0",
+    "prettier": "1.14.3"
+  }
+}
