@@ -4,10 +4,11 @@ jest.mock("./logger", () => ({
     error: jest.fn()
   }
 }));
-const { logger } = require("./logger");
-const { logEmitter } = require("./logging.service");
 
 jest.unmock("./logging.service");
+
+const { logger } = require("./logger");
+const { logEmitter } = require("./logging.service");
 
 describe("logEmitter", () => {
   describe("on functionCall event", () => {
