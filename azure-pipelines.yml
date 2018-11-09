@@ -35,15 +35,15 @@ steps:
       summaryFileLocation: "$(System.DefaultWorkingDirectory)/coverage/cobertura-coverage.xml"
       reportDirectory: "$(System.DefaultWorkingDirectory)/coverage/lcov-report"
 
-- script: npm prune --production
-  displayName: Prune dev dependencies
+  - script: npm prune --production
+    displayName: Prune dev dependencies
 
-- script: rm -rf coverage reports
-  displayName: Remove reporting folders
-  
-- task: ArchiveFiles@2
-  inputs:
-    rootFolderOrFile: '$(System.DefaultWorkingDirectory)'
-    includeRootFolder: false
+  - script: rm -rf coverage reports
+    displayName: Remove reporting folders
+    
+  - task: ArchiveFiles@2
+    inputs:
+      rootFolderOrFile: '$(System.DefaultWorkingDirectory)'
+      includeRootFolder: false
 
-- task: PublishBuildArtifacts@1
+  - task: PublishBuildArtifacts@1
