@@ -1,4 +1,4 @@
-const { logger } = require("./services/logging.service");
+const { logger } = require("../services/logger");
 const db = require("./models");
 
 db.sequelize
@@ -16,5 +16,6 @@ module.exports = {
   Metadata: db.metadata,
   Operator: db.operator,
   Premise: db.premise,
-  Registration: db.registration
+  Registration: db.registration,
+  db
 };

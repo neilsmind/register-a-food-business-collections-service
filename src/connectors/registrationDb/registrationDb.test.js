@@ -35,8 +35,10 @@ const {
   getOperatorByEstablishmentId,
   getPremiseByEstablishmentId,
   getActivitiesByEstablishmentId,
-  getRegistrationsByCouncil
+  getRegistrationsByCouncil,
+  getAllRegistrationsByCouncil
 } = require("./registrationDb");
+
 describe("RegistrationDb connector", () => {
   let result;
   afterEach(() => {
@@ -269,5 +271,51 @@ describe("RegistrationDb connector", () => {
         });
       });
     });
+  });
+
+  // get all registrations by council
+  describe("Function: getAllRegistrationsByCouncil", () => {
+    let result;
+    // Should respond with double response in double mode
+    describe("it should response with double response in double mode", () => {
+      beforeEach(async () => {
+        process.env.DOUBLE_MODE = "true";
+        result = await getAllRegistrationsByCouncil("west-dorset");
+      });
+      it("should use the double data", () => {
+        expect(result[0].establishment.establishment_trading_name).toBe("Itsu");
+      });
+
+      it("Should not call the mocked models", () => {
+        expect(Activities.findOne).not.toHaveBeenCalled();
+        expect(Establishment.findOne).not.toHaveBeenCalled();
+        expect(Metadata.findOne).not.toHaveBeenCalled();
+        expect(Operator.findOne).not.toHaveBeenCalled();
+        expect(Premise.findOne).not.toHaveBeenCalled();
+        expect(Registration.findAll).not.toHaveBeenCalled();
+      });
+    });
+
+    describe("it should return all responses when not in double mode", () => {
+      beforeEach(async () => {
+        process.env.DOUBLE_MODE = "false";
+        Registration.findAll.mockImplementation(() => {
+          return [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }];
+        });
+        result = await getAllRegistrationsByCouncil("west-dorset");
+      });
+
+      it("it should call Registration.findAll with council", () => {
+        expect(Registration.findAll.mock.calls[0][0].where).toEqual({
+          council: "west-dorset"
+        });
+      });
+
+      it("it should call the models the appropriate numbers of times", () => {
+        expect(Operator.findOne.mock.calls.length).toBe(4);
+      });
+    });
+    // Should call find all registrations
+    // Should call the other models as many times as necessary
   });
 });

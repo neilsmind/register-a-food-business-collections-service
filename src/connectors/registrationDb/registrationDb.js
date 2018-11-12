@@ -6,6 +6,7 @@ const {
   Premise,
   Registration
 } = require("../../db/db");
+const allRegistrationsDouble = require("./registrationDb.double");
 const { logEmitter } = require("../../services/logging.service");
 
 const modelFindOne = async (query, model, functionName) => {
@@ -98,11 +99,46 @@ const getRegistrationsByCouncil = async council => {
   }
 };
 
+const getFullRegistration = async registration => {
+  const [establishment, metadata] = await Promise.all([
+    getEstablishmentByRegId(registration.id),
+    getMetadataByRegId(registration.id)
+  ]);
+  const [operator, activities, premise] = await Promise.all([
+    getOperatorByEstablishmentId(establishment.id),
+    getActivitiesByEstablishmentId(establishment.id),
+    getPremiseByEstablishmentId(establishment.id)
+  ]);
+  return {
+    registration: registration.dataValues,
+    establishment: establishment.dataValues,
+    operator: operator.dataValues,
+    activities: activities.dataValues,
+    premise: premise.dataValues,
+    metadata: metadata.dataValues
+  };
+};
+
+const getAllRegistrationsByCouncil = async council => {
+  if (process.env.DOUBLE_MODE === "true") {
+    return allRegistrationsDouble;
+  }
+  const registrationPromises = [];
+  const registrations = await getRegistrationsByCouncil(council);
+  registrations.forEach(registration => {
+    registrationPromises.push(getFullRegistration(registration));
+  });
+  const fullRegistrations = await Promise.all(registrationPromises);
+
+  return fullRegistrations;
+};
+
 module.exports = {
   getEstablishmentByRegId,
   getMetadataByRegId,
   getOperatorByEstablishmentId,
   getPremiseByEstablishmentId,
   getActivitiesByEstablishmentId,
-  getRegistrationsByCouncil
+  getRegistrationsByCouncil,
+  getAllRegistrationsByCouncil
 };
