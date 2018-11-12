@@ -21,7 +21,7 @@ const errorHandler = (err, req, res, next) => {
     : defaultError;
 
   errorToSend.rawError = err.rawError || "none";
-  
+
   res.status(errorToSend.statusCode);
   res.send(errorToSend);
 };
