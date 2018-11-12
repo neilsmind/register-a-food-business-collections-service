@@ -277,7 +277,7 @@ describe("RegistrationDb connector", () => {
   describe("Function: getAllRegistrationsByCouncil", () => {
     let result;
     // Should respond with double response in double mode
-    describe("it should response with double response in double mode", () => {
+    describe("When running in double mode", () => {
       beforeEach(async () => {
         process.env.DOUBLE_MODE = "true";
         result = await getAllRegistrationsByCouncil("west-dorset");
@@ -296,7 +296,7 @@ describe("RegistrationDb connector", () => {
       });
     });
 
-    describe("it should return all responses when not in double mode", () => {
+    describe("When not running in double mode", () => {
       beforeEach(async () => {
         process.env.DOUBLE_MODE = "false";
         Registration.findAll.mockImplementation(() => {
@@ -315,7 +315,5 @@ describe("RegistrationDb connector", () => {
         expect(Operator.findOne.mock.calls.length).toBe(4);
       });
     });
-    // Should call find all registrations
-    // Should call the other models as many times as necessary
   });
 });
