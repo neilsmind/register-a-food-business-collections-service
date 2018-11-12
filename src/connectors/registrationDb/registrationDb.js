@@ -20,6 +20,8 @@ const modelFindOne = async (query, model, functionName) => {
     );
     return response;
   } catch (err) {
+    err.name = "dbModelFindOneError";
+    err.rawError = `Model: ${model}`;
     logEmitter.emit(
       "functionFail",
       "registration.connector.js",
