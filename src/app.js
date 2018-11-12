@@ -1,7 +1,7 @@
 const express = require("express");
 const helmet = require("helmet");
 
-const { logger } = require("./services/logging.service");
+const { logger } = require("./services/logger");
 const { routers } = require("./api/routers");
 const { errorHandler } = require("./middleware/errorHandler");
 
