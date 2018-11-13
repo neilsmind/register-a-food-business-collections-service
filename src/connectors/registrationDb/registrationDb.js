@@ -135,6 +135,20 @@ const getAllRegistrationsByCouncil = async council => {
   return fullRegistrations;
 };
 
+const getUncollectedRegistrationsByCouncil = async council => {
+  if (process.env.DOUBLE_MODE === "true") {
+    return allRegistrationsDouble;
+  }
+  const registrationPromises = [];
+  const registrations = await getRegistrationsByCouncil(council);
+  registrations.forEach(registration => {
+    registrationPromises.push(getFullRegistration(registration));
+  });
+  const fullRegistrations = await Promise.all(registrationPromises);
+
+  return fullRegistrations;
+};
+
 module.exports = {
   getEstablishmentByRegId,
   getMetadataByRegId,
@@ -142,5 +156,6 @@ module.exports = {
   getPremiseByEstablishmentId,
   getActivitiesByEstablishmentId,
   getRegistrationsByCouncil,
-  getAllRegistrationsByCouncil
+  getAllRegistrationsByCouncil,
+  getUncollectedRegistrationsByCouncil
 };

@@ -2,7 +2,8 @@ const { Router } = require("express");
 const swaggerUi = require("swagger-ui-express");
 const swaggerDocument = require("../../openAPI.spec.json");
 const {
-  getAllRegistrationsByCouncil
+  getAllRegistrationsByCouncil,
+  getUncollectedRegistrationsByCouncil
 } = require("../connectors/registrationDb/registrationDb");
 const routers = () => {
   const router = Router();
@@ -11,6 +12,12 @@ const routers = () => {
   router.get("/api/collect/:lc", async (req, res) => {
     const allLocalCouncils = await getAllRegistrationsByCouncil(req.params.lc);
     res.send(allLocalCouncils);
+  });
+  router.get("/api/collect", async (req, res) => {
+    const registrationsToBeCollected = await getUncollectedRegistrationsByCouncil(
+      req.params.lc
+    );
+    res.send(registrationsToBeCollected);
   });
   router.use("/", (req, res) => {
     res.send(swaggerDocument);
