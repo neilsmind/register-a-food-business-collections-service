@@ -32,6 +32,14 @@ const modelFindOne = async (query, model, functionName) => {
   }
 };
 
+// model.update({
+//   collected: new Date(),
+// }, {
+//   where: {
+//     collected: null
+//   }
+// });
+
 const getEstablishmentByRegId = async id => {
   return modelFindOne(
     { where: { registrationId: id } },
@@ -171,6 +179,8 @@ const getNewRegistrationsByCouncil = async council => {
   }
   const registrationPromises = [];
   const registrations = await getRegistrationTableByCouncilAndNew(council);
+  console.log(registrations);
+
   registrations.forEach(registration => {
     registrationPromises.push(getFullRegistration(registration));
   });
