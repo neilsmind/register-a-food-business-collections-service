@@ -72,11 +72,11 @@ const getActivitiesByEstablishmentId = async id => {
   );
 };
 
-const getRegistrationsByCouncil = async council => {
+const getRegistrationTableByCouncil = async council => {
   logEmitter.emit(
     "functionCall",
     "registration.connector.js",
-    "getRegistrationsByCouncil"
+    "getRegistrationTableByCouncil"
   );
   try {
     const response = await Registration.findAll({
@@ -87,14 +87,44 @@ const getRegistrationsByCouncil = async council => {
     logEmitter.emit(
       "functionSuccess",
       "registration.connector.js",
-      "getRegistrationsByCouncil"
+      "getRegistrationTableByCouncil"
     );
     return response;
   } catch (err) {
     logEmitter.emit(
       "functionFail",
       "registration.connector.js",
-      "getRegistrationsByCouncil",
+      "getRegistrationTableByCouncil",
+      err
+    );
+    throw err;
+  }
+};
+
+const getRegistrationTableByCouncilAndNew = async council => {
+  logEmitter.emit(
+    "functionCall",
+    "registration.connector.js",
+    "getRegistrationTableByCouncilAndNew"
+  );
+  try {
+    const response = await Registration.findAll({
+      where: {
+        council: council,
+        collected: null
+      }
+    });
+    logEmitter.emit(
+      "functionSuccess",
+      "registration.connector.js",
+      "getRegistrationTableByCouncilAndNew"
+    );
+    return response;
+  } catch (err) {
+    logEmitter.emit(
+      "functionFail",
+      "registration.connector.js",
+      "getRegistrationTableByCouncilAndNew",
       err
     );
     throw err;
@@ -126,7 +156,7 @@ const getAllRegistrationsByCouncil = async council => {
     return allRegistrationsDouble;
   }
   const registrationPromises = [];
-  const registrations = await getRegistrationsByCouncil(council);
+  const registrations = await getRegistrationTableByCouncil(council);
   registrations.forEach(registration => {
     registrationPromises.push(getFullRegistration(registration));
   });
@@ -135,12 +165,12 @@ const getAllRegistrationsByCouncil = async council => {
   return fullRegistrations;
 };
 
-const getUncollectedRegistrationsByCouncil = async council => {
+const getNewRegistrationsByCouncil = async council => {
   if (process.env.DOUBLE_MODE === "true") {
     return allRegistrationsDouble;
   }
   const registrationPromises = [];
-  const registrations = await getRegistrationsByCouncil(council);
+  const registrations = await getRegistrationTableByCouncilAndNew(council);
   registrations.forEach(registration => {
     registrationPromises.push(getFullRegistration(registration));
   });
@@ -155,7 +185,7 @@ module.exports = {
   getOperatorByEstablishmentId,
   getPremiseByEstablishmentId,
   getActivitiesByEstablishmentId,
-  getRegistrationsByCouncil,
+  getRegistrationTableByCouncil,
   getAllRegistrationsByCouncil,
-  getUncollectedRegistrationsByCouncil
+  getNewRegistrationsByCouncil
 };
