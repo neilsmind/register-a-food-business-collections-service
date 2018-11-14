@@ -1,3 +1,5 @@
+const validator = require("validator");
+
 jest.mock("../../db/db", () => ({
   Activities: {
     findOne: jest.fn()
@@ -16,7 +18,8 @@ jest.mock("../../db/db", () => ({
   },
   Registration: {
     findOne: jest.fn(),
-    findAll: jest.fn()
+    findAll: jest.fn(),
+    update: jest.fn()
   }
 }));
 
@@ -35,8 +38,10 @@ const {
   getOperatorByEstablishmentId,
   getPremiseByEstablishmentId,
   getActivitiesByEstablishmentId,
-  getRegistrationsByCouncil,
-  getAllRegistrationsByCouncil
+  getRegistrationTableByCouncil,
+  getAllRegistrationsByCouncil,
+  getNewRegistrationsByCouncil,
+  updateRegistrationCollectedToTrue
 } = require("./registrationDb");
 
 describe("RegistrationDb connector", () => {
@@ -235,14 +240,14 @@ describe("RegistrationDb connector", () => {
     });
   });
 
-  describe("Function: getRegistrationsByCouncil", () => {
+  describe("Function: getRegistrationTableByCouncil", () => {
     describe("When Registration.findAll fails", () => {
       beforeEach(async () => {
         Registration.findAll.mockImplementation(() => {
           throw new Error("Failed");
         });
         try {
-          await getRegistrationsByCouncil("council");
+          await getRegistrationTableByCouncil("council");
         } catch (err) {
           result = err;
         }
@@ -258,7 +263,7 @@ describe("RegistrationDb connector", () => {
         Registration.findAll.mockImplementation(() => {
           return "success";
         });
-        result = await getRegistrationsByCouncil("council");
+        result = await getRegistrationTableByCouncil("council");
       });
 
       it("Should return the response", () => {
@@ -314,6 +319,76 @@ describe("RegistrationDb connector", () => {
       it("it should call the models the appropriate numbers of times", () => {
         expect(Operator.findOne.mock.calls.length).toBe(4);
       });
+    });
+  });
+
+  describe("Function: getNewRegistrationsByCouncil", () => {
+    let result;
+    // Should respond with double response in double mode
+    describe("When running in double mode", () => {
+      beforeEach(async () => {
+        process.env.DOUBLE_MODE = "true";
+        result = await getNewRegistrationsByCouncil("west-dorset");
+      });
+      it("should use the double data", () => {
+        expect(result[0].establishment.establishment_trading_name).toBe("Itsu");
+      });
+
+      it("Should not call the mocked models", () => {
+        expect(Activities.findOne).not.toHaveBeenCalled();
+        expect(Establishment.findOne).not.toHaveBeenCalled();
+        expect(Metadata.findOne).not.toHaveBeenCalled();
+        expect(Operator.findOne).not.toHaveBeenCalled();
+        expect(Premise.findOne).not.toHaveBeenCalled();
+        expect(Registration.findAll).not.toHaveBeenCalled();
+      });
+    });
+
+    describe("When not running in double mode", () => {
+      beforeEach(async () => {
+        process.env.DOUBLE_MODE = "false";
+        Registration.findAll.mockImplementation(() => {
+          return [
+            { id: 1, collected: null },
+            { id: 2, collected: true },
+            { id: 3, collected: null },
+            { id: 4, collected: true }
+          ];
+        });
+        result = await getNewRegistrationsByCouncil("west-dorset");
+      });
+
+      it("it should call Registration.findAll with council and collected", () => {
+        expect(Registration.findAll.mock.calls[0][0].where).toEqual({
+          council: "west-dorset",
+          collected: null
+        });
+      });
+
+      it("it should call the models the appropriate numbers of times", () => {
+        expect(Operator.findOne.mock.calls.length).toBe(4);
+      });
+    });
+  });
+
+  describe("Function:  updateRegistrationCollectedToTrue", () => {
+    beforeEach(async () => {
+      await updateRegistrationCollectedToTrue("west-dorset");
+    });
+
+    it("it should call Registration.update with collected: true", () => {
+      expect(Registration.update.mock.calls[0][0].collected).toBe(true);
+    });
+
+    it("it should call Registration.update with collected_at in the ISO date format", () => {
+      const date = Registration.update.mock.calls[0][0].collected_at;
+      expect(validator.isISO8601(date)).toBe(true);
+    });
+
+    it("it should call Registration.update with the specified council", () => {
+      expect(Registration.update.mock.calls[0][1].where.council).toBe(
+        "west-dorset"
+      );
     });
   });
 });

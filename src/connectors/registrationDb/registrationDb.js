@@ -32,13 +32,27 @@ const modelFindOne = async (query, model, functionName) => {
   }
 };
 
-// model.update({
-//   collected: new Date(),
-// }, {
-//   where: {
-//     collected: null
-//   }
-// });
+const convertJSDateToISODate = () => {
+  const jsDate = new Date();
+  const isoDate = jsDate.toISOString();
+  return isoDate;
+};
+
+const updateRegistrationCollectedToTrue = async council => {
+  const isoDate = convertJSDateToISODate();
+  Registration.update(
+    {
+      collected: true,
+      collected_at: isoDate
+    },
+    {
+      where: {
+        council: council,
+        collected: null
+      }
+    }
+  );
+};
 
 const getEstablishmentByRegId = async id => {
   return modelFindOne(
@@ -120,8 +134,10 @@ const getRegistrationTableByCouncilAndNew = async council => {
       where: {
         council: council,
         collected: null
-      }
+      },
+      attributes: { exclude: ["collected", "collected_at"] }
     });
+
     logEmitter.emit(
       "functionSuccess",
       "registration.connector.js",
@@ -179,7 +195,7 @@ const getNewRegistrationsByCouncil = async council => {
   }
   const registrationPromises = [];
   const registrations = await getRegistrationTableByCouncilAndNew(council);
-  console.log(registrations);
+  await updateRegistrationCollectedToTrue(council);
 
   registrations.forEach(registration => {
     registrationPromises.push(getFullRegistration(registration));
@@ -197,5 +213,6 @@ module.exports = {
   getActivitiesByEstablishmentId,
   getRegistrationTableByCouncil,
   getAllRegistrationsByCouncil,
-  getNewRegistrationsByCouncil
+  getNewRegistrationsByCouncil,
+  updateRegistrationCollectedToTrue
 };
