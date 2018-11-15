@@ -130,6 +130,7 @@ const getRegistrationTableByCouncilAndNew = async council => {
     "getRegistrationTableByCouncilAndNew"
   );
   try {
+    console.log("HERE1", Registration.findAll());
     const response = await Registration.findAll({
       where: {
         council: council,
@@ -145,6 +146,7 @@ const getRegistrationTableByCouncilAndNew = async council => {
     );
     return response;
   } catch (err) {
+    console.log("HERE");
     logEmitter.emit(
       "functionFail",
       "registration.connector.js",
@@ -206,13 +208,6 @@ const getNewRegistrationsByCouncil = async council => {
 };
 
 module.exports = {
-  getEstablishmentByRegId,
-  getMetadataByRegId,
-  getOperatorByEstablishmentId,
-  getPremiseByEstablishmentId,
-  getActivitiesByEstablishmentId,
-  getRegistrationTableByCouncil,
   getAllRegistrationsByCouncil,
-  getNewRegistrationsByCouncil,
-  updateRegistrationCollectedToTrue
+  getNewRegistrationsByCouncil
 };
