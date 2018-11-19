@@ -1,10 +1,10 @@
 const {
   getAllRegistrationsByCouncil
-} = require("../../src/connectors/registrationDb/registrationDb");
+} = require("../../src/connectors/registrationDb/registrationDb.connector");
 
 const { db } = require("../../src/db/db");
 
-describe("registrationDb integration: getRegistrationsByCouncil", () => {
+describe("registrationDb.connector integration: getRegistrationsByCouncil", () => {
   it("Should return list of registrations from council", async () => {
     process.env.DOUBLE_MODE = "true";
     const result = await getAllRegistrationsByCouncil("west-dorset");

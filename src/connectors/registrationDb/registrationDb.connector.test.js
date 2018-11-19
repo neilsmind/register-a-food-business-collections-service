@@ -35,9 +35,9 @@ const {
 const {
   getAllRegistrationsByCouncil,
   getNewRegistrationsByCouncil
-} = require("./registrationDb");
+} = require("./registrationDb.connector");
 
-describe("RegistrationDb connector", () => {
+describe("registrationDb.connector connector", () => {
   let result;
   beforeEach(() => {
     process.env.DOUBLE_MODE = "false";

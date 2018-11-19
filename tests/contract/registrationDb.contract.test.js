@@ -1,13 +1,13 @@
 const {
   getAllRegistrationsByCouncil
-} = require("../../src/connectors/registrationDb/registrationDb");
+} = require("../../src/connectors/registrationDb/registrationDb.connector");
 
 const { db } = require("../../src/db/db");
 
 let doubleResult;
 let realResult;
 
-describe("registrationDb integration: getRegistrationsByCouncil", () => {
+describe("registrationDb.connector integration: getRegistrationsByCouncil", () => {
   beforeEach(async () => {
     process.env.DOUBLE_MODE = "true";
     doubleResult = await getAllRegistrationsByCouncil("west-dorset");

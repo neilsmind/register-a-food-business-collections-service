@@ -4,7 +4,7 @@ const swaggerDocument = require("../../openAPI.spec.json");
 const {
   getAllRegistrationsByCouncil,
   getNewRegistrationsByCouncil
-} = require("../connectors/registrationDb/registrationDb");
+} = require("../connectors/registrationDb/registrationDb.connector");
 const routers = () => {
   const router = Router();
   router.use("/api-docs", swaggerUi.serve);
