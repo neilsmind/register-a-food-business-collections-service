@@ -15,7 +15,7 @@ describe("Collections Route: ", () => {
       expect(result[0].operator.operator_name).toBe("BLAH");
       expect(result[0].premise.establishment_postcode).toBe("BLAH BLAH");
       expect(result[0].metadata.declaration1).toBe("BLAH");
-      expect(result[0].registration.collected).toBe(true)
+      expect(result[0].registration.collected).toBe(true);
     });
   });
   describe("On a GET request to /api/collect/:lc/all", () => {
@@ -38,8 +38,12 @@ describe("Collections Route: ", () => {
     });
     describe("When called twice", () => {
       beforeEach(async () => {
-        const response1 = await request(url);  
-        const response2 = await request(url);        
+        const response1 = await request(url);
+        const response2 = await request(url);
       });
+      it("Should return an empty array", () => {
+        expect(response2).toBe([]);
+      });
+    });
   });
 });
