@@ -17,6 +17,8 @@ module.exports = {
     "!**/coverage/**",
     "!**/src/app.js",
     "!**/src/api/routers.js",
-    "!**/src/db/**"
+    "!**/src/db/**",
+    "!**/src/connectors/**/*.double.js",
+    "!**/src/api/**/*.router.js"
   ]
 };

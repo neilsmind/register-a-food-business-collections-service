@@ -104,7 +104,8 @@ const getRegistrationTableByCouncil = async council => {
     const response = await Registration.findAll({
       where: {
         council: council
-      }
+      },
+      attributes: { exclude: ["collected", "collected_at"] }
     });
     logEmitter.emit(
       "functionSuccess",
@@ -182,6 +183,11 @@ const getAllRegistrationsByCouncil = async (council, options) => {
 
   const registrationPromises = [];
   const registrations = await getRegistrationTableByCouncil(council);
+
+  if (options.mark_as_collected === "true") {
+    await updateRegistrationCollectedToTrue(council);
+  }
+
   registrations.forEach(registration => {
     registrationPromises.push(getFullRegistration(registration));
   });

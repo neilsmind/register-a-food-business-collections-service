@@ -13,6 +13,7 @@ const collectRouter = () => {
     try {
       const options = {};
       options.double_mode = req.headers["double-mode"];
+      options.mark_as_collected = req.query.mark_as_collected;
 
       const allRegistrations = await getAllRegistrationsByCouncil(
         req.params.lc,
@@ -26,7 +27,7 @@ const collectRouter = () => {
     }
   });
 
-  router.get("/:lc/new", async (req, res) => {
+  router.get("/:lc/new", async (req, res, next) => {
     logEmitter.emit("functionCall", "collect.router", "/:lc/new route");
     try {
       const options = {};
@@ -36,6 +37,7 @@ const collectRouter = () => {
         req.params.lc,
         options
       );
+
       logEmitter.emit("functionSuccess", "collect.router", "/:lc/new route");
       res.send(newRegistrations);
     } catch (err) {

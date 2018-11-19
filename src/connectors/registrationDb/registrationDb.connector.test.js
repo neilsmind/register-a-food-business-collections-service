@@ -85,6 +85,29 @@ describe("registrationDb.connector connector", () => {
         expect(result[0].premise.establishment_postcode).toBe("ER1 56GF");
         expect(result[0].metadata.declaration1).toBe("yes");
       });
+
+      describe("given options.mark_as_collected is 'true'", () => {
+        beforeEach(async () => {
+          Registration.update.mockImplementation(() => [
+            {
+              collected: true,
+              collected_at: "2018-11-14T13:57:49.193Z"
+            }
+          ]);
+          result = await getAllRegistrationsByCouncil("west-dorset", {
+            mark_as_collected: "true"
+          });
+        });
+
+        it("should call Registration.update with collected: true", () => {
+          expect(Registration.update.mock.calls[0][0].collected).toBe(true);
+        });
+
+        it("should call Registration.update with collected_at in the ISO date format", () => {
+          const date = Registration.update.mock.calls[0][0].collected_at;
+          expect(validator.isISO8601(date)).toBe(true);
+        });
+      });
     });
 
     describe("given [modelName].findOne fails", () => {
@@ -179,7 +202,7 @@ describe("registrationDb.connector connector", () => {
           }
         ]);
 
-        result = await getNewRegistrationsByCouncil();
+        result = await getNewRegistrationsByCouncil("west-dorset", {});
       });
 
       it("should return an array of registrations", async () => {
