@@ -39,9 +39,7 @@ const {
 
 describe("registrationDb.connector connector", () => {
   let result;
-  beforeEach(() => {
-    process.env.DOUBLE_MODE = "false";
-  });
+
   afterEach(() => {
     jest.clearAllMocks();
   });
@@ -74,7 +72,7 @@ describe("registrationDb.connector connector", () => {
           dataValues: { declaration1: "yes" }
         }));
 
-        result = await getAllRegistrationsByCouncil();
+        result = await getAllRegistrationsByCouncil("west-dorset", {});
       });
 
       it("should return an array of registrations", async () => {
@@ -96,7 +94,7 @@ describe("registrationDb.connector connector", () => {
         });
 
         try {
-          await getAllRegistrationsByCouncil("west-dorset");
+          await getAllRegistrationsByCouncil("west-dorset", {});
         } catch (err) {
           result = err;
         }
@@ -114,7 +112,7 @@ describe("registrationDb.connector connector", () => {
         });
 
         try {
-          await getAllRegistrationsByCouncil("west-dorset");
+          await getAllRegistrationsByCouncil("west-dorset", {});
         } catch (err) {
           result = err;
         }
@@ -125,10 +123,11 @@ describe("registrationDb.connector connector", () => {
       });
     });
 
-    describe("given DOUBLE_MODE is true", () => {
+    describe("given options.double_mode is 'success'", () => {
       beforeEach(async () => {
-        process.env.DOUBLE_MODE = "true";
-        result = await getAllRegistrationsByCouncil("west-dorset");
+        result = await getAllRegistrationsByCouncil("west-dorset", {
+          double_mode: "success"
+        });
       });
 
       it("should use the double data", () => {
@@ -211,7 +210,7 @@ describe("registrationDb.connector connector", () => {
         });
 
         try {
-          await getNewRegistrationsByCouncil("west-dorset");
+          await getNewRegistrationsByCouncil("west-dorset", {});
         } catch (err) {
           result = err;
         }
@@ -229,7 +228,7 @@ describe("registrationDb.connector connector", () => {
         });
 
         try {
-          await getNewRegistrationsByCouncil("west-dorset");
+          await getNewRegistrationsByCouncil("west-dorset", {});
         } catch (err) {
           result = err;
         }
@@ -240,10 +239,11 @@ describe("registrationDb.connector connector", () => {
       });
     });
 
-    describe("given DOUBLE_MODE is true", () => {
+    describe("given options.double_mode is 'success'", () => {
       beforeEach(async () => {
-        process.env.DOUBLE_MODE = "true";
-        result = await getNewRegistrationsByCouncil("west-dorset");
+        result = await getNewRegistrationsByCouncil("west-dorset", {
+          double_mode: "success"
+        });
       });
 
       it("should use the double data", () => {

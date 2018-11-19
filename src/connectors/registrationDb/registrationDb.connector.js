@@ -6,7 +6,7 @@ const {
   Premise,
   Registration
 } = require("../../db/db");
-const allRegistrationsDouble = require("./registrationDb.double");
+const { registrationDbDouble } = require("./registrationDb.double");
 const { logEmitter } = require("../../services/logging.service");
 
 const modelFindOne = async (query, model, functionName) => {
@@ -130,7 +130,6 @@ const getRegistrationTableByCouncilAndNew = async council => {
     "getRegistrationTableByCouncilAndNew"
   );
   try {
-    console.log("HERE1", Registration.findAll());
     const response = await Registration.findAll({
       where: {
         council: council,
@@ -146,7 +145,6 @@ const getRegistrationTableByCouncilAndNew = async council => {
     );
     return response;
   } catch (err) {
-    console.log("HERE");
     logEmitter.emit(
       "functionFail",
       "registration.connector.js",
@@ -177,10 +175,11 @@ const getFullRegistration = async registration => {
   };
 };
 
-const getAllRegistrationsByCouncil = async council => {
-  if (process.env.DOUBLE_MODE === "true") {
-    return allRegistrationsDouble;
+const getAllRegistrationsByCouncil = async (council, options) => {
+  if (options.double_mode) {
+    return registrationDbDouble(options.double_mode);
   }
+
   const registrationPromises = [];
   const registrations = await getRegistrationTableByCouncil(council);
   registrations.forEach(registration => {
@@ -191,10 +190,11 @@ const getAllRegistrationsByCouncil = async council => {
   return fullRegistrations;
 };
 
-const getNewRegistrationsByCouncil = async council => {
-  if (process.env.DOUBLE_MODE === "true") {
-    return allRegistrationsDouble;
+const getNewRegistrationsByCouncil = async (council, options) => {
+  if (options.double_mode) {
+    return registrationDbDouble(options.double_mode);
   }
+
   const registrationPromises = [];
   const registrations = await getRegistrationTableByCouncilAndNew(council);
   await updateRegistrationCollectedToTrue(council);

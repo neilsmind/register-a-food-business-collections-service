@@ -9,19 +9,14 @@ let realResult;
 
 describe("registrationDb.connector integration: getRegistrationsByCouncil", () => {
   beforeEach(async () => {
-    process.env.DOUBLE_MODE = "true";
-    doubleResult = await getAllRegistrationsByCouncil("west-dorset");
-
-    process.env.DOUBLE_MODE = "false";
-    realResult = await getAllRegistrationsByCouncil("west-dorset");
+    doubleResult = await getAllRegistrationsByCouncil("west-dorset", {
+      double_mode: "success"
+    });
+    realResult = await getAllRegistrationsByCouncil("west-dorset", {});
     db.sequelize.close();
   });
 
   it("Should return list of registrations from council", async () => {
-    process.env.DOUBLE_MODE = "true";
-    const result = await getAllRegistrationsByCouncil("west-dorset");
-    db.sequelize.close();
-    expect(Array.isArray(result)).toBe(true);
     expect(realResult[0].registration.fsa_rn).toBeDefined();
     expect(realResult[0].registration.council).toBeDefined();
     expect(

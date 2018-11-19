@@ -10,7 +10,6 @@ const errorHandler = (err, req, res, next) => {
   const errorDetail = errors.find(error => {
     return error.name === err.name;
   });
-
   const errorToSend = errorDetail
     ? {
         errorCode: errorDetail.code,
@@ -21,7 +20,6 @@ const errorHandler = (err, req, res, next) => {
     : defaultError;
 
   errorToSend.rawError = err.rawError || "none";
-
   res.status(errorToSend.statusCode);
   res.send(errorToSend);
 };
