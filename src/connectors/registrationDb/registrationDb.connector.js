@@ -185,7 +185,7 @@ const getAllRegistrationsByCouncil = async (council, options) => {
   const registrations = await getRegistrationTableByCouncil(council);
 
   if (options.mark_as_collected === "true") {
-    await updateRegistrationCollectedToTrue(council);
+    updateRegistrationCollectedToTrue(council);
   }
 
   registrations.forEach(registration => {
@@ -203,7 +203,7 @@ const getNewRegistrationsByCouncil = async (council, options) => {
 
   const registrationPromises = [];
   const registrations = await getRegistrationTableByCouncilAndNew(council);
-  await updateRegistrationCollectedToTrue(council);
+  updateRegistrationCollectedToTrue(council);
 
   registrations.forEach(registration => {
     registrationPromises.push(getFullRegistration(registration));
