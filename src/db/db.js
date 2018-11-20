@@ -7,7 +7,7 @@ db.sequelize
     logger.info("Connection to postgres db has been established successfully.");
   })
   .catch(err => {
-    logger.info("Unable to connect to the database:", err);
+    logger.error("Unable to connect to the database:", err);
   });
 
 module.exports = {

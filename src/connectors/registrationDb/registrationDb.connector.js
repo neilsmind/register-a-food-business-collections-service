@@ -6,7 +6,7 @@ const {
   Premise,
   Registration
 } = require("../../db/db");
-const allRegistrationsDouble = require("./registrationDb.double");
+const { registrationDbDouble } = require("./registrationDb.double");
 const { logEmitter } = require("../../services/logging.service");
 
 const modelFindOne = async (query, model, functionName) => {
@@ -30,6 +30,28 @@ const modelFindOne = async (query, model, functionName) => {
     );
     throw err;
   }
+};
+
+const convertJSDateToISODate = () => {
+  const jsDate = new Date();
+  const isoDate = jsDate.toISOString();
+  return isoDate;
+};
+
+const updateRegistrationCollectedToTrue = async council => {
+  const isoDate = convertJSDateToISODate();
+  Registration.update(
+    {
+      collected: true,
+      collected_at: isoDate
+    },
+    {
+      where: {
+        council: council,
+        collected: null
+      }
+    }
+  );
 };
 
 const getEstablishmentByRegId = async id => {
@@ -72,29 +94,62 @@ const getActivitiesByEstablishmentId = async id => {
   );
 };
 
-const getRegistrationsByCouncil = async council => {
+const getRegistrationTableByCouncil = async council => {
   logEmitter.emit(
     "functionCall",
     "registration.connector.js",
-    "getRegistrationsByCouncil"
+    "getRegistrationTableByCouncil"
   );
   try {
     const response = await Registration.findAll({
       where: {
         council: council
-      }
+      },
+      attributes: { exclude: ["collected", "collected_at"] }
     });
     logEmitter.emit(
       "functionSuccess",
       "registration.connector.js",
-      "getRegistrationsByCouncil"
+      "getRegistrationTableByCouncil"
     );
     return response;
   } catch (err) {
     logEmitter.emit(
       "functionFail",
       "registration.connector.js",
-      "getRegistrationsByCouncil",
+      "getRegistrationTableByCouncil",
+      err
+    );
+    throw err;
+  }
+};
+
+const getRegistrationTableByCouncilAndNew = async council => {
+  logEmitter.emit(
+    "functionCall",
+    "registration.connector.js",
+    "getRegistrationTableByCouncilAndNew"
+  );
+  try {
+    const response = await Registration.findAll({
+      where: {
+        council: council,
+        collected: null
+      },
+      attributes: { exclude: ["collected", "collected_at"] }
+    });
+
+    logEmitter.emit(
+      "functionSuccess",
+      "registration.connector.js",
+      "getRegistrationTableByCouncilAndNew"
+    );
+    return response;
+  } catch (err) {
+    logEmitter.emit(
+      "functionFail",
+      "registration.connector.js",
+      "getRegistrationTableByCouncilAndNew",
       err
     );
     throw err;
@@ -121,12 +176,35 @@ const getFullRegistration = async registration => {
   };
 };
 
-const getAllRegistrationsByCouncil = async council => {
-  if (process.env.DOUBLE_MODE === "true") {
-    return allRegistrationsDouble;
+const getAllRegistrationsByCouncil = async (council, options) => {
+  if (options.double_mode) {
+    return registrationDbDouble(options.double_mode);
   }
+
   const registrationPromises = [];
-  const registrations = await getRegistrationsByCouncil(council);
+  const registrations = await getRegistrationTableByCouncil(council);
+
+  if (options.mark_as_collected === "true") {
+    updateRegistrationCollectedToTrue(council);
+  }
+
+  registrations.forEach(registration => {
+    registrationPromises.push(getFullRegistration(registration));
+  });
+  const fullRegistrations = await Promise.all(registrationPromises);
+
+  return fullRegistrations;
+};
+
+const getNewRegistrationsByCouncil = async (council, options) => {
+  if (options.double_mode) {
+    return registrationDbDouble(options.double_mode);
+  }
+
+  const registrationPromises = [];
+  const registrations = await getRegistrationTableByCouncilAndNew(council);
+  updateRegistrationCollectedToTrue(council);
+
   registrations.forEach(registration => {
     registrationPromises.push(getFullRegistration(registration));
   });
@@ -136,11 +214,6 @@ const getAllRegistrationsByCouncil = async council => {
 };
 
 module.exports = {
-  getEstablishmentByRegId,
-  getMetadataByRegId,
-  getOperatorByEstablishmentId,
-  getPremiseByEstablishmentId,
-  getActivitiesByEstablishmentId,
-  getRegistrationsByCouncil,
-  getAllRegistrationsByCouncil
+  getAllRegistrationsByCouncil,
+  getNewRegistrationsByCouncil
 };

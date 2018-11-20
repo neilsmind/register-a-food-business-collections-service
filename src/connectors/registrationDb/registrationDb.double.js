@@ -84,4 +84,16 @@ const doubleResponse = [
   }
 ];
 
-module.exports = doubleResponse;
+const registrationDbDouble = double_mode => {
+  if (double_mode === "success") {
+    return doubleResponse;
+  } else if (double_mode === "fail") {
+    throw new Error("Registration DB double, double mode is set to 'fail'");
+  } else {
+    throw new Error(
+      "Registration DB double, double mode is undefined or not supported"
+    );
+  }
+};
+
+module.exports = { registrationDbDouble };
