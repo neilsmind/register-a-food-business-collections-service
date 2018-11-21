@@ -35,9 +35,9 @@ const {
 const {
   getAllRegistrationsByCouncil,
   getNewRegistrationsByCouncil
-} = require("./registrationDb.connector");
+} = require("./collect.service");
 
-describe("registrationDb.connector connector", () => {
+describe("collect.service", () => {
   let result;
 
   afterEach(() => {

@@ -3,7 +3,7 @@ const { logEmitter } = require("../../services/logging.service");
 const {
   getAllRegistrationsByCouncil,
   getNewRegistrationsByCouncil
-} = require("../../connectors/registrationDb/registrationDb.connector");
+} = require("./collect.service");
 
 const collectRouter = () => {
   const router = Router();
