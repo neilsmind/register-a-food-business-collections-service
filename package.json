@@ -11,7 +11,8 @@
     "start": "node src/app.js",
     "lint": "eslint ./src",
     "format:verify": "prettier --list-different '{src,tests}/**/*.js'",
-    "format": "prettier --write '{src,tests}/**/*.js'"
+    "format": "prettier --write '{src,tests}/**/*.js'",
+    "seed-postgres-test-env": "node tests/component/postgres-seed/postgres-seed.js"
   },
   "repository": {
     "type": "git",
