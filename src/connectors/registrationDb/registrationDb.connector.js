@@ -6,7 +6,6 @@ const {
   Premise,
   Registration
 } = require("../../db/db");
-const { registrationDbDouble } = require("./registrationDb.double");
 const { logEmitter } = require("../../services/logging.service");
 
 const modelFindOne = async (query, model, functionName) => {
@@ -36,22 +35,6 @@ const convertJSDateToISODate = () => {
   const jsDate = new Date();
   const isoDate = jsDate.toISOString();
   return isoDate;
-};
-
-const updateRegistrationCollectedToTrue = async council => {
-  const isoDate = convertJSDateToISODate();
-  Registration.update(
-    {
-      collected: true,
-      collected_at: isoDate
-    },
-    {
-      where: {
-        council: council,
-        collected: null
-      }
-    }
-  );
 };
 
 const getEstablishmentByRegId = async id => {
@@ -176,44 +159,25 @@ const getFullRegistration = async registration => {
   };
 };
 
-const getAllRegistrationsByCouncil = async (council, options) => {
-  if (options.double_mode) {
-    return registrationDbDouble(options.double_mode);
-  }
-
-  const registrationPromises = [];
-  const registrations = await getRegistrationTableByCouncil(council);
-
-  if (options.mark_as_collected === "true") {
-    await updateRegistrationCollectedToTrue(council);
-  }
-
-  registrations.forEach(registration => {
-    registrationPromises.push(getFullRegistration(registration));
-  });
-  const fullRegistrations = await Promise.all(registrationPromises);
-
-  return fullRegistrations;
-};
-
-const getNewRegistrationsByCouncil = async (council, options) => {
-  if (options.double_mode) {
-    return registrationDbDouble(options.double_mode);
-  }
-
-  const registrationPromises = [];
-  const registrations = await getRegistrationTableByCouncilAndNew(council);
-  await updateRegistrationCollectedToTrue(council);
-
-  registrations.forEach(registration => {
-    registrationPromises.push(getFullRegistration(registration));
-  });
-  const fullRegistrations = await Promise.all(registrationPromises);
-
-  return fullRegistrations;
+const updateRegistrationCollectedToTrue = async council => {
+  const isoDate = convertJSDateToISODate();
+  Registration.update(
+    {
+      collected: true,
+      collected_at: isoDate
+    },
+    {
+      where: {
+        council: council,
+        collected: null
+      }
+    }
+  );
 };
 
 module.exports = {
-  getAllRegistrationsByCouncil,
-  getNewRegistrationsByCouncil
+  getRegistrationTableByCouncil,
+  getRegistrationTableByCouncilAndNew,
+  getFullRegistration,
+  updateRegistrationCollectedToTrue
 };
