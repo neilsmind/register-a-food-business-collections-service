@@ -1,9 +1,8 @@
 const request = require("request-promise-native");
 const mockRegistrationData = require("./mock-registration-data.json");
 
-const seedPostgresOnTestEnv = async () => {
-  const url =
-    "https://test-register-a-food-business-service.azurewebsites.net/api/registration/createNewRegistration";
+const seedPostgres = async () => {
+  const url = process.env.SERVICE_API_URL;
 
   const responses = [];
 
@@ -27,6 +26,6 @@ const seedPostgresOnTestEnv = async () => {
   return responses;
 };
 
-seedPostgresOnTestEnv().then(result => {
+seedPostgres().then(result => {
   console.log(result);
 });
