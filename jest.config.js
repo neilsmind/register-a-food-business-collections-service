@@ -19,6 +19,7 @@ module.exports = {
     "!**/src/api/routers.js",
     "!**/src/db/**",
     "!**/src/connectors/**/*.double.js",
-    "!**/src/api/**/*.router.js"
+    "!**/src/api/**/*.router.js",
+    "!**/tests/**/*.js"
   ]
 };
