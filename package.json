@@ -5,7 +5,9 @@
   "main": "src/app.js",
   "scripts": {
     "test": "jest ./src --coverage",
+    "test:unit:ci": "export TEST_TYPE=unit && jest ./src --coverage",
     "test:component": "jest ./tests/component/*.js",
+    "test:component:ci": "export TEST_TYPE=component && jest ./tests/component/*.js",
     "test:integration": "jest ./tests/integration/*.js",
     "test:contract": "jest ./tests/contract/*.js",
     "start": "node src/app.js",

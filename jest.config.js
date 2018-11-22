@@ -21,5 +21,13 @@ module.exports = {
     "!**/src/connectors/**/*.double.js",
     "!**/src/api/**/*.router.js",
     "!**/tests/**/*.js"
-  ]
+  ],
+  coverageThreshold: {
+    global: {
+      branches: 100,
+      functions: 100,
+      lines: 100,
+      statements: -10
+    }
+  }
 };
