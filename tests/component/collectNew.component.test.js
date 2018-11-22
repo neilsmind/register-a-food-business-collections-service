@@ -1,5 +1,6 @@
 const request = require("request-promise-native");
-const url = "http://localhost:4001/api/collect/west-dorset/new";
+const baseUrl = process.env.COMPONENT_TEST_BASE_URL || "http://localhost:4001";
+const url = `${baseUrl}/api/collect/cardiff/new`;
 
 describe("On a GET request to /api/collect/:lc/new", () => {
   let response;
@@ -42,6 +43,7 @@ describe("On a GET request to /api/collect/:lc/new", () => {
           uri: url,
           json: true
         };
+        await request(requestOptions);
         response = await request(requestOptions);
       });
 
