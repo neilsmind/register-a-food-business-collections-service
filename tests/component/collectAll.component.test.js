@@ -1,9 +1,10 @@
 const request = require("request-promise-native");
 const baseUrl = process.env.COMPONENT_TEST_BASE_URL || "http://localhost:4001";
-const url = `${baseUrl}/api/collect/west-dorset/all`;
+const url = `${baseUrl}/api/collect/cardiff/all`;
 
 describe("On a GET request to /api/collect/:lc/all", () => {
   let response;
+
   describe("given the request is successful", () => {
     beforeAll(async () => {
       const requestOptions = {
