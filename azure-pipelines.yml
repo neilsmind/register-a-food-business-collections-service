@@ -19,7 +19,7 @@ steps:
   - script: npm run lint
     displayName: "Lint"
 
-  - script: npm run test
+  - script: npm run test:unit:ci
     displayName: "Unit tests"
 
   - task: PublishTestResults@2
@@ -40,10 +40,10 @@ steps:
 
   - script: rm -rf coverage reports
     displayName: Remove reporting folders
-    
+
   - task: ArchiveFiles@2
     inputs:
-      rootFolderOrFile: '$(System.DefaultWorkingDirectory)'
+      rootFolderOrFile: "$(System.DefaultWorkingDirectory)"
       includeRootFolder: false
 
   - task: PublishBuildArtifacts@1

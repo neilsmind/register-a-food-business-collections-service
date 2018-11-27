@@ -1,0 +1,104 @@
+[
+  {
+    "registration": {
+      "establishment": {
+        "establishment_details": {
+          "establishment_trading_name": "Blanda Inc",
+          "establishment_primary_number": "4113016343",
+          "establishment_secondary_number": "4511307229",
+          "establishment_email": "dbridgewater0@blogs.com",
+          "establishment_opening_date": "2018-03-14"
+        },
+        "operator": {
+          "operator_first_name": "Darline",
+          "operator_last_name": "Bridgewater",
+          "operator_postcode": "WV98 1PS",
+          "operator_first_line": "1998",
+          "operator_street": "Bartelt",
+          "operator_town": "Bas Goynuk",
+          "operator_primary_number": "3757031885",
+          "operator_secondary_number": "3562126616",
+          "operator_email": "dbridgewater0@wix.com",
+          "operator_type": "Sole trader"
+        },
+        "premise": {
+          "establishment_postcode": "CB22 4RX",
+          "establishment_first_line": "2634",
+          "establishment_street": "Moulton",
+          "establishment_town": "Vermelha",
+          "establishment_type": "Home or domestic premises"
+        },
+        "activities": {
+          "customer_type": "End consumer",
+          "business_type": "Fishmonger",
+          "import_export_activities": "Directly import and export",
+          "business_other_details": "Suspendisse potenti. Cras in purus eu magna vulputate luctus. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.",
+          "opening_day_monday": true,
+          "opening_day_tuesday": true,
+          "opening_day_wednesday": false,
+          "opening_day_thursday": true,
+          "opening_day_friday": false,
+          "opening_day_saturday": false,
+          "opening_day_sunday": false
+        }
+      },
+      "metadata": {
+        "declaration1": "Vivamus vel nulla eget eros elementum pellentesque.",
+        "declaration2": "In hac habitasse platea dictumst. Etiam faucibus cursus urna.",
+        "declaration3": "Nullam varius. Nulla facilisi."
+      }
+    },
+    "local_council_url": "cardiff"
+  },
+  {
+    "registration": {
+      "establishment": {
+        "establishment_details": {
+          "establishment_trading_name": "Berge-Beer",
+          "establishment_primary_number": "5501482376",
+          "establishment_secondary_number": "9266017931",
+          "establishment_email": "pfinlay1@walmart.com",
+          "establishment_opening_date": "2018-06-10"
+        },
+        "operator": {
+          "operator_first_name": "Pansie",
+          "operator_last_name": "Finlay",
+          "operator_postcode": "WA14 4HE",
+          "operator_first_line": "41321",
+          "operator_street": "Larry",
+          "operator_town": "San Francisco",
+          "operator_primary_number": "1439333058",
+          "operator_secondary_number": "3607803759",
+          "operator_email": "pfinlay1@simplemachines.org",
+          "operator_type": "Sole trader"
+        },
+        "premise": {
+          "establishment_postcode": "CB22 4RX",
+          "establishment_first_line": "93",
+          "establishment_street": "Sunfield",
+          "establishment_town": "Balungao",
+          "establishment_type": "Home or domestic premises"
+        },
+        "activities": {
+          "customer_type": "End consumer",
+          "business_type": "Butcher",
+          "import_export_activities": "Directly import and export",
+          "business_other_details": "Duis ac nibh. Fusce lacus purus, aliquet at, feugiat non, pretium quis, lectus. Suspendisse potenti.",
+          "opening_day_monday": true,
+          "opening_day_tuesday": true,
+          "opening_day_wednesday": true,
+          "opening_day_thursday": true,
+          "opening_day_friday": true,
+          "opening_day_saturday": true,
+          "opening_day_sunday": false
+        }
+      },
+      "metadata": {
+        "declaration1": "In hac habitasse platea dictumst. Aliquam augue quam, sollicitudin vitae, consectetuer eget, rutrum at, lorem.",
+        "declaration2": "Integer ac leo. Pellentesque ultrices mattis odio.",
+        "declaration3": "Nunc purus."
+      }
+    },
+    "local_council_url": "the-vale-of-glamorgan"
+  }
+]

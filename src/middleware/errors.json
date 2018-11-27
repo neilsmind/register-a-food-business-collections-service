@@ -1,0 +1,8 @@
+[
+  {
+    "name": "dbModelFindOneError",
+    "code": "1",
+    "developerMessage": "An error occured when calling findOne against the registrations database",
+    "statusCode": 500
+  }
+]
