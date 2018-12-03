@@ -52,7 +52,7 @@ describe("registrations.controller", () => {
 
       it("Should return the result of getAllRegistrations", () => {
         expect(result).toEqual([{ id: 1, data: "data" }]);
-      })
+      });
     });
   });
 
@@ -86,7 +86,7 @@ describe("registrations.controller", () => {
         updateRegistrationCollected.mockImplementation(() => ({
           fsa_rn: "5768",
           collected: true
-        }))
+        }));
         result = await updateRegistration({
           collected: true,
           fsa_rn: "5768"
