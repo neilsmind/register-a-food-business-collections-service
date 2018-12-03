@@ -4,5 +4,17 @@
     "code": "1",
     "developerMessage": "An error occured when calling findOne against the registrations database",
     "statusCode": 500
+  },
+  {
+    "name": "getNewRegistrationsError",
+    "code": "2",
+    "developerMessage": "getNewRegistrations is required and must be a boolean",
+    "statusCode": 400
+  },
+  {
+    "name": "updateCollectedError",
+    "code": "3",
+    "developerMessage": "collected is required and must be a boolean",
+    "statusCode": 400
   }
 ]
