@@ -8,25 +8,12 @@ const {
 } = require("../../db/db");
 const { logEmitter } = require("../../services/logging.service");
 
-const modelFindOne = async (query, model, functionName) => {
-  logEmitter.emit("functionCall", "registration.connector.js", functionName);
+const modelFindOne = async (query, model) => {
   try {
-    const response = await model.findOne(query);
-    logEmitter.emit(
-      "functionSuccess",
-      "registration.connector.js",
-      functionName
-    );
-    return response;
+    return model.findOne(query);
   } catch (err) {
     err.name = "dbModelFindOneError";
     err.rawError = `Model: ${model}`;
-    logEmitter.emit(
-      "functionFail",
-      "registration.connector.js",
-      functionName,
-      err
-    );
     throw err;
   }
 };
@@ -77,7 +64,7 @@ const getActivitiesByEstablishmentId = async id => {
   );
 };
 
-const getRegistrationTableByCouncil = async council => {
+const getRegistrationTable = async (council, collected) => {
   logEmitter.emit(
     "functionCall",
     "registration.connector.js",
@@ -86,7 +73,8 @@ const getRegistrationTableByCouncil = async council => {
   try {
     const response = await Registration.findAll({
       where: {
-        council: council
+        council,
+        collected
       },
       attributes: { exclude: ["collected", "collected_at"] }
     });
@@ -101,38 +89,6 @@ const getRegistrationTableByCouncil = async council => {
       "functionFail",
       "registration.connector.js",
       "getRegistrationTableByCouncil",
-      err
-    );
-    throw err;
-  }
-};
-
-const getRegistrationTableByCouncilAndNew = async council => {
-  logEmitter.emit(
-    "functionCall",
-    "registration.connector.js",
-    "getRegistrationTableByCouncilAndNew"
-  );
-  try {
-    const response = await Registration.findAll({
-      where: {
-        council: council,
-        collected: null
-      },
-      attributes: { exclude: ["collected", "collected_at"] }
-    });
-
-    logEmitter.emit(
-      "functionSuccess",
-      "registration.connector.js",
-      "getRegistrationTableByCouncilAndNew"
-    );
-    return response;
-  } catch (err) {
-    logEmitter.emit(
-      "functionFail",
-      "registration.connector.js",
-      "getRegistrationTableByCouncilAndNew",
       err
     );
     throw err;
@@ -159,25 +115,37 @@ const getFullRegistration = async registration => {
   };
 };
 
-const updateRegistrationCollectedToTrue = async council => {
+const getAllRegistrations = async (council, collected) => {
+  const registrationPromises = [];
+  const queryArray = collected ? [true, false, null] : [false, null];
+  const registrations = await getRegistrationTable(council, queryArray);
+
+  registrations.forEach(registration => {
+    registrationPromises.push(getFullRegistration(registration));
+  });
+  const fullRegistrations = await Promise.all(registrationPromises);
+
+  return fullRegistrations;
+};
+
+const updateRegistrationCollected = async (fsa_rn, collected) => {
   const isoDate = convertJSDateToISODate();
   Registration.update(
     {
-      collected: true,
+      collected,
       collected_at: isoDate
     },
     {
       where: {
-        council: council,
-        collected: null
+        fsa_rn
       }
     }
   );
+
+  return { fsa_rn, collected };
 };
 
 module.exports = {
-  getRegistrationTableByCouncil,
-  getRegistrationTableByCouncilAndNew,
-  getFullRegistration,
-  updateRegistrationCollectedToTrue
+  getAllRegistrations,
+  updateRegistrationCollected
 };
