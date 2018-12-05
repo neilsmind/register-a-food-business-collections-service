@@ -45,6 +45,10 @@ const validationFields = {
   collected: {
     function: validateBoolean,
     message: "collected option must be a boolean"
+  },
+  fsa_rn: {
+    function: validateString,
+    message: "fsa_rn option must be a string"
   }
 };
 
