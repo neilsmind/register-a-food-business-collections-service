@@ -4,6 +4,10 @@ jest.mock("../../connectors/registrationDb/registrationDb.connector", () => ({
   registrationDbDouble: jest.fn()
 }));
 
+jest.mock("./registrations.service");
+
+const { validateOptions } = require("./registrations.service");
+
 const {
   getAllRegistrations,
   updateRegistrationCollected
@@ -20,6 +24,7 @@ describe("registrations.controller", () => {
     describe("When given invalid getNewRegistrations option", () => {
       beforeEach(async () => {
         try {
+          validateOptions.mockImplementation(() => false);
           await getRegistrations({ getNewRegistrations: "not a boolean" });
         } catch (err) {
           result = err;
@@ -27,11 +32,12 @@ describe("registrations.controller", () => {
       });
 
       it("should bubble up the error", () => {
-        expect(result.name).toBe("getNewRegistrationsError");
+        expect(result.name).toBe("optionsValidationError");
       });
     });
     describe("When given double mode", () => {
       beforeEach(async () => {
+        validateOptions.mockImplementation(() => true);
         result = await getRegistrations({
           getNewRegistrations: "true",
           double_mode: "success"
@@ -43,6 +49,7 @@ describe("registrations.controller", () => {
     });
     describe("When successful", () => {
       beforeEach(async () => {
+        validateOptions.mockImplementation(() => true);
         getAllRegistrations.mockImplementation(() => [{ id: 1, data: "data" }]);
         result = await getRegistrations({
           getNewRegistrations: "true",
@@ -59,6 +66,7 @@ describe("registrations.controller", () => {
   describe("Function: updateRegistration", () => {
     describe("When given invalid collected option", () => {
       beforeEach(async () => {
+        validateOptions.mockImplementation(() => false);
         try {
           await updateRegistration({ collected: "true" });
         } catch (err) {
@@ -67,11 +75,12 @@ describe("registrations.controller", () => {
       });
 
       it("should bubble up the error", () => {
-        expect(result.name).toBe("updateCollectedError");
+        expect(result.name).toBe("optionsValidationError");
       });
     });
     describe("When given double mode", () => {
       beforeEach(async () => {
+        validateOptions.mockImplementation(() => true);
         result = await updateRegistration({
           collected: true,
           double_mode: "update"
@@ -83,6 +92,7 @@ describe("registrations.controller", () => {
     });
     describe("When successful", () => {
       beforeEach(async () => {
+        validateOptions.mockImplementation(() => true);
         updateRegistrationCollected.mockImplementation(() => ({
           fsa_rn: "5768",
           collected: true

@@ -3,20 +3,13 @@ const {
   updateRegistrationCollected
 } = require("../../connectors/registrationDb/registrationDb.connector");
 
+const { validateOptions } = require("./registrations.service");
+
 const {
   registrationDbDouble
 } = require("../../connectors/registrationDb/registrationDb.double");
 
 const { logEmitter } = require("../../services/logging.service");
-
-const validateBoolean = value => {
-  return typeof value === "boolean";
-};
-
-const validateBooleanString = value => {
-  const validValues = ["true", "false"];
-  return validValues.includes(value);
-};
 
 const getRegistrations = async options => {
   logEmitter.emit(
@@ -25,13 +18,16 @@ const getRegistrations = async options => {
     "getRegistrations"
   );
 
-  if (validateBooleanString(options.getNewRegistrations)) {
+  const validationResult = validateOptions(options);
+
+  if (validationResult === true) {
     if (options.double_mode) {
       return registrationDbDouble(options.double_mode);
     }
     const registrations = await getAllRegistrations(
       options.council,
-      options.collected
+      options.new,
+      options.fields
     );
     logEmitter.emit(
       "functionSuccess",
@@ -40,8 +36,9 @@ const getRegistrations = async options => {
     );
     return registrations;
   } else {
-    const error = new Error("getNewRegistrations invalid");
-    error.name = "getNewRegistrationsError";
+    const error = new Error("");
+    error.name = "optionsValidationError";
+    error.rawError = validationResult;
     throw error;
   }
 };
@@ -53,7 +50,9 @@ const updateRegistration = async options => {
     "updateRegistration"
   );
 
-  if (validateBoolean(options.collected)) {
+  const validationResult = validateOptions(options);
+
+  if (validationResult === true) {
     if (options.double_mode) {
       return registrationDbDouble(options.double_mode);
     }
@@ -71,8 +70,9 @@ const updateRegistration = async options => {
 
     return response;
   } else {
-    const error = new Error("collected invalid");
-    error.name = "updateCollectedError";
+    const error = new Error("");
+    error.name = "optionsValidationError";
+    error.rawError = validationResult;
     throw error;
   }
 };
