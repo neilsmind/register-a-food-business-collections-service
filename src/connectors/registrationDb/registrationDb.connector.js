@@ -75,8 +75,7 @@ const getRegistrationTable = async (council, collected) => {
       where: {
         council,
         collected
-      },
-      attributes: { exclude: ["collected", "collected_at"] }
+      }
     });
     logEmitter.emit(
       "functionSuccess",
@@ -95,52 +94,76 @@ const getRegistrationTable = async (council, collected) => {
   }
 };
 
-const getFullRegistration = async registration => {
-  const [establishment, metadata] = await Promise.all([
-    getEstablishmentByRegId(registration.id),
-    getMetadataByRegId(registration.id)
-  ]);
+const getFullEstablishment = async id => {
+  const establishment = await getEstablishmentByRegId(id);
   const [operator, activities, premise] = await Promise.all([
     getOperatorByEstablishmentId(establishment.id),
     getActivitiesByEstablishmentId(establishment.id),
     getPremiseByEstablishmentId(establishment.id)
   ]);
-  return {
-    registration: registration.dataValues,
-    establishment: establishment.dataValues,
-    operator: operator.dataValues,
-    activities: activities.dataValues,
-    premise: premise.dataValues,
-    metadata: metadata.dataValues
-  };
+  return Object.assign(
+    establishment.dataValues,
+    { operator: operator.dataValues },
+    { activities: activities.dataValues },
+    { premise: premise.dataValues }
+  );
 };
 
-const getAllRegistrations = async (council, collected) => {
+const getFullMetadata = async id => {
+  const metadata = await getMetadataByRegId(id);
+
+  return metadata.dataValues;
+};
+
+const getFullRegistration = async (registration, fields = []) => {
+  const establishment = fields.includes("establishment")
+    ? await getFullEstablishment(registration.id)
+    : {};
+  const metadata = fields.includes("metadata")
+    ? await getFullMetadata(registration.id)
+    : {};
+
+  return Object.assign(
+    registration.dataValues,
+    { establishment },
+    { metadata }
+  );
+};
+
+const getAllRegistrations = async (council, newRegistrations, fields) => {
   const registrationPromises = [];
-  const queryArray = collected ? [true, false, null] : [false, null];
+  // get NEW [false, null] or EVERYTHING [true, false, null]
+  const queryArray =
+    newRegistrations === "true" ? [false, null] : [true, false, null];
   const registrations = await getRegistrationTable(council, queryArray);
 
   registrations.forEach(registration => {
-    registrationPromises.push(getFullRegistration(registration));
+    registrationPromises.push(getFullRegistration(registration, fields));
   });
   const fullRegistrations = await Promise.all(registrationPromises);
-
   return fullRegistrations;
 };
 
-const updateRegistrationCollected = async (fsa_rn, collected) => {
+const updateRegistrationCollected = async (fsa_rn, collected, council) => {
   const isoDate = convertJSDateToISODate();
-  Registration.update(
+  const response = await Registration.update(
     {
       collected,
       collected_at: isoDate
     },
     {
       where: {
-        fsa_rn
+        fsa_rn,
+        council
       }
     }
   );
+
+  if (response[0] === 0) {
+    const error = new Error();
+    error.name = "updateRegistrationNotFoundError";
+    throw error;
+  }
 
   return { fsa_rn, collected };
 };

@@ -12,9 +12,15 @@
     "statusCode": 400
   },
   {
-    "name": "updateCollectedError",
+    "name": "optionsValidationError",
     "code": "3",
-    "developerMessage": "collected is required and must be a boolean",
+    "developerMessage": "One of the supplied options is invalid",
+    "statusCode": 400
+  },
+  {
+    "name": "updateRegistrationNotFoundError",
+    "code": "4",
+    "developerMessage": "The registration number specified could not be found for the council requested. Please check this reference number is definitely associated with this council",
     "statusCode": 400
   }
 ]
