@@ -59,7 +59,8 @@ const updateRegistration = async options => {
 
     const response = await updateRegistrationCollected(
       options.fsa_rn,
-      options.collected
+      options.collected,
+      options.council
     );
 
     logEmitter.emit(
