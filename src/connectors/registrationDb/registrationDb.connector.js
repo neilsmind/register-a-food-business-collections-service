@@ -131,6 +131,11 @@ const getFullRegistration = async (registration, fields = []) => {
 };
 
 const getAllRegistrations = async (council, newRegistrations, fields) => {
+  logEmitter.emit(
+    "functionCall",
+    "registrationsDb.connector",
+    "getAllRegistrations"
+  );
   const registrationPromises = [];
   // get NEW [false, null] or EVERYTHING [true, false, null]
   const queryArray =
@@ -141,10 +146,20 @@ const getAllRegistrations = async (council, newRegistrations, fields) => {
     registrationPromises.push(getFullRegistration(registration, fields));
   });
   const fullRegistrations = await Promise.all(registrationPromises);
+  logEmitter.emit(
+    "functionSuccess",
+    "registrationsDb.connector",
+    "getAllRegistrations"
+  );
   return fullRegistrations;
 };
 
 const updateRegistrationCollected = async (fsa_rn, collected, council) => {
+  logEmitter.emit(
+    "functionCall",
+    "registrationsDb.connector",
+    "updateRegistrationCollected"
+  );
   const isoDate = convertJSDateToISODate();
   const response = await Registration.update(
     {
@@ -160,11 +175,21 @@ const updateRegistrationCollected = async (fsa_rn, collected, council) => {
   );
 
   if (response[0] === 0) {
-    const error = new Error();
+    const error = new Error("updateRegistrationNotFoundError");
     error.name = "updateRegistrationNotFoundError";
+    logEmitter.emit(
+      "functionFail",
+      "registrationsDb.connector",
+      "updateRegistrationCollected",
+      error
+    );
     throw error;
   }
-
+  logEmitter.emit(
+    "functionSuccess",
+    "registrationsDb.connector",
+    "updateRegistrationCollected"
+  );
   return { fsa_rn, collected };
 };
 

@@ -294,6 +294,6 @@ describe("collect.service", () => {
       it("Should bubble the error up", () => {
         expect(result.name).toBe("updateRegistrationNotFoundError");
       });
-    })
+    });
   });
 });

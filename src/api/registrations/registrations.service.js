@@ -1,3 +1,5 @@
+const { logEmitter } = require("../../services/logging.service");
+
 const validateString = value => {
   return typeof value === "string";
 };
@@ -53,12 +55,23 @@ const validationFields = {
 };
 
 const validateOptions = options => {
+  logEmitter.emit("functionCall", "registrations.service", "validateOptions");
   for (const key in options) {
     // Check if the validation function for each key returns true or false for the associated value
     if (!validationFields[key].function(options[key])) {
+      logEmitter.emit(
+        "functionFail",
+        "registrations.service",
+        "validateOptions"
+      );
       return validationFields[key].message;
     }
   }
+  logEmitter.emit(
+    "functionSuccess",
+    "registrations.service",
+    "validateOptions"
+  );
   return true;
 };
 
