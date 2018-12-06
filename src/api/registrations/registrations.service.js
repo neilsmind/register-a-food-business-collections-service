@@ -56,13 +56,15 @@ const validationFields = {
 
 const validateOptions = options => {
   logEmitter.emit("functionCall", "registrations.service", "validateOptions");
+  // console.log(options);
   for (const key in options) {
     // Check if the validation function for each key returns true or false for the associated value
     if (!validationFields[key].function(options[key])) {
       logEmitter.emit(
         "functionFail",
         "registrations.service",
-        "validateOptions"
+        "validateOptions",
+        new Error(validationFields[key].message)
       );
       return validationFields[key].message;
     }

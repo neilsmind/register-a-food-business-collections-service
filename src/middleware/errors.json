@@ -6,12 +6,6 @@
     "statusCode": 500
   },
   {
-    "name": "getNewRegistrationsError",
-    "code": "2",
-    "developerMessage": "getNewRegistrations is required and must be a boolean",
-    "statusCode": 400
-  },
-  {
     "name": "optionsValidationError",
     "code": "3",
     "developerMessage": "One of the supplied options is invalid",
@@ -21,12 +15,12 @@
     "name": "updateRegistrationNotFoundError",
     "code": "4",
     "developerMessage": "The registration number specified could not be found for the council requested. Please check this reference number is definitely associated with this council",
-    "statusCode": 400
+    "statusCode": 404
   },
   {
     "name": "getRegistrationNotFoundError",
     "code": "5",
     "developerMessage": "The registration number specified could not be found for the council requested. Please check this reference number is definitely associated with this council",
-    "statusCode": 400
+    "statusCode": 404
   }
 ]

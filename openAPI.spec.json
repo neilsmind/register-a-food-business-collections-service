@@ -4,7 +4,7 @@
       "title": "Register a food business collections",
       "version": "1.0"
   },
-  "host": "localhost:4001",
+  "host": "fsa-rof-gateway.azure-api.net",
   "basePath": "/api/registrations",
   "schemes": [
       "https"
@@ -44,24 +44,59 @@
                       "type": "string"
                   },
                   {
-                      "name": "mark_as_collected",
+                      "name": "fields",
                       "in": "query",
-                      "description": "Optionally mark any new registrations as collected when collecting all registrations",
-                      "type": "boolean",
-                      "enum": [
-                          "true",
-                          "false"
-                      ]
+                      "description": "Extra fields to return as part of the response",
+                      "type": "array",
+                      "items": {
+                          "type": "string"
+                      }
+                  },
+                  {
+                    "name": "new",
+                    "in": "query",
+                    "description": "Flag to return only new registrations",
+                    "type": "boolean",
+                    "enum": [
+                        "true",
+                        "false"
+                    ]
+                  },
+                  {
+                    "name": "double-mode",
+                    "in": "header",
+                    "description": "Optional string to run the applcation against an in memory double rather than the real DB",
+                    "type": "string",
+                    "enum": [
+                        "success",
+                        "fail",
+                        "single",
+                        "update"
+                    ]
                   }
               ],
-              "responses": {}
+              "responses": {
+                  "200": {
+                      "description": "OK",
+                      "schema": {
+                          "$ref": "#/definitions/ArrayOfRegistrations"
+                      }
+                  },
+                  "400": {
+                    "description": "Bad request, invalid options"
+                  },
+                  "404": {
+                    "description": "Resource not found"
+                  },
+                  "500": {
+                    "description": "Internal server error"
+                  }
+              }
           }
       },
-      "/{lc}/new": {
+      "/{lc}/{fsa_rn}": {
           "get": {
-              "description": "Collect any new, previously uncollected registrations for the given council.",
-              "operationId": "collect-new-registrations-for-council",
-              "summary": "Collect NEW registrations for council",
+              "description": "Get a single registrations in full",
               "parameters": [
                   {
                       "name": "lc",
@@ -69,10 +104,114 @@
                       "description": "The council name",
                       "required": true,
                       "type": "string"
-                  }
+                  },
+                  {
+                    "name": "fsa_rn",
+                    "in": "path",
+                    "description": "The reference number for the registration to be retrieved",
+                    "required": true,
+                    "type": "string"
+                    },
+                {
+                    "name": "double-mode",
+                    "in": "header",
+                    "description": "Optional string to run the applcation against an in memory double rather than the real DB",
+                    "type": "string",
+                    "enum": [
+                        "success",
+                        "fail",
+                        "single",
+                        "update"
+                    ]
+                }
               ],
-              "responses": {}
+              "responses": {
+                "200": {
+                    "description": "OK",
+                    "schema": {
+                        "$ref": "#/definitions/Registration"
+                    }
+                },
+                "400": {
+                  "description": "Bad request, invalid options"
+                },
+                "404": {
+                  "description": "Resource not found"
+                },
+                "500": {
+                  "description": "Internal server error"
+                }
+            }
+          },
+          "put":  {
+            "description": "Update a single registrations with collected",
+            "parameters": [
+                {
+                    "name": "lc",
+                    "in": "path",
+                    "description": "The council name",
+                    "required": true,
+                    "type": "string"
+                },
+                {
+                  "name": "fsa_rn",
+                  "in": "path",
+                  "description": "The reference number for the registration to be retrieved",
+                  "required": true,
+                  "type": "string"
+                  },
+              {
+                  "name": "double-mode",
+                  "in": "header",
+                  "description": "Optional string to run the applcation against an in memory double rather than the real DB",
+                  "type": "string",
+                  "enum": [
+                      "success",
+                      "fail",
+                      "single",
+                      "update"
+                  ]
+              },
+              {
+                "name": "collected",
+                "in": "body",
+                "description": "The flag to mark the registration with",
+                "schema": {
+                    "type": "object",
+                    "properties": {
+                        "collected": {
+                            "type": "boolean"
+                        }
+                    }
+                }                
+            }
+            ],
+            "responses": {
+              "200": {
+                  "description": "OK",
+                  "schema": {
+                      "type": "object",
+                      "properties": {
+                          "fsa_rn": {
+                             "type": "string"
+                          },
+                          "collected": {
+                            "type": "boolean"
+                         }
+                      }
+                  }
+              },
+              "400": {
+                "description": "Bad request, invalid options"
+              },
+              "404": {
+                "description": "Resource not found"
+              },
+              "500": {
+                "description": "Internal server error"
+              }
           }
+        }
       }
   },
   "definitions": {
