@@ -93,6 +93,8 @@ const registrationDbDouble = double_mode => {
     throw new Error("Registration DB double, double mode is set to 'fail'");
   } else if (double_mode === "update") {
     return updateResponse;
+  } else if (double_mode === "single") {
+    return doubleResponse[0];
   } else {
     throw new Error(
       "Registration DB double, double mode is undefined or not supported"

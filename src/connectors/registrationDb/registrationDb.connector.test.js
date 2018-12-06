@@ -33,6 +33,7 @@ const {
 
 const {
   getAllRegistrations,
+  getSingleRegistration,
   updateRegistrationCollected
 } = require("./registrationDb.connector");
 
@@ -293,6 +294,61 @@ describe("collect.service", () => {
 
       it("Should bubble the error up", () => {
         expect(result.name).toBe("updateRegistrationNotFoundError");
+      });
+    });
+  });
+
+  describe("Function: getSingleRegistration", () => {
+    let result;
+    describe("when Registration.FindOne returns no results", () => {
+      beforeEach(async () => {
+        Registration.findOne.mockImplementation(() => null);
+
+        try {
+          await getSingleRegistration("1234", "west-dorset");
+        } catch (err) {
+          result = err;
+        }
+      });
+
+      it("Should bubble up the error", () => {
+        expect(result.name).toBe("getRegistrationNotFoundError");
+      });
+    });
+
+    describe("when Registration.FindOne returns a result", () => {
+      beforeEach(async () => {
+        Registration.findOne.mockImplementation(() => ({
+          id: 1,
+          dataValues: { fsa_rn: "1234" }
+        }));
+        Establishment.findOne.mockImplementation(() => ({
+          id: 1,
+          dataValues: { establishment_trading_name: "taco" }
+        }));
+        Operator.findOne.mockImplementation(() => ({
+          id: 1,
+          dataValues: { operator_name: "fred" }
+        }));
+        Activities.findOne.mockImplementation(() => ({
+          id: 1,
+          dataValues: { business_type: "cookies" }
+        }));
+        Premise.findOne.mockImplementation(() => ({
+          id: 1,
+          dataValues: { establishment_postcode: "ER1 56GF" }
+        }));
+        Metadata.findOne.mockImplementation(() => ({
+          id: 1,
+          dataValues: { declaration1: "yes" }
+        }));
+
+        result = await getSingleRegistration("1234", "west-dorset");
+      });
+
+      it("Should return the full registration", () => {
+        expect(result.fsa_rn).toBe("1234");
+        expect(result.establishment.establishment_trading_name).toBe("taco");
       });
     });
   });

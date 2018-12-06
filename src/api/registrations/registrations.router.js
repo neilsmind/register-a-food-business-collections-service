@@ -2,6 +2,7 @@ const { Router } = require("express");
 const { logEmitter } = require("../../services/logging.service");
 const {
   getRegistrations,
+  getRegistration,
   updateRegistration
 } = require("./registrations.controller");
 
@@ -39,6 +40,38 @@ const registrationsRouter = () => {
     }
   });
 
+  router.get("/:lc/:fsa_rn", async (req, res, next) => {
+    logEmitter.emit(
+      "functionCall",
+      "registrations.router",
+      "GET /:lc/:fsa_rn route"
+    );
+    try {
+      const options = {
+        double_mode: req.headers["double-mode"] || "",
+        fsa_rn: req.params.fsa_rn,
+        council: req.params.lc
+      };
+
+      const registration = await getRegistration(options);
+
+      logEmitter.emit(
+        "functionSuccess",
+        "registrations.router",
+        "GET /:lc/:fsa_rn route"
+      );
+      res.send(registration);
+    } catch (err) {
+      logEmitter.emit(
+        "functionFail",
+        "registrations.router",
+        "GET /:lc/:fsa_rn route",
+        err
+      );
+      next(err);
+    }
+  });
+
   router.put("/:lc/:fsa_rn", async (req, res, next) => {
     logEmitter.emit(
       "functionCall",
@@ -46,7 +79,6 @@ const registrationsRouter = () => {
       "PUT /:lc/:fsa_rn route"
     );
     try {
-      let response;
       const options = {
         double_mode: req.headers["double-mode"] || "",
         collected: req.body.collected,
@@ -54,7 +86,7 @@ const registrationsRouter = () => {
         council: req.params.lc
       };
 
-      response = await updateRegistration(options);
+      const response = await updateRegistration(options);
 
       logEmitter.emit(
         "functionSuccess",

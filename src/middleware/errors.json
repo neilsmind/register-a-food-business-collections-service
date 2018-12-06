@@ -22,5 +22,11 @@
     "code": "4",
     "developerMessage": "The registration number specified could not be found for the council requested. Please check this reference number is definitely associated with this council",
     "statusCode": 400
+  },
+  {
+    "name": "getRegistrationNotFoundError",
+    "code": "5",
+    "developerMessage": "The registration number specified could not be found for the council requested. Please check this reference number is definitely associated with this council",
+    "statusCode": 400
   }
 ]

@@ -1,5 +1,6 @@
 jest.mock("../../connectors/registrationDb/registrationDb.connector", () => ({
   getAllRegistrations: jest.fn(),
+  getSingleRegistration: jest.fn(),
   updateRegistrationCollected: jest.fn(),
   registrationDbDouble: jest.fn()
 }));
@@ -10,11 +11,13 @@ const { validateOptions } = require("./registrations.service");
 
 const {
   getAllRegistrations,
+  getSingleRegistration,
   updateRegistrationCollected
 } = require("../../connectors/registrationDb/registrationDb.connector");
 
 const {
   getRegistrations,
+  getRegistration,
   updateRegistration
 } = require("./registrations.controller");
 
@@ -59,6 +62,51 @@ describe("registrations.controller", () => {
 
       it("Should return the result of getAllRegistrations", () => {
         expect(result).toEqual([{ id: 1, data: "data" }]);
+      });
+    });
+  });
+
+  describe("Function: getRegistration", () => {
+    describe("When given invalid option", () => {
+      beforeEach(async () => {
+        try {
+          validateOptions.mockImplementation(() => false);
+          await getRegistration({ fsa_rn: "not valid" });
+        } catch (err) {
+          result = err;
+        }
+      });
+
+      it("should bubble up the error", () => {
+        expect(result.name).toBe("optionsValidationError");
+      });
+    });
+    describe("When given double mode", () => {
+      beforeEach(async () => {
+        validateOptions.mockImplementation(() => true);
+        result = await getRegistration({
+          double_mode: "single"
+        });
+      });
+      it("Should return the double response", () => {
+        expect(result.establishment.id).toBe(68);
+      });
+    });
+    describe("When successful", () => {
+      beforeEach(async () => {
+        validateOptions.mockImplementation(() => true);
+        getSingleRegistration.mockImplementation(() => ({
+          id: 1,
+          data: "data"
+        }));
+        result = await getRegistration({
+          getNewRegistrations: "true",
+          council: "cardiff"
+        });
+      });
+
+      it("Should return the result of getSingleRegistration", () => {
+        expect(result).toEqual({ id: 1, data: "data" });
       });
     });
   });

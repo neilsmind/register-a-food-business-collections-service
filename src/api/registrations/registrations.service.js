@@ -13,7 +13,7 @@ const validateBooleanString = value => {
   return validValues.includes(value);
 };
 
-const doubleModes = ["success", "fail", "update", ""];
+const doubleModes = ["success", "fail", "update", "single", ""];
 const validateDoubleMode = value => {
   return doubleModes.includes(value);
 };

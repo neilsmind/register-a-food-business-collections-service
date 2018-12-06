@@ -115,6 +115,40 @@ const getFullMetadata = async id => {
   return metadata.dataValues;
 };
 
+const getSingleRegistration = async (fsa_rn, council) => {
+  logEmitter.emit(
+    "functionCall",
+    "registrationsDb.connector",
+    "getSingleRegistration"
+  );
+  const registration = await modelFindOne(
+    { where: { fsa_rn, council } },
+    Registration,
+    "getSingleRegistration"
+  );
+  if (registration === null) {
+    const error = new Error("getRegistrationNotFoundError");
+    error.name = "getRegistrationNotFoundError";
+    logEmitter.emit(
+      "functionFail",
+      "registrationsDb.connector",
+      "getRegistrationCollected",
+      error
+    );
+    throw error;
+  }
+  const fullRegistration = await getFullRegistration(registration, [
+    "establishment",
+    "metadata"
+  ]);
+  logEmitter.emit(
+    "functionCall",
+    "registrationsDb.connector",
+    "getSingleRegistration"
+  );
+  return fullRegistration;
+};
+
 const getFullRegistration = async (registration, fields = []) => {
   const establishment = fields.includes("establishment")
     ? await getFullEstablishment(registration.id)
@@ -195,5 +229,6 @@ const updateRegistrationCollected = async (fsa_rn, collected, council) => {
 
 module.exports = {
   getAllRegistrations,
+  getSingleRegistration,
   updateRegistrationCollected
 };

@@ -1,5 +1,6 @@
 const {
   getAllRegistrations,
+  getSingleRegistration,
   updateRegistrationCollected
 } = require("../../connectors/registrationDb/registrationDb.connector");
 
@@ -43,6 +44,37 @@ const getRegistrations = async options => {
   }
 };
 
+const getRegistration = async options => {
+  logEmitter.emit(
+    "functionCall",
+    "registrations.controller",
+    "getSingleRegistration"
+  );
+
+  const validationResult = validateOptions(options);
+
+  if (validationResult === true) {
+    if (options.double_mode) {
+      return registrationDbDouble(options.double_mode);
+    }
+    const registration = await getSingleRegistration(
+      options.fsa_rn,
+      options.council
+    );
+    logEmitter.emit(
+      "functionSuccess",
+      "registrations.controller",
+      "getRegistrations"
+    );
+    return registration;
+  } else {
+    const error = new Error("");
+    error.name = "optionsValidationError";
+    error.rawError = validationResult;
+    throw error;
+  }
+};
+
 const updateRegistration = async options => {
   logEmitter.emit(
     "functionCall",
@@ -78,4 +110,4 @@ const updateRegistration = async options => {
   }
 };
 
-module.exports = { getRegistrations, updateRegistration };
+module.exports = { getRegistrations, getRegistration, updateRegistration };
