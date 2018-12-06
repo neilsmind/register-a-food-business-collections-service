@@ -1,143 +1,266 @@
 {
-  "openapi": "3.0.2",
+  "swagger": "2.0",
   "info": {
-    "title": "Register a food business collections",
-    "version": "1.0.0"
+      "title": "Register a food business collections",
+      "version": "1.0"
   },
-  "components": {
-    "schemas": {
+  "host": "localhost:4001",
+  "basePath": "/api/registrations",
+  "schemes": [
+      "https"
+  ],
+  "securityDefinitions": {
+      "apiKeyHeader": {
+          "type": "apiKey",
+          "name": "Ocp-Apim-Subscription-Key",
+          "in": "header"
+      },
+      "apiKeyQuery": {
+          "type": "apiKey",
+          "name": "subscription-key",
+          "in": "query"
+      }
+  },
+  "security": [
+      {
+          "apiKeyHeader": []
+      },
+      {
+          "apiKeyQuery": []
+      }
+  ],
+  "paths": {
+      "/{lc}": {
+          "get": {
+              "description": "Returns all registrations for the given council.",
+              "operationId": "collect-all-registrations-for-council",
+              "summary": "Collect ALL registrations for council",
+              "parameters": [
+                  {
+                      "name": "lc",
+                      "in": "path",
+                      "description": "The council name",
+                      "required": true,
+                      "type": "string"
+                  },
+                  {
+                      "name": "mark_as_collected",
+                      "in": "query",
+                      "description": "Optionally mark any new registrations as collected when collecting all registrations",
+                      "type": "boolean",
+                      "enum": [
+                          "true",
+                          "false"
+                      ]
+                  }
+              ],
+              "responses": {}
+          }
+      },
+      "/{lc}/new": {
+          "get": {
+              "description": "Collect any new, previously uncollected registrations for the given council.",
+              "operationId": "collect-new-registrations-for-council",
+              "summary": "Collect NEW registrations for council",
+              "parameters": [
+                  {
+                      "name": "lc",
+                      "in": "path",
+                      "description": "The council name",
+                      "required": true,
+                      "type": "string"
+                  }
+              ],
+              "responses": {}
+          }
+      }
+  },
+  "definitions": {
       "ArrayOfRegistrations": {
-        "type": "array",
-        "items": {
-          "$ref": "#/components/schemas/Registration"
-        }
+          "type": "array",
+          "items": {
+              "$ref": "#/definitions/Registration"
+          }
       },
       "Registration": {
-        "type": "object",
-        "properties": {
-          "establishment": {
-            "$ref": "#/components/schemas/Establishment"
-          },
-          "metadata": {
-            "$ref": "#/components/schemas/Metadata"
+          "type": "object",
+          "properties": {
+              "establishment": {
+                  "$ref": "#/definitions/Establishment"
+              },
+              "metadata": {
+                  "$ref": "#/definitions/Metadata"
+              }
           }
-        }
       },
       "Establishment": {
-        "type": "object",
-        "properties": {
-          "establishment_details": {
-            "$ref": "#/components/schemas/EstablishmentDetails"
-          },
-          "operator": {
-            "$ref": "#/components/schemas/Operator"
-          },
-          "premise": {
-            "$ref": "#/components/schemas/Premise"
-          },
-          "activities": {
-            "$ref": "#/components/schemas/Activities"
+          "type": "object",
+          "properties": {
+              "establishment_details": {
+                  "$ref": "#/definitions/EstablishmentDetails"
+              },
+              "operator": {
+                  "$ref": "#/definitions/Operator"
+              },
+              "premise": {
+                  "$ref": "#/definitions/Premise"
+              },
+              "activities": {
+                  "$ref": "#/definitions/Activities"
+              }
           }
-        }
       },
       "EstablishmentDetails": {
-        "type": "object",
-        "properties": {
-          "establishment_trading_name": { "type": "string" },
-          "establishment_primary_number": { "type": "string" },
-          "establishment_secondary_number": { "type": "string" },
-          "establishment_email": { "type": "string" },
-          "establishment_opening_date": { "type": "string" }
-        }
+          "type": "object",
+          "properties": {
+              "establishment_trading_name": {
+                  "type": "string"
+              },
+              "establishment_primary_number": {
+                  "type": "string"
+              },
+              "establishment_secondary_number": {
+                  "type": "string"
+              },
+              "establishment_email": {
+                  "type": "string"
+              },
+              "establishment_opening_date": {
+                  "type": "string"
+              }
+          }
       },
       "Operator": {
-        "type": "object",
-        "properties": {
-          "operator_first_name": { "type": "string" },
-          "operator_last_name": { "type": "string" },
-          "operator_postcode": { "type": "string" },
-          "operator_first_line": { "type": "string" },
-          "operator_street": { "type": "string" },
-          "operator_town": { "type": "string" },
-          "operator_primary_number": { "type": "string" },
-          "operator_secondary_number": { "type": "string" },
-          "operator_email": { "type": "string" },
-          "contact_representative_number": { "type": "string" },
-          "contact_representative_email": { "type": "string" },
-          "operator_type": { "type": "string" },
-          "operator_company_name": { "type": "string" },
-          "operator_company_house_number": { "type": "string" },
-          "operator_charity_name": { "type": "string" },
-          "operator_charity_number": { "type": "string" }
-        }
+          "type": "object",
+          "properties": {
+              "operator_first_name": {
+                  "type": "string"
+              },
+              "operator_last_name": {
+                  "type": "string"
+              },
+              "operator_postcode": {
+                  "type": "string"
+              },
+              "operator_first_line": {
+                  "type": "string"
+              },
+              "operator_street": {
+                  "type": "string"
+              },
+              "operator_town": {
+                  "type": "string"
+              },
+              "operator_primary_number": {
+                  "type": "string"
+              },
+              "operator_secondary_number": {
+                  "type": "string"
+              },
+              "operator_email": {
+                  "type": "string"
+              },
+              "contact_representative_number": {
+                  "type": "string"
+              },
+              "contact_representative_email": {
+                  "type": "string"
+              },
+              "operator_type": {
+                  "type": "string"
+              },
+              "operator_company_name": {
+                  "type": "string"
+              },
+              "operator_company_house_number": {
+                  "type": "string"
+              },
+              "operator_charity_name": {
+                  "type": "string"
+              },
+              "operator_charity_number": {
+                  "type": "string"
+              }
+          }
       },
       "Premise": {
-        "type": "object",
-        "properties": {
-          "establishment_postcode": { "type": "string" },
-          "establishment_first_line": { "type": "string" },
-          "establishment_street": { "type": "string" },
-          "establishment_town": { "type": "string" },
-          "establishment_type": { "type": "string" }
-        }
+          "type": "object",
+          "properties": {
+              "establishment_postcode": {
+                  "type": "string"
+              },
+              "establishment_first_line": {
+                  "type": "string"
+              },
+              "establishment_street": {
+                  "type": "string"
+              },
+              "establishment_town": {
+                  "type": "string"
+              },
+              "establishment_type": {
+                  "type": "string"
+              }
+          }
       },
       "Activities": {
-        "type": "object",
-        "properties": {
-          "customer_type": { "type": "string" },
-          "business_type": { "type": "string" },
-          "business_type_search_term": { "type": "string" },
-          "import_export_activities": { "type": "string" },
-          "business_other_details": { "type": "string" },
-          "opening_days_irregular": { "type": "string" },
-          "opening_day_monday": { "type": "boolean" },
-          "opening_day_tuesday": { "type": "boolean" },
-          "opening_day_wednesday": { "type": "boolean" },
-          "opening_day_thursday": { "type": "boolean" },
-          "opening_day_friday": { "type": "boolean" },
-          "opening_day_saturday": { "type": "boolean" },
-          "opening_day_sunday": { "type": "boolean" }
-        }
+          "type": "object",
+          "properties": {
+              "customer_type": {
+                  "type": "string"
+              },
+              "business_type": {
+                  "type": "string"
+              },
+              "business_type_search_term": {
+                  "type": "string"
+              },
+              "import_export_activities": {
+                  "type": "string"
+              },
+              "business_other_details": {
+                  "type": "string"
+              },
+              "opening_days_irregular": {
+                  "type": "string"
+              },
+              "opening_day_monday": {
+                  "type": "boolean"
+              },
+              "opening_day_tuesday": {
+                  "type": "boolean"
+              },
+              "opening_day_wednesday": {
+                  "type": "boolean"
+              },
+              "opening_day_thursday": {
+                  "type": "boolean"
+              },
+              "opening_day_friday": {
+                  "type": "boolean"
+              },
+              "opening_day_saturday": {
+                  "type": "boolean"
+              },
+              "opening_day_sunday": {
+                  "type": "boolean"
+              }
+          }
       },
       "Metadata": {
-        "type": "object",
-        "properties": {
-          "declaration1": { "type": "string" },
-          "declaration2": { "type": "string" },
-          "declaration3": { "type": "string" }
-        }
-      }
-    }
-  },
-  "paths": {
-    "/api/collect/{lc}": {
-      "description": "Get all registrations for a local council",
-      "get": {
-        "parameters": [
-          {
-            "name": "lc",
-            "in": "path",
-            "description": "Name of the local council to use",
-            "required": true,
-            "schema": {
-              "type": "string"
-            },
-            "style": "simple"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ArrayOfRegistrations"
-                }
+          "type": "object",
+          "properties": {
+              "declaration1": {
+                  "type": "string"
+              },
+              "declaration2": {
+                  "type": "string"
+              },
+              "declaration3": {
+                  "type": "string"
               }
-            }
           }
-        }
       }
-    }
-  }
+  },
+  "tags": []
 }
