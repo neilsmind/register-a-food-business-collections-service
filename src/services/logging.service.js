@@ -1,9 +1,11 @@
 const EventEmitter = require("events");
-const { logger } = require("./logger");
+const { createLogger } = require("./logger");
 
 class LogEmitter extends EventEmitter {}
 
 const logEmitter = new LogEmitter();
+
+const logger = createLogger(process.env.LOG_LEVEL);
 
 logEmitter.on("functionCall", (module, functionName) => {
   logger.info(`${module}: ${functionName} called`);

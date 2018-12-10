@@ -1,5 +1,7 @@
-const { logger } = require("../services/logger");
+const { createLogger } = require("../services/logger");
 const db = require("./models");
+
+const logger = createLogger(process.env.LOG_LEVEL);
 
 db.sequelize
   .authenticate()
