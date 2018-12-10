@@ -172,8 +172,7 @@ const getAllRegistrations = async (council, newRegistrations, fields) => {
   );
   const registrationPromises = [];
   // get NEW [false, null] or EVERYTHING [true, false, null]
-  const queryArray =
-    newRegistrations === "true" ? [false, null] : [true, false, null];
+  const queryArray = newRegistrations === "true" ? [false] : [true, false];
   const registrations = await getRegistrationTable(council, queryArray);
 
   registrations.forEach(registration => {
