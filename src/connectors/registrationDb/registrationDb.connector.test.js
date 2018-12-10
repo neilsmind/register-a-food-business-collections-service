@@ -76,8 +76,7 @@ describe("collect.service", () => {
 
       it("should call registration.findAll with queryArray [false, null]", () => {
         expect(Registration.findAll.mock.calls[0][0].where.collected).toEqual([
-          false,
-          null
+          false
         ]);
       });
     });
@@ -115,8 +114,7 @@ describe("collect.service", () => {
       it("should call registration.findAll with queryArray [true, false, null]", () => {
         expect(Registration.findAll.mock.calls[0][0].where.collected).toEqual([
           true,
-          false,
-          null
+          false
         ]);
       });
     });
