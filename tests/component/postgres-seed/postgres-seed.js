@@ -19,7 +19,7 @@ const seedPostgres = async () => {
       }
     };
 
-    response = await request(requestOptions);
+    const response = await request(requestOptions);
     responses.push(response);
   }
 

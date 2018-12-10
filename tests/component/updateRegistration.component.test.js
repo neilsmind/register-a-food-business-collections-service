@@ -30,9 +30,67 @@ describe("PUT to /api/registrations/:lc/:fsa_rn", () => {
     });
   });
 
-  describe("Given council or fsa_rn which cannot be found", () => {});
+  describe("Given council or fsa_rn which cannot be found", () => {
+    let response;
+    beforeEach(async () => {
+      const requestOptions = {
+        uri: `${url}/1234253`,
+        json: true
+      };
+      try {
+        await request(requestOptions);
+      } catch (err) {
+        response = err;
+      }
+    });
 
-  describe("Given invalid parameters", () => {});
+    it("should return the getRegistrationNotFound error", () => {
+      expect(response.error).toBeDefined();
+      expect(response.error.statusCode).toBe(404);
+    });
+  });
 
-  describe("Given 'double-mode' header", () => {});
+  describe("Given invalid parameters", () => {
+    let response;
+    beforeEach(async () => {
+      const requestOptions = {
+        uri: `${url}/1234253`,
+        json: true,
+        headers: {
+          "double-mode": "invalid double mode"
+        }
+      };
+      try {
+        await request(requestOptions);
+      } catch (err) {
+        response = err;
+      }
+    });
+
+    it("should return the options validation error", () => {
+      expect(response.statusCode).toBe(400);
+      expect(response.error.errorCode).toBe("3");
+      expect(response.error.developerMessage).toBe(
+        "One of the supplied options is invalid"
+      );
+    });
+  });
+
+  describe("Given 'double-mode' header", () => {
+    let response;
+    beforeEach(async () => {
+      const requestOptions = {
+        uri: `${url}`,
+        json: true,
+        headers: {
+          "double-mode": "update"
+        }
+      };
+      response = await request(requestOptions);
+    });
+
+    it("should return the double mode response", () => {
+      expect(response.fsa_rn).toBe("1234");
+    });
+  });
 });
