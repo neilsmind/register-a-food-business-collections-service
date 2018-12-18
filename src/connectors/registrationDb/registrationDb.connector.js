@@ -131,7 +131,6 @@ const getSingleRegistration = async (fsa_rn, council) => {
     "getSingleRegistration"
   );
   if (registration === null) {
-    // closeConnection();
     const error = new Error("getRegistrationNotFoundError");
     error.name = "getRegistrationNotFoundError";
     logEmitter.emit(
@@ -146,9 +145,6 @@ const getSingleRegistration = async (fsa_rn, council) => {
     "establishment",
     "metadata"
   ]);
-
-  // closeConnection();
-
   logEmitter.emit(
     "functionSuccess",
     "registrationsDb.connector",
@@ -190,9 +186,6 @@ const getAllRegistrations = async (council, newRegistrations, fields) => {
     registrationPromises.push(getFullRegistration(registration, fields));
   });
   const fullRegistrations = await Promise.all(registrationPromises);
-
-  // closeConnection();
-
   logEmitter.emit(
     "functionSuccess",
     "registrationsDb.connector",
@@ -225,7 +218,6 @@ const updateRegistrationCollected = async (fsa_rn, collected, council) => {
   );
 
   if (response[0] === 0) {
-    // closeConnection();
     const error = new Error("updateRegistrationNotFoundError");
     error.name = "updateRegistrationNotFoundError";
     logEmitter.emit(
@@ -236,9 +228,6 @@ const updateRegistrationCollected = async (fsa_rn, collected, council) => {
     );
     throw error;
   }
-
-  // closeConnection();
-
   logEmitter.emit(
     "functionSuccess",
     "registrationsDb.connector",
