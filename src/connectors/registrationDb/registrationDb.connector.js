@@ -4,7 +4,8 @@ const {
   Metadata,
   Operator,
   Premise,
-  Registration
+  Registration,
+  connectToDb
 } = require("../../db/db");
 const { logEmitter } = require("../../services/logging.service");
 
@@ -121,12 +122,16 @@ const getSingleRegistration = async (fsa_rn, council) => {
     "registrationsDb.connector",
     "getSingleRegistration"
   );
+
+  await connectToDb();
+
   const registration = await modelFindOne(
     { where: { fsa_rn, council } },
     Registration,
     "getSingleRegistration"
   );
   if (registration === null) {
+    // closeConnection();
     const error = new Error("getRegistrationNotFoundError");
     error.name = "getRegistrationNotFoundError";
     logEmitter.emit(
@@ -141,8 +146,11 @@ const getSingleRegistration = async (fsa_rn, council) => {
     "establishment",
     "metadata"
   ]);
+
+  // closeConnection();
+
   logEmitter.emit(
-    "functionCall",
+    "functionSuccess",
     "registrationsDb.connector",
     "getSingleRegistration"
   );
@@ -170,6 +178,9 @@ const getAllRegistrations = async (council, newRegistrations, fields) => {
     "registrationsDb.connector",
     "getAllRegistrations"
   );
+
+  await connectToDb();
+
   const registrationPromises = [];
   // get NEW [false, null] or EVERYTHING [true, false, null]
   const queryArray = newRegistrations === "true" ? [false] : [true, false];
@@ -179,6 +190,9 @@ const getAllRegistrations = async (council, newRegistrations, fields) => {
     registrationPromises.push(getFullRegistration(registration, fields));
   });
   const fullRegistrations = await Promise.all(registrationPromises);
+
+  // closeConnection();
+
   logEmitter.emit(
     "functionSuccess",
     "registrationsDb.connector",
@@ -193,6 +207,9 @@ const updateRegistrationCollected = async (fsa_rn, collected, council) => {
     "registrationsDb.connector",
     "updateRegistrationCollected"
   );
+
+  await connectToDb();
+
   const isoDate = convertJSDateToISODate();
   const response = await Registration.update(
     {
@@ -208,6 +225,7 @@ const updateRegistrationCollected = async (fsa_rn, collected, council) => {
   );
 
   if (response[0] === 0) {
+    // closeConnection();
     const error = new Error("updateRegistrationNotFoundError");
     error.name = "updateRegistrationNotFoundError";
     logEmitter.emit(
@@ -218,6 +236,9 @@ const updateRegistrationCollected = async (fsa_rn, collected, council) => {
     );
     throw error;
   }
+
+  // closeConnection();
+
   logEmitter.emit(
     "functionSuccess",
     "registrationsDb.connector",

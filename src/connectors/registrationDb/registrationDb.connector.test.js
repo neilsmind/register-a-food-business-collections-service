@@ -19,7 +19,9 @@ jest.mock("../../db/db", () => ({
     findOne: jest.fn(),
     findAll: jest.fn(),
     update: jest.fn()
-  }
+  },
+  connectToDb: jest.fn(),
+  closeConnection: jest.fn()
 }));
 
 const {
