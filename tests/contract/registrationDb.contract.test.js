@@ -1,39 +1,103 @@
-const {
-  getAllRegistrationsByCouncil
-} = require("../../src/connectors/registrationDb/registrationDb.connector");
+require("dotenv").config();
 
-const { db } = require("../../src/db/db");
+const {
+  getRegistrations,
+  getRegistration,
+  updateRegistration
+} = require("../../src/api/registrations/registrations.controller");
+
+const { closeConnection } = require("../../src/db/db");
 
 let doubleResult;
 let realResult;
 
-describe("registrationDb.connector integration: getRegistrationsByCouncil", () => {
+afterAll(() => {
+  closeConnection();
+});
+
+describe("registrationDb.connector integration: getAllRegistrations", () => {
   beforeEach(async () => {
-    doubleResult = await getAllRegistrationsByCouncil("west-dorset", {
-      double_mode: "success"
+    doubleResult = await getRegistrations({ double_mode: "success" });
+    realResult = await getRegistrations({
+      council: "cardiff",
+      fields: ["establishment", "metadata"]
     });
-    realResult = await getAllRegistrationsByCouncil("west-dorset", {});
-    db.sequelize.close();
   });
 
   it("Should return list of registrations from council", async () => {
-    expect(realResult[0].registration.fsa_rn).toBeDefined();
-    expect(realResult[0].registration.council).toBeDefined();
+    expect(Array.isArray(realResult)).toBe(true);
+    expect(realResult[0].fsa_rn).toBeDefined();
+    expect(realResult[0].council).toBeDefined();
     expect(
       realResult[0].establishment.establishment_trading_name
     ).toBeDefined();
-    expect(realResult[0].operator.operator_type).toBeDefined();
-    expect(realResult[0].activities.business_type).toBeDefined();
-    expect(realResult[0].premise.establishment_type).toBeDefined();
+    expect(realResult[0].establishment.operator.operator_type).toBeDefined();
+    expect(realResult[0].establishment.activities.business_type).toBeDefined();
+    expect(
+      realResult[0].establishment.premise.establishment_type
+    ).toBeDefined();
     expect(realResult[0].metadata.declaration1).toBeDefined();
-    expect(doubleResult[0].registration.fsa_rn).toBeDefined();
-    expect(doubleResult[0].registration.council).toBeDefined();
+    expect(doubleResult[0].fsa_rn).toBeDefined();
+    expect(doubleResult[0].council).toBeDefined();
     expect(
       doubleResult[0].establishment.establishment_trading_name
     ).toBeDefined();
-    expect(doubleResult[0].operator.operator_type).toBeDefined();
-    expect(doubleResult[0].activities.business_type).toBeDefined();
-    expect(doubleResult[0].premise.establishment_type).toBeDefined();
+    expect(doubleResult[0].establishment.operator.operator_type).toBeDefined();
+    expect(
+      doubleResult[0].establishment.activities.business_type
+    ).toBeDefined();
+    expect(
+      doubleResult[0].establishment.premise.establishment_type
+    ).toBeDefined();
     expect(doubleResult[0].metadata.declaration1).toBeDefined();
+  });
+});
+
+describe("registrationDb.connector integration: getSingleRegistrations", () => {
+  beforeEach(async () => {
+    doubleResult = await getRegistration({ double_mode: "single" });
+    const realSummaryResult = await getRegistrations({ council: "cardiff" });
+    realResult = await getRegistration({
+      council: "cardiff",
+      fsa_rn: realSummaryResult[0].fsa_rn
+    });
+  });
+
+  it("Should return single of registrations from council", async () => {
+    expect(Array.isArray(realResult)).toBe(false);
+    expect(realResult.fsa_rn).toBeDefined();
+    expect(realResult.council).toBeDefined();
+    expect(realResult.establishment.establishment_trading_name).toBeDefined();
+    expect(realResult.establishment.operator.operator_type).toBeDefined();
+    expect(realResult.establishment.activities.business_type).toBeDefined();
+    expect(realResult.establishment.premise.establishment_type).toBeDefined();
+    expect(realResult.metadata.declaration1).toBeDefined();
+    expect(doubleResult.fsa_rn).toBeDefined();
+    expect(doubleResult.council).toBeDefined();
+    expect(doubleResult.establishment.establishment_trading_name).toBeDefined();
+    expect(doubleResult.establishment.operator.operator_type).toBeDefined();
+    expect(doubleResult.establishment.activities.business_type).toBeDefined();
+    expect(doubleResult.establishment.premise.establishment_type).toBeDefined();
+    expect(doubleResult.metadata.declaration1).toBeDefined();
+  });
+});
+
+describe("registrationDb.connector integration: updateRegistrationCollected", () => {
+  beforeEach(async () => {
+    doubleResult = await updateRegistration({ double_mode: "update" });
+    const realSummaryResult = await getRegistrations({
+      council: "the-vale-of-glamorgan"
+    });
+    realResult = await getRegistration({
+      council: "the-vale-of-glamorgan",
+      fsa_rn: realSummaryResult[0].fsa_rn
+    });
+  });
+
+  it("Should return the update response", async () => {
+    expect(realResult.fsa_rn).toBeDefined();
+    expect(realResult.collected).toBeDefined();
+    expect(doubleResult.fsa_rn).toBeDefined();
+    expect(doubleResult.collected).toBeDefined();
   });
 });
