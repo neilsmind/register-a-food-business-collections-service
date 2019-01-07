@@ -4,7 +4,8 @@ const {
   Metadata,
   Operator,
   Premise,
-  Registration
+  Registration,
+  connectToDb
 } = require("../../db/db");
 const { logEmitter } = require("../../services/logging.service");
 
@@ -121,6 +122,9 @@ const getSingleRegistration = async (fsa_rn, council) => {
     "registrationsDb.connector",
     "getSingleRegistration"
   );
+
+  await connectToDb();
+
   const registration = await modelFindOne(
     { where: { fsa_rn, council } },
     Registration,
@@ -142,7 +146,7 @@ const getSingleRegistration = async (fsa_rn, council) => {
     "metadata"
   ]);
   logEmitter.emit(
-    "functionCall",
+    "functionSuccess",
     "registrationsDb.connector",
     "getSingleRegistration"
   );
@@ -170,6 +174,9 @@ const getAllRegistrations = async (council, newRegistrations, fields) => {
     "registrationsDb.connector",
     "getAllRegistrations"
   );
+
+  await connectToDb();
+
   const registrationPromises = [];
   // get NEW [false, null] or EVERYTHING [true, false, null]
   const queryArray = newRegistrations === "true" ? [false] : [true, false];
@@ -193,6 +200,9 @@ const updateRegistrationCollected = async (fsa_rn, collected, council) => {
     "registrationsDb.connector",
     "updateRegistrationCollected"
   );
+
+  await connectToDb();
+
   const isoDate = convertJSDateToISODate();
   const response = await Registration.update(
     {
