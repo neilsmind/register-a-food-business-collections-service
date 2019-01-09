@@ -480,11 +480,11 @@
               },
               "business_other_details": {
                   "type": "string",
-                  "maximum": "1550"
+                  "maximum": "1500"
               },
               "opening_days_irregular": {
                   "type": "string",
-                  "maximum": "1550"
+                  "maximum": "1500"
               },
               "opening_day_monday": {
                   "type": "boolean"
