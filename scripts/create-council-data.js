@@ -107,7 +107,7 @@ const getAllData = async (count, council) => {
     var s = Math.round(Math.random() * count);
     splitTotal.push(s);
     count -= s;
-    if (splitTotal.length === 4) {
+    if (splitTotal.length === dataTypes.length - 1) {
       splitTotal.push(count);
       count = 0;
     }
