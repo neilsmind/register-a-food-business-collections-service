@@ -16,12 +16,8 @@ const { createLogger } = require("../src/services/logger");
 const logger = createLogger("info");
 
 const modelCreate = async (data, model) => {
-  try {
-    const response = await model.create(data);
-    return response;
-  } catch (err) {
-    throw err;
-  }
+  const response = await model.create(data);
+  return response;
 };
 
 const createActivities = async (activities, establishmentId) => {
@@ -115,6 +111,10 @@ const getAllData = async (count, council) => {
       splitTotal.push(count);
       count = 0;
     }
+  }
+
+  while (splitTotal.length < dataTypes.length) {
+    splitTotal.push(0);
   }
 
   const dataPromises = [];
