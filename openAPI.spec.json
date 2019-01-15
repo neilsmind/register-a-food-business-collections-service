@@ -252,7 +252,7 @@
       },
       "council": {
           "type": "string",
-          "description": "The local council the registration belongs to"
+          "description": "The local council that the registration belongs to"
       },
       "collected": {
         "type": "boolean",
@@ -260,7 +260,7 @@
       },
       "collected_at": {
         "type": "string",
-        "description": "The date and time the registratio was collected"
+        "description": "The date and time that the registration was collected"
       },
       "Establishment": {
           "type": "object",
@@ -310,7 +310,7 @@
               "establishment_opening_date": {
                   "type": "string",
                   "required": true,
-                  "description": "Uses [npm Validator](https://www.npmjs.com/package/validator) isISO8601"
+                  "description": "Uses YYYY-MM-DD [npm Validator](https://www.npmjs.com/package/validator) isISO8601"
 
               }
           }
