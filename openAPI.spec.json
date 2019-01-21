@@ -224,6 +224,18 @@
       "Registration": {
           "type": "object",
           "properties": {
+              "fsa_rn": {
+                "$ref": "#/definitions/fsa_rn"
+              },
+              "council": {
+                "$ref": "#/definitions/council"
+              },
+              "collected": {
+                "$ref": "#/definitions/collected"
+              },
+              "collected_at": {
+                "$ref": "#/definitions/collected_at"
+              },
               "establishment": {
                   "$ref": "#/definitions/Establishment"
               },
@@ -231,6 +243,24 @@
                   "$ref": "#/definitions/Metadata"
               }
           }
+      },
+      "fsa_rn": {
+          "type": "string",
+          "maximum": 20,
+          "minimum": 20,
+          "description": "The unique reference number to identify this registration"
+      },
+      "council": {
+          "type": "string",
+          "description": "The local council that the registration belongs to"
+      },
+      "collected": {
+        "type": "boolean",
+        "description": "Flag indicating whether this registration has been collected by the council or not"
+      },
+      "collected_at": {
+        "type": "string",
+        "description": "The date and time that the registration was collected"
       },
       "Establishment": {
           "type": "object",
@@ -253,19 +283,35 @@
           "type": "object",
           "properties": {
               "establishment_trading_name": {
-                  "type": "string"
+                  "type": "string",
+                  "required": true,
+                  "description": "ASCII string",
+                  "maximum": "255"
               },
               "establishment_primary_number": {
-                  "type": "string"
+                  "type": "string",
+                  "required": true,
+                  "minimum": "5",
+                  "maximum": "20",
+                  "description": "Numeric string. Blank spaces and + allowed"
               },
               "establishment_secondary_number": {
-                  "type": "string"
+                  "type": "string",
+                  "minimum": "5",
+                  "maximum": "20",
+                  "description": "Numeric string. Blank spaces and + allowed"
               },
               "establishment_email": {
-                  "type": "string"
+                  "type": "string",
+                  "required": true,
+                  "maximum": "255",
+                  "description": "Uses [npm Validator](https://www.npmjs.com/package/validator) isEmail"
               },
               "establishment_opening_date": {
-                  "type": "string"
+                  "type": "string",
+                  "required": true,
+                  "description": "Uses YYYY-MM-DD [npm Validator](https://www.npmjs.com/package/validator) isISO8601"
+
               }
           }
       },
@@ -273,52 +319,110 @@
           "type": "object",
           "properties": {
               "operator_first_name": {
-                  "type": "string"
+                  "type": "string",
+                  "required": "If operator_type is 'Sole trader', 'Partnership', or 'A person (registered by a representative)'",
+                  "description": "ASCII string",
+                  "maximum": "255"
               },
               "operator_last_name": {
-                  "type": "string"
+                  "type": "string",
+                  "required": "If operator_type is 'Sole trader', 'Partnership', or 'A person (registered by a representative)'",
+                  "description": "ASCII string",
+                  "maximum": "255"
               },
               "operator_postcode": {
-                  "type": "string"
+                  "type": "string",
+                  "required": true,
+                  "description": "Uses [npm Validator](https://www.npmjs.com/package/validator) isPostalCode (GB)"
               },
               "operator_first_line": {
-                  "type": "string"
+                  "type": "string",
+                  "required": true,
+                  "description": "ASCII string",
+                  "maximum": "255"
               },
               "operator_street": {
-                  "type": "string"
+                  "type": "string",
+                  "description": "ASCII string",
+                  "maximum": "255"
               },
               "operator_town": {
-                  "type": "string"
+                  "type": "string",
+                  "description": "ASCII string",
+                  "maximum": "255"
               },
               "operator_primary_number": {
-                  "type": "string"
+                  "type": "string",
+                  "required": true,
+                  "minimum": "5",
+                  "maximum": "20",
+                  "description": "Numeric string. Blank spaces and + allowed"
               },
               "operator_secondary_number": {
-                  "type": "string"
+                  "type": "string",
+                  "required": true,
+                  "minimum": "5",
+                  "maximum": "20",
+                  "description": "Numeric string. Blank spaces and + allowed"
               },
               "operator_email": {
-                  "type": "string"
+                  "type": "string",
+                  "required": true,
+                  "maximum": "255",
+                  "description": "Uses [npm Validator](https://www.npmjs.com/package/validator) isEmail"
               },
+              "contact_representative_name": {
+                "type": "string",
+                "required": "If operator_type is 'A company (registered by a representative)' or 'A charity (registered by a representative)'",
+                "description": "ASCII string",
+                "maximum": "255"
+            },
+              "contact_representative_role": {
+                "type": "string",
+                "required": "If operator_type is 'A company (registered by a representative)' or 'A charity (registered by a representative)'",
+                "description": "ASCII string",
+                "maximum": "255"
+            },
               "contact_representative_number": {
-                  "type": "string"
+                "type": "string",
+                "required": "If operator_type is 'A company (registered by a representative)' or 'A charity (registered by a representative)'",
+                "description": "ASCII string",
+                "maximum": "255"
               },
               "contact_representative_email": {
-                  "type": "string"
+                  "type": "string",
+                  "required": "If operator_type is 'A company (registered by a representative)' or 'A charity (registered by a representative)'",
+                  "maximum": "255",
+                  "description": "Uses [npm Validator](https://www.npmjs.com/package/validator) isEmail"
               },
               "operator_type": {
-                  "type": "string"
+                  "type": "string",
+                  "required": true,
+                  "description": "Possible values: 'Sole trader', 'Partnership', 'A person (registered by a representative)' 'A company (registered by a representative)' or 'A charity (registered by a representative)'"
               },
               "operator_company_name": {
-                  "type": "string"
+                  "type": "string",
+                  "required": "If operator_type is 'A company (registered by a representative)'",
+                  "maximum": "50"
               },
               "operator_company_house_number": {
-                  "type": "string"
+                  "type": "string",
+                  "required": "If operator_type is 'A company (registered by a representative)'",
+                  "maximum": "8",
+                  "minimum": "8",
+                  "description": "Uses [npm Validator](https://www.npmjs.com/package/validator) isAlphanumeric (GB), first two characters can be letters"
               },
               "operator_charity_name": {
-                  "type": "string"
-              },
+                  "type": "string",
+                  "required": "If operator_type is 'A charity (registered by a representative)'",
+                  "maximum": "50"
+                },
               "operator_charity_number": {
-                  "type": "string"
+                  "type": "string",
+                  "required": "If operator_type is 'A charity (registered by a representative)'",
+                  "maximum": "8",
+                  "minimum": "6",
+                  "description": "Uses [npm Validator](https://www.npmjs.com/package/validator) isAlphanumeric (GB), allows '-'"
               }
           }
       },
@@ -326,19 +430,30 @@
           "type": "object",
           "properties": {
               "establishment_postcode": {
-                  "type": "string"
+                "type": "string",
+                "required": true,
+                "description": "Uses [npm Validator](https://www.npmjs.com/package/validator) isPostalCode (GB)"
               },
               "establishment_first_line": {
-                  "type": "string"
+                  "type": "string",
+                  "required": true,
+                  "description": "ASCII string",
+                  "maximum": "255"
               },
               "establishment_street": {
-                  "type": "string"
+                  "type": "string",
+                  "description": "ASCII string",
+                  "maximum": "255"
               },
               "establishment_town": {
-                  "type": "string"
+                  "type": "string",
+                  "description": "ASCII string",
+                  "maximum": "255"
               },
               "establishment_type": {
-                  "type": "string"
+                  "type": "string",
+                  "required": true,
+                  "description": "Possible values: 'Place of business or commercial premises', 'Mobile or moveable premises', 'Home or domestic premises'"
               }
           }
       },
@@ -346,22 +461,30 @@
           "type": "object",
           "properties": {
               "customer_type": {
-                  "type": "string"
+                  "type": "string",
+                  "required": true,
+                  "description": "Possible values: 'Other businesses', 'End consumer', 'End consumer and other businesses'"
               },
               "business_type": {
-                  "type": "string"
+                  "type": "string",
+                  "required": true,
+                  "description": "Predetermined values, see separate document for full business type list"
               },
               "business_type_search_term": {
                   "type": "string"
               },
               "import_export_activities": {
-                  "type": "string"
+                  "type": "string",
+                  "required": true,
+                  "description": "Possible values: 'Directly import', 'Directly export', 'Directly import and export', 'None'"
               },
               "business_other_details": {
-                  "type": "string"
+                  "type": "string",
+                  "maximum": "1500"
               },
               "opening_days_irregular": {
-                  "type": "string"
+                  "type": "string",
+                  "maximum": "1500"
               },
               "opening_day_monday": {
                   "type": "boolean"
@@ -390,13 +513,16 @@
           "type": "object",
           "properties": {
               "declaration1": {
-                  "type": "string"
+                  "type": "string",
+                  "description": "I declare that the information I have given on this form is correct and complete to the best of my knowledge and belief."
               },
               "declaration2": {
-                  "type": "string"
+                  "type": "string",
+                  "description": "The operator will notify their local council of any significant changes to the business activity, including closure, within 28 days of the change happening."
               },
               "declaration3": {
-                  "type": "string"
+                  "type": "string",
+                  "description": "The operator understands they are legally responsible for the safety and authenticity of the food being produced or served at this establishment."
               }
           }
       }
