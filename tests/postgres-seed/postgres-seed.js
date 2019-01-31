@@ -1,3 +1,5 @@
+require("dotenv").config();
+
 const request = require("request-promise-native");
 const mockRegistrationData = require("./mock-registration-data.json");
 
@@ -19,7 +21,7 @@ const seedPostgres = async () => {
       }
     };
 
-    response = await request(requestOptions);
+    const response = await request(requestOptions);
     responses.push(response);
   }
 

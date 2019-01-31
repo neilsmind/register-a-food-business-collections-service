@@ -1,14 +1,20 @@
-const { logger } = require("../services/logger");
+const { createLogger } = require("../services/logger");
 const db = require("./models");
 
-db.sequelize
-  .authenticate()
-  .then(() => {
+const logger = createLogger(process.env.LOG_LEVEL);
+
+const connectToDb = async () => {
+  try {
+    await db.sequelize.authenticate();
     logger.info("Connection to postgres db has been established successfully.");
-  })
-  .catch(err => {
-    logger.error("Unable to connect to the database:", err);
-  });
+  } catch (err) {
+    logger.info(`Unable to connect to the database: ${err}`);
+  }
+};
+
+const closeConnection = async () => {
+  return db.sequelize.close();
+};
 
 module.exports = {
   Activities: db.activities,
@@ -17,5 +23,7 @@ module.exports = {
   Operator: db.operator,
   Premise: db.premise,
   Registration: db.registration,
-  db
+  db,
+  connectToDb,
+  closeConnection
 };

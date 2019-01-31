@@ -13,6 +13,7 @@ module.exports = {
     "**/*.{js}",
     "!**/node_modules/**",
     "!**/jest.config.js",
+    "!**/scripts/*",
     "!**/tests/*",
     "!**/coverage/**",
     "!**/src/app.js",

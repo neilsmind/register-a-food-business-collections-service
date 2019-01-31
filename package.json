@@ -1,21 +1,23 @@
 {
   "name": "register-a-food-business-collections-service",
-  "version": "1.0.0",
+  "version": "4.1.0",
   "description": "",
   "main": "src/app.js",
   "scripts": {
     "test": "jest ./src --coverage",
     "test:unit:ci": "export TEST_TYPE=unit && jest ./src --coverage",
-    "test:component": "jest ./tests/component/*.js --runInBand",
+    "test:component": "npm run reset-postgres && jest ./tests/component/*.js --runInBand",
     "test:component:ci": "export TEST_TYPE=component && jest ./tests/component/*.js --runInBand",
     "test:integration": "jest ./tests/integration/*.js",
-    "test:contract": "jest ./tests/contract/*.js",
+    "test:contract": "npm run reset-postgres && jest ./tests/contract/*.js",
     "start": "node src/app.js",
     "start:docker": "export NODE_ENV=local && node src/db/check-connection.js && node src/app.js",
     "lint": "eslint ./src",
     "format:verify": "prettier --list-different '{src,tests}/**/*.js'",
     "format": "prettier --write '{src,tests}/**/*.js'",
-    "seed-postgres-test-env": "node tests/component/postgres-seed/postgres-seed.js"
+    "seed-postgres": "node tests/postgres-seed/postgres-seed.js",
+    "clear-postgres": "node tests/postgres-seed/postgres-clear.js",
+    "reset-postgres": "npm run clear-postgres && npm run seed-postgres"
   },
   "repository": {
     "type": "git",
@@ -28,23 +30,27 @@
   },
   "homepage": "https://github.com/FoodStandardsAgency/register-a-food-business-collections-service#readme",
   "dependencies": {
+    "body-parser": "1.18.3",
     "express": "4.16.4",
     "helmet": "3.14.0",
+    "lodash.flatten": "^4.4.0",
     "path": "0.12.7",
     "pg": "7.6.0",
     "request": "2.88.0",
     "request-promise-native": "1.0.5",
     "sequelize": "4.41.0",
     "swagger-ui-express": "4.0.1",
-    "validator": "10.9.0",
-    "winston": "3.1.0"
+    "winston": "3.1.0",
+    "yargs": "12.0.5"
   },
   "devDependencies": {
+    "dotenv": "6.2.0",
     "eslint": "5.8.0",
     "eslint-config-prettier": "3.1.0",
     "eslint-plugin-prettier": "3.0.0",
     "jest": "23.6.0",
     "jest-junit": "5.2.0",
-    "prettier": "1.14.3"
+    "prettier": "1.14.3",
+    "validator": "10.9.0"
   }
 }

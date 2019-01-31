@@ -4,5 +4,23 @@
     "code": "1",
     "developerMessage": "An error occured when calling findOne against the registrations database",
     "statusCode": 500
+  },
+  {
+    "name": "optionsValidationError",
+    "code": "3",
+    "developerMessage": "One of the supplied options is invalid",
+    "statusCode": 400
+  },
+  {
+    "name": "updateRegistrationNotFoundError",
+    "code": "4",
+    "developerMessage": "The registration number specified could not be found for the council requested. Please check this reference number is definitely associated with this council",
+    "statusCode": 404
+  },
+  {
+    "name": "getRegistrationNotFoundError",
+    "code": "5",
+    "developerMessage": "The registration number specified could not be found for the council requested. Please check this reference number is definitely associated with this council",
+    "statusCode": 404
   }
 ]

@@ -1,27 +1,29 @@
+const mockLogger = {
+  info: jest.fn(),
+  error: jest.fn()
+};
+
 jest.mock("./logger", () => ({
-  logger: {
-    info: jest.fn(),
-    error: jest.fn()
-  }
+  createLogger: () => mockLogger
 }));
 
 jest.unmock("./logging.service");
 
-const { logger } = require("./logger");
+// const { logger } = require("./logger");
 const { logEmitter } = require("./logging.service");
 
 describe("logEmitter", () => {
   describe("on functionCall event", () => {
     it("should call winston info", () => {
       logEmitter.emit("functionCall");
-      expect(logger.info).toBeCalled();
+      expect(mockLogger.info).toBeCalled();
     });
   });
 
   describe("on functionSuccess event", () => {
     it("should call winston info", () => {
       logEmitter.emit("functionSuccess");
-      expect(logger.info).toBeCalled();
+      expect(mockLogger.info).toBeCalled();
     });
   });
 
@@ -30,14 +32,14 @@ describe("logEmitter", () => {
       logEmitter.emit("functionFail", "module", "function", {
         message: "error"
       });
-      expect(logger.error).toBeCalled();
+      expect(mockLogger.error).toBeCalled();
     });
   });
 
   describe("on doubleMode event", () => {
     it("should call winston info", () => {
       logEmitter.emit("doubleMode");
-      expect(logger.info).toBeCalled();
+      expect(mockLogger.info).toBeCalled();
     });
   });
 });

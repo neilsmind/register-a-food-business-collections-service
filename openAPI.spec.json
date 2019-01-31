@@ -1,143 +1,531 @@
 {
-  "openapi": "3.0.2",
+  "swagger": "2.0",
   "info": {
-    "title": "Register a food business collections",
-    "version": "1.0.0"
+      "title": "Register a food business collections",
+      "version": "1.0"
   },
-  "components": {
-    "schemas": {
-      "ArrayOfRegistrations": {
-        "type": "array",
-        "items": {
-          "$ref": "#/components/schemas/Registration"
+  "host": "fsa-rof-gateway.azure-api.net",
+  "basePath": "/api/registrations",
+  "schemes": [
+      "https"
+  ],
+  "securityDefinitions": {
+      "apiKeyHeader": {
+          "type": "apiKey",
+          "name": "Ocp-Apim-Subscription-Key",
+          "in": "header"
+      },
+      "apiKeyQuery": {
+          "type": "apiKey",
+          "name": "subscription-key",
+          "in": "query"
+      }
+  },
+  "security": [
+      {
+          "apiKeyHeader": []
+      },
+      {
+          "apiKeyQuery": []
+      }
+  ],
+  "paths": {
+      "/{lc}": {
+          "get": {
+              "description": "Returns all registrations for the given council.",
+              "operationId": "collect-all-registrations-for-council",
+              "summary": "Collect ALL registrations for council",
+              "parameters": [
+                  {
+                      "name": "lc",
+                      "in": "path",
+                      "description": "The council name",
+                      "required": true,
+                      "type": "string"
+                  },
+                  {
+                      "name": "fields",
+                      "in": "query",
+                      "description": "Extra fields to return as part of the response",
+                      "type": "array",
+                      "items": {
+                          "type": "string"
+                      }
+                  },
+                  {
+                    "name": "new",
+                    "in": "query",
+                    "description": "Flag to return only new registrations",
+                    "type": "boolean",
+                    "enum": [
+                        "true",
+                        "false"
+                    ]
+                  },
+                  {
+                    "name": "double-mode",
+                    "in": "header",
+                    "description": "Optional string to run the applcation against an in memory double rather than the real DB",
+                    "type": "string",
+                    "enum": [
+                        "success",
+                        "fail",
+                        "single",
+                        "update"
+                    ]
+                  }
+              ],
+              "responses": {
+                  "200": {
+                      "description": "OK",
+                      "schema": {
+                          "$ref": "#/definitions/ArrayOfRegistrations"
+                      }
+                  },
+                  "400": {
+                    "description": "Bad request, invalid options"
+                  },
+                  "404": {
+                    "description": "Resource not found"
+                  },
+                  "500": {
+                    "description": "Internal server error"
+                  }
+              }
+          }
+      },
+      "/{lc}/{fsa_rn}": {
+          "get": {
+              "description": "Get a single registrations in full",
+              "parameters": [
+                  {
+                      "name": "lc",
+                      "in": "path",
+                      "description": "The council name",
+                      "required": true,
+                      "type": "string"
+                  },
+                  {
+                    "name": "fsa_rn",
+                    "in": "path",
+                    "description": "The reference number for the registration to be retrieved",
+                    "required": true,
+                    "type": "string"
+                    },
+                {
+                    "name": "double-mode",
+                    "in": "header",
+                    "description": "Optional string to run the applcation against an in memory double rather than the real DB",
+                    "type": "string",
+                    "enum": [
+                        "success",
+                        "fail",
+                        "single",
+                        "update"
+                    ]
+                }
+              ],
+              "responses": {
+                "200": {
+                    "description": "OK",
+                    "schema": {
+                        "$ref": "#/definitions/Registration"
+                    }
+                },
+                "400": {
+                  "description": "Bad request, invalid options"
+                },
+                "404": {
+                  "description": "Resource not found"
+                },
+                "500": {
+                  "description": "Internal server error"
+                }
+            }
+          },
+          "put":  {
+            "description": "Update a single registrations with collected",
+            "parameters": [
+                {
+                    "name": "lc",
+                    "in": "path",
+                    "description": "The council name",
+                    "required": true,
+                    "type": "string"
+                },
+                {
+                  "name": "fsa_rn",
+                  "in": "path",
+                  "description": "The reference number for the registration to be retrieved",
+                  "required": true,
+                  "type": "string"
+                  },
+              {
+                  "name": "double-mode",
+                  "in": "header",
+                  "description": "Optional string to run the applcation against an in memory double rather than the real DB",
+                  "type": "string",
+                  "enum": [
+                      "success",
+                      "fail",
+                      "single",
+                      "update"
+                  ]
+              },
+              {
+                "name": "collected",
+                "in": "body",
+                "description": "The flag to mark the registration with",
+                "schema": {
+                    "type": "object",
+                    "properties": {
+                        "collected": {
+                            "type": "boolean"
+                        }
+                    }
+                }                
+            }
+            ],
+            "responses": {
+              "200": {
+                  "description": "OK",
+                  "schema": {
+                      "type": "object",
+                      "properties": {
+                          "fsa_rn": {
+                             "type": "string"
+                          },
+                          "collected": {
+                            "type": "boolean"
+                         }
+                      }
+                  }
+              },
+              "400": {
+                "description": "Bad request, invalid options"
+              },
+              "404": {
+                "description": "Resource not found"
+              },
+              "500": {
+                "description": "Internal server error"
+              }
+          }
         }
+      }
+  },
+  "definitions": {
+      "ArrayOfRegistrations": {
+          "type": "array",
+          "items": {
+              "$ref": "#/definitions/Registration"
+          }
       },
       "Registration": {
-        "type": "object",
-        "properties": {
-          "establishment": {
-            "$ref": "#/components/schemas/Establishment"
-          },
-          "metadata": {
-            "$ref": "#/components/schemas/Metadata"
+          "type": "object",
+          "properties": {
+              "fsa_rn": {
+                "$ref": "#/definitions/fsa_rn"
+              },
+              "council": {
+                "$ref": "#/definitions/council"
+              },
+              "collected": {
+                "$ref": "#/definitions/collected"
+              },
+              "collected_at": {
+                "$ref": "#/definitions/collected_at"
+              },
+              "establishment": {
+                  "$ref": "#/definitions/Establishment"
+              },
+              "metadata": {
+                  "$ref": "#/definitions/Metadata"
+              }
           }
-        }
+      },
+      "fsa_rn": {
+          "type": "string",
+          "maximum": 20,
+          "minimum": 20,
+          "description": "The unique reference number to identify this registration"
+      },
+      "council": {
+          "type": "string",
+          "description": "The local council that the registration belongs to"
+      },
+      "collected": {
+        "type": "boolean",
+        "description": "Flag indicating whether this registration has been collected by the council or not"
+      },
+      "collected_at": {
+        "type": "string",
+        "description": "The date and time that the registration was collected"
       },
       "Establishment": {
-        "type": "object",
-        "properties": {
-          "establishment_details": {
-            "$ref": "#/components/schemas/EstablishmentDetails"
-          },
-          "operator": {
-            "$ref": "#/components/schemas/Operator"
-          },
-          "premise": {
-            "$ref": "#/components/schemas/Premise"
-          },
-          "activities": {
-            "$ref": "#/components/schemas/Activities"
+          "type": "object",
+          "properties": {
+              "establishment_details": {
+                  "$ref": "#/definitions/EstablishmentDetails"
+              },
+              "operator": {
+                  "$ref": "#/definitions/Operator"
+              },
+              "premise": {
+                  "$ref": "#/definitions/Premise"
+              },
+              "activities": {
+                  "$ref": "#/definitions/Activities"
+              }
           }
-        }
       },
       "EstablishmentDetails": {
-        "type": "object",
-        "properties": {
-          "establishment_trading_name": { "type": "string" },
-          "establishment_primary_number": { "type": "string" },
-          "establishment_secondary_number": { "type": "string" },
-          "establishment_email": { "type": "string" },
-          "establishment_opening_date": { "type": "string" }
-        }
+          "type": "object",
+          "properties": {
+              "establishment_trading_name": {
+                  "type": "string",
+                  "required": true,
+                  "description": "ASCII string",
+                  "maximum": "255"
+              },
+              "establishment_primary_number": {
+                  "type": "string",
+                  "required": true,
+                  "minimum": "5",
+                  "maximum": "20",
+                  "description": "Numeric string. Blank spaces and + allowed"
+              },
+              "establishment_secondary_number": {
+                  "type": "string",
+                  "minimum": "5",
+                  "maximum": "20",
+                  "description": "Numeric string. Blank spaces and + allowed"
+              },
+              "establishment_email": {
+                  "type": "string",
+                  "required": true,
+                  "maximum": "255",
+                  "description": "Uses [npm Validator](https://www.npmjs.com/package/validator) isEmail"
+              },
+              "establishment_opening_date": {
+                  "type": "string",
+                  "required": true,
+                  "description": "Uses YYYY-MM-DD [npm Validator](https://www.npmjs.com/package/validator) isISO8601"
+
+              }
+          }
       },
       "Operator": {
-        "type": "object",
-        "properties": {
-          "operator_first_name": { "type": "string" },
-          "operator_last_name": { "type": "string" },
-          "operator_postcode": { "type": "string" },
-          "operator_first_line": { "type": "string" },
-          "operator_street": { "type": "string" },
-          "operator_town": { "type": "string" },
-          "operator_primary_number": { "type": "string" },
-          "operator_secondary_number": { "type": "string" },
-          "operator_email": { "type": "string" },
-          "contact_representative_number": { "type": "string" },
-          "contact_representative_email": { "type": "string" },
-          "operator_type": { "type": "string" },
-          "operator_company_name": { "type": "string" },
-          "operator_company_house_number": { "type": "string" },
-          "operator_charity_name": { "type": "string" },
-          "operator_charity_number": { "type": "string" }
-        }
+          "type": "object",
+          "properties": {
+              "operator_first_name": {
+                  "type": "string",
+                  "required": "If operator_type is 'Sole trader', 'Partnership', or 'A person (registered by a representative)'",
+                  "description": "ASCII string",
+                  "maximum": "255"
+              },
+              "operator_last_name": {
+                  "type": "string",
+                  "required": "If operator_type is 'Sole trader', 'Partnership', or 'A person (registered by a representative)'",
+                  "description": "ASCII string",
+                  "maximum": "255"
+              },
+              "operator_postcode": {
+                  "type": "string",
+                  "required": true,
+                  "description": "Uses [npm Validator](https://www.npmjs.com/package/validator) isPostalCode (GB)"
+              },
+              "operator_first_line": {
+                  "type": "string",
+                  "required": true,
+                  "description": "ASCII string",
+                  "maximum": "255"
+              },
+              "operator_street": {
+                  "type": "string",
+                  "description": "ASCII string",
+                  "maximum": "255"
+              },
+              "operator_town": {
+                  "type": "string",
+                  "description": "ASCII string",
+                  "maximum": "255"
+              },
+              "operator_primary_number": {
+                  "type": "string",
+                  "required": true,
+                  "minimum": "5",
+                  "maximum": "20",
+                  "description": "Numeric string. Blank spaces and + allowed"
+              },
+              "operator_secondary_number": {
+                  "type": "string",
+                  "required": true,
+                  "minimum": "5",
+                  "maximum": "20",
+                  "description": "Numeric string. Blank spaces and + allowed"
+              },
+              "operator_email": {
+                  "type": "string",
+                  "required": true,
+                  "maximum": "255",
+                  "description": "Uses [npm Validator](https://www.npmjs.com/package/validator) isEmail"
+              },
+              "contact_representative_name": {
+                "type": "string",
+                "required": "If operator_type is 'A company (registered by a representative)' or 'A charity (registered by a representative)'",
+                "description": "ASCII string",
+                "maximum": "255"
+            },
+              "contact_representative_role": {
+                "type": "string",
+                "required": "If operator_type is 'A company (registered by a representative)' or 'A charity (registered by a representative)'",
+                "description": "ASCII string",
+                "maximum": "255"
+            },
+              "contact_representative_number": {
+                "type": "string",
+                "required": "If operator_type is 'A company (registered by a representative)' or 'A charity (registered by a representative)'",
+                "description": "ASCII string",
+                "maximum": "255"
+              },
+              "contact_representative_email": {
+                  "type": "string",
+                  "required": "If operator_type is 'A company (registered by a representative)' or 'A charity (registered by a representative)'",
+                  "maximum": "255",
+                  "description": "Uses [npm Validator](https://www.npmjs.com/package/validator) isEmail"
+              },
+              "operator_type": {
+                  "type": "string",
+                  "required": true,
+                  "description": "Possible values: 'Sole trader', 'Partnership', 'A person (registered by a representative)' 'A company (registered by a representative)' or 'A charity (registered by a representative)'"
+              },
+              "operator_company_name": {
+                  "type": "string",
+                  "required": "If operator_type is 'A company (registered by a representative)'",
+                  "maximum": "50"
+              },
+              "operator_company_house_number": {
+                  "type": "string",
+                  "required": "If operator_type is 'A company (registered by a representative)'",
+                  "maximum": "8",
+                  "minimum": "8",
+                  "description": "Uses [npm Validator](https://www.npmjs.com/package/validator) isAlphanumeric (GB), first two characters can be letters"
+              },
+              "operator_charity_name": {
+                  "type": "string",
+                  "required": "If operator_type is 'A charity (registered by a representative)'",
+                  "maximum": "50"
+                },
+              "operator_charity_number": {
+                  "type": "string",
+                  "required": "If operator_type is 'A charity (registered by a representative)'",
+                  "maximum": "8",
+                  "minimum": "6",
+                  "description": "Uses [npm Validator](https://www.npmjs.com/package/validator) isAlphanumeric (GB), allows '-'"
+              }
+          }
       },
       "Premise": {
-        "type": "object",
-        "properties": {
-          "establishment_postcode": { "type": "string" },
-          "establishment_first_line": { "type": "string" },
-          "establishment_street": { "type": "string" },
-          "establishment_town": { "type": "string" },
-          "establishment_type": { "type": "string" }
-        }
+          "type": "object",
+          "properties": {
+              "establishment_postcode": {
+                "type": "string",
+                "required": true,
+                "description": "Uses [npm Validator](https://www.npmjs.com/package/validator) isPostalCode (GB)"
+              },
+              "establishment_first_line": {
+                  "type": "string",
+                  "required": true,
+                  "description": "ASCII string",
+                  "maximum": "255"
+              },
+              "establishment_street": {
+                  "type": "string",
+                  "description": "ASCII string",
+                  "maximum": "255"
+              },
+              "establishment_town": {
+                  "type": "string",
+                  "description": "ASCII string",
+                  "maximum": "255"
+              },
+              "establishment_type": {
+                  "type": "string",
+                  "required": true,
+                  "description": "Possible values: 'Place of business or commercial premises', 'Mobile or moveable premises', 'Home or domestic premises'"
+              }
+          }
       },
       "Activities": {
-        "type": "object",
-        "properties": {
-          "customer_type": { "type": "string" },
-          "business_type": { "type": "string" },
-          "business_type_search_term": { "type": "string" },
-          "import_export_activities": { "type": "string" },
-          "business_other_details": { "type": "string" },
-          "opening_days_irregular": { "type": "string" },
-          "opening_day_monday": { "type": "boolean" },
-          "opening_day_tuesday": { "type": "boolean" },
-          "opening_day_wednesday": { "type": "boolean" },
-          "opening_day_thursday": { "type": "boolean" },
-          "opening_day_friday": { "type": "boolean" },
-          "opening_day_saturday": { "type": "boolean" },
-          "opening_day_sunday": { "type": "boolean" }
-        }
+          "type": "object",
+          "properties": {
+              "customer_type": {
+                  "type": "string",
+                  "required": true,
+                  "description": "Possible values: 'Other businesses', 'End consumer', 'End consumer and other businesses'"
+              },
+              "business_type": {
+                  "type": "string",
+                  "required": true,
+                  "description": "Predetermined values, see separate document for full business type list"
+              },
+              "business_type_search_term": {
+                  "type": "string"
+              },
+              "import_export_activities": {
+                  "type": "string",
+                  "required": true,
+                  "description": "Possible values: 'Directly import', 'Directly export', 'Directly import and export', 'None'"
+              },
+              "business_other_details": {
+                  "type": "string",
+                  "maximum": "1500"
+              },
+              "opening_days_irregular": {
+                  "type": "string",
+                  "maximum": "1500"
+              },
+              "opening_day_monday": {
+                  "type": "boolean"
+              },
+              "opening_day_tuesday": {
+                  "type": "boolean"
+              },
+              "opening_day_wednesday": {
+                  "type": "boolean"
+              },
+              "opening_day_thursday": {
+                  "type": "boolean"
+              },
+              "opening_day_friday": {
+                  "type": "boolean"
+              },
+              "opening_day_saturday": {
+                  "type": "boolean"
+              },
+              "opening_day_sunday": {
+                  "type": "boolean"
+              }
+          }
       },
       "Metadata": {
-        "type": "object",
-        "properties": {
-          "declaration1": { "type": "string" },
-          "declaration2": { "type": "string" },
-          "declaration3": { "type": "string" }
-        }
-      }
-    }
-  },
-  "paths": {
-    "/api/collect/{lc}": {
-      "description": "Get all registrations for a local council",
-      "get": {
-        "parameters": [
-          {
-            "name": "lc",
-            "in": "path",
-            "description": "Name of the local council to use",
-            "required": true,
-            "schema": {
-              "type": "string"
-            },
-            "style": "simple"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ArrayOfRegistrations"
-                }
+          "type": "object",
+          "properties": {
+              "declaration1": {
+                  "type": "string",
+                  "description": "I declare that the information I have given on this form is correct and complete to the best of my knowledge and belief."
+              },
+              "declaration2": {
+                  "type": "string",
+                  "description": "The operator will notify their local council of any significant changes to the business activity, including closure, within 28 days of the change happening."
+              },
+              "declaration3": {
+                  "type": "string",
+                  "description": "The operator understands they are legally responsible for the safety and authenticity of the food being produced or served at this establishment."
               }
-            }
           }
-        }
       }
-    }
-  }
+  },
+  "tags": []
 }
