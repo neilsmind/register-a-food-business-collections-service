@@ -330,10 +330,22 @@
                   "description": "ASCII string",
                   "maximum": "255"
               },
+              "partners": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Partner"
+                    }
+              },
               "operator_postcode": {
                   "type": "string",
                   "required": true,
                   "description": "Uses [npm Validator](https://www.npmjs.com/package/validator) isPostalCode (GB)"
+              },
+              "operator_uprn": {
+                  "type": "string",
+                  "required": false,
+                  "maximum": 12,
+                  "description": "Unique Property Reference Number"
               },
               "operator_first_line": {
                   "type": "string",
@@ -426,6 +438,21 @@
               }
           }
       },
+      "Partner": {
+        "type": "object",
+        "properties": {
+            "partner_name": {
+                "type": "string",
+                "required": true,
+                "description": "ASCII string"
+            },
+            "partner_is_primary_contact": {
+                "type": "boolean",
+                "required": true,
+                "description": "Flag indicating whether the partner is the primary contact"
+            }
+        }
+      },
       "Premise": {
           "type": "object",
           "properties": {
@@ -433,6 +460,12 @@
                 "type": "string",
                 "required": true,
                 "description": "Uses [npm Validator](https://www.npmjs.com/package/validator) isPostalCode (GB)"
+              },
+              "establishment_uprn": {
+                  "type": "string",
+                  "required": false,
+                  "maximum": 12,
+                  "description": "Unique Property Reference Number"
               },
               "establishment_first_line": {
                   "type": "string",
