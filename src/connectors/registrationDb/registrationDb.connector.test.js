@@ -328,7 +328,14 @@ describe("collect.service", () => {
         }));
         Operator.findOne.mockImplementation(() => ({
           id: 1,
-          dataValues: { operator_name: "fred" }
+          dataValues: {
+            operator_name: "fred",
+            partners: [
+              {
+                partner_name: "Darleene"
+              }
+            ]
+          }
         }));
         Activities.findOne.mockImplementation(() => ({
           id: 1,
@@ -349,6 +356,9 @@ describe("collect.service", () => {
       it("Should return the full registration", () => {
         expect(result.fsa_rn).toBe("1234");
         expect(result.establishment.establishment_trading_name).toBe("taco");
+        expect(result.establishment.operator.partners[0].partner_name).toBe(
+          "Darleene"
+        );
       });
     });
   });
