@@ -10,6 +10,8 @@ const {
 } = require("../../db/db");
 const { logEmitter } = require("../../services/logging.service");
 
+const { Op } = require("sequelize");
+
 const modelFindOne = async (query, model) => {
   try {
     return model.findOne(query);
@@ -74,7 +76,7 @@ const getActivitiesByEstablishmentId = async id => {
   );
 };
 
-const getRegistrationTable = async (council, collected) => {
+const getRegistrationTableByCouncil = async (council, collected) => {
   logEmitter.emit(
     "functionCall",
     "registration.connector.js",
@@ -98,6 +100,38 @@ const getRegistrationTable = async (council, collected) => {
       "functionFail",
       "registration.connector.js",
       "getRegistrationTableByCouncil",
+      err
+    );
+    throw err;
+  }
+};
+
+const getRegistrationTable = async (before, after) => {
+  logEmitter.emit(
+    "functionCall",
+    "registration.connector.js",
+    "getRegistrationTable"
+  );
+  try {
+    const response = await Registration.findAll({
+      where: {
+        createdAt: {
+          [Op.lt]: before,
+          [Op.gte]: after
+        }
+      }
+    });
+    logEmitter.emit(
+      "functionSuccess",
+      "registration.connector.js",
+      "getRegistrationTable"
+    );
+    return response;
+  } catch (err) {
+    logEmitter.emit(
+      "functionFail",
+      "registration.connector.js",
+      "getRegistrationTable",
       err
     );
     throw err;
@@ -177,11 +211,47 @@ const getFullRegistration = async (registration, fields = []) => {
   );
 };
 
-const getAllRegistrations = async (council, newRegistrations, fields) => {
+const getUnifiedRegistrations = async (
+  registrationsBefore,
+  registrationsAfter,
+  fields
+) => {
   logEmitter.emit(
     "functionCall",
     "registrationsDb.connector",
-    "getAllRegistrations"
+    "getUnifiedRegistrations"
+  );
+
+  await connectToDb();
+
+  const registrations = await getRegistrationTable(
+    registrationsBefore,
+    registrationsAfter
+  );
+
+  const registrationPromises = [];
+  registrations.forEach(registration => {
+    registrationPromises.push(getFullRegistration(registration, fields));
+  });
+  const fullRegistrations = await Promise.all(registrationPromises);
+
+  logEmitter.emit(
+    "functionSuccess",
+    "registrationsDb.connector",
+    "getUnifiedRegistrations"
+  );
+  return fullRegistrations;
+};
+
+const getAllRegistrationsByCouncil = async (
+  council,
+  newRegistrations,
+  fields
+) => {
+  logEmitter.emit(
+    "functionCall",
+    "registrationsDb.connector",
+    "getAllRegistrationsByCouncil"
   );
 
   await connectToDb();
@@ -189,7 +259,10 @@ const getAllRegistrations = async (council, newRegistrations, fields) => {
   const registrationPromises = [];
   // get NEW [false, null] or EVERYTHING [true, false, null]
   const queryArray = newRegistrations === "true" ? [false] : [true, false];
-  const registrations = await getRegistrationTable(council, queryArray);
+  const registrations = await getRegistrationTableByCouncil(
+    council,
+    queryArray
+  );
 
   registrations.forEach(registration => {
     registrationPromises.push(getFullRegistration(registration, fields));
@@ -198,16 +271,20 @@ const getAllRegistrations = async (council, newRegistrations, fields) => {
   logEmitter.emit(
     "functionSuccess",
     "registrationsDb.connector",
-    "getAllRegistrations"
+    "getAllRegistrationsByCouncil"
   );
   return fullRegistrations;
 };
 
-const updateRegistrationCollected = async (fsa_rn, collected, council) => {
+const updateRegistrationCollectedByCouncil = async (
+  fsa_rn,
+  collected,
+  council
+) => {
   logEmitter.emit(
     "functionCall",
     "registrationsDb.connector",
-    "updateRegistrationCollected"
+    "updateRegistrationCollectedByCouncil"
   );
 
   await connectToDb();
@@ -232,7 +309,7 @@ const updateRegistrationCollected = async (fsa_rn, collected, council) => {
     logEmitter.emit(
       "functionFail",
       "registrationsDb.connector",
-      "updateRegistrationCollected",
+      "updateRegistrationCollectedByCouncil",
       error
     );
     throw error;
@@ -240,13 +317,14 @@ const updateRegistrationCollected = async (fsa_rn, collected, council) => {
   logEmitter.emit(
     "functionSuccess",
     "registrationsDb.connector",
-    "updateRegistrationCollected"
+    "updateRegistrationCollectedByCouncil"
   );
   return { fsa_rn, collected };
 };
 
 module.exports = {
-  getAllRegistrations,
+  getUnifiedRegistrations,
+  getAllRegistrationsByCouncil,
   getSingleRegistration,
-  updateRegistrationCollected
+  updateRegistrationCollectedByCouncil
 };
