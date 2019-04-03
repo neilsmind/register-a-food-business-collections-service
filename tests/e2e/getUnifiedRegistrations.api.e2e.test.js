@@ -28,7 +28,7 @@ describe("Retrieve all registrations through API", () => {
       response = await request(requestOptions);
     });
 
-    it("should return all the new registrations for that council", () => {
+    it("should return all the registrations in the specified time frame", () => {
       expect(response.body.length).toBeGreaterThanOrEqual(1);
       expect(response.body[0].fsa_rn).toBeDefined();
       expect(response.body[0].collected).toBeDefined();
