@@ -31,7 +31,7 @@ describe("Retrieve all registrations through API", () => {
     it("should return all the new registrations for that council", () => {
       expect(response.body.length).toBeGreaterThanOrEqual(1);
       expect(response.body[0].fsa_rn).toBeDefined();
-      expect(response.body[0].collected).toBe(false);
+      expect(response.body[0].collected).toBeDefined();
       expect(response.statusCode).toBe(200);
     });
   });
