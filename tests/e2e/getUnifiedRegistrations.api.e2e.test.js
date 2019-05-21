@@ -93,8 +93,11 @@ describe("Retrieve all registrations through API", () => {
   describe("Given invalid parameters", () => {
     let response;
     beforeEach(async () => {
+      const before = new Date();
       const requestOptions = {
-        uri: `${unifiedUrl}?after=alskdfj&env=${process.env.NODE_ENV}`,
+        uri: `${unifiedUrl}?before=${before.toISOString()}&after=dfgdfggfgf&env=${
+          process.env.NODE_ENV
+        }`,
         json: true,
         headers: {
           "Ocp-Apim-Subscription-Key": unifiedAPIKey
