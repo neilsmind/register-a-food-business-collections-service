@@ -7,8 +7,6 @@ jest.mock("./logger", () => ({
   createLogger: () => mockLogger
 }));
 
-jest.unmock("./logging.service");
-
 // const { logger } = require("./logger");
 const { logEmitter } = require("./logging.service");
 
