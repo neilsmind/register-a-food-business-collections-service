@@ -1,9 +1,6 @@
 module.exports = {
   verbose: true,
   testEnvironment: "node",
-  moduleNameMapper: {
-    "logging.service": "<rootDir>/src/__mocks__/logging.service.js"
-  },
   reporters: [
     "default",
     ["jest-junit", { output: `./reports/TEST-${process.env.TEST_TYPE}.xml` }]

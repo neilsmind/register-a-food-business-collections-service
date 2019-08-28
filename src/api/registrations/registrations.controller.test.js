@@ -6,6 +6,7 @@ jest.mock("../../connectors/registrationDb/registrationDb.connector", () => ({
   registrationDbDouble: jest.fn()
 }));
 
+jest.mock("../../services/logging.service");
 jest.mock("./registrations.service");
 
 const { validateOptions } = require("./registrations.service");
