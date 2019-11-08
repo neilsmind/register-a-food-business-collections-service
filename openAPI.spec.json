@@ -390,6 +390,11 @@
           "description": "ASCII string.",
           "maximum": 255
         },
+        "operator_dependent_locality": {
+          "type": "string",
+          "description": "ASCII string.",
+          "maximum": 255
+        },
         "operator_town": {
           "type": "string",
           "description": "ASCII string.",
@@ -503,6 +508,11 @@
           "maximum": 255
         },
         "establishment_street": {
+          "type": "string",
+          "description": "ASCII string.",
+          "maximum": 255
+        },
+        "establishment_dependent_locality": {
           "type": "string",
           "description": "ASCII string.",
           "maximum": 255
