@@ -30,7 +30,10 @@ const convertJSDateToISODate = () => {
 
 const getEstablishmentByRegId = async id => {
   return modelFindOne(
-    { where: { registrationId: id } },
+    {
+      where: { registrationId: id },
+      attributes: { exclude: ["registrationId"] }
+    },
     Establishment,
     "getEstablishmentByRegId"
   );
@@ -38,7 +41,10 @@ const getEstablishmentByRegId = async id => {
 
 const getMetadataByRegId = async id => {
   return modelFindOne(
-    { where: { registrationId: id } },
+    {
+      where: { registrationId: id },
+      attributes: { exclude: ["id", "registrationId"] }
+    },
     Metadata,
     "getMetadataByRegId"
   );
@@ -53,7 +59,8 @@ const getOperatorByEstablishmentId = async id => {
           model: Partner,
           as: "partners"
         }
-      ]
+      ],
+      attributes: { exclude: ["id", "establishmentId"] }
     },
     Operator,
     "getOperatorByEstablishmentId"
@@ -62,7 +69,10 @@ const getOperatorByEstablishmentId = async id => {
 
 const getPremiseByEstablishmentId = async id => {
   return modelFindOne(
-    { where: { establishmentId: id } },
+    {
+      where: { establishmentId: id },
+      attributes: { exclude: ["id", "establishmentId"] }
+    },
     Premise,
     "getPremiseByEstablishmentId"
   );
@@ -70,7 +80,10 @@ const getPremiseByEstablishmentId = async id => {
 
 const getActivitiesByEstablishmentId = async id => {
   return modelFindOne(
-    { where: { establishmentId: id } },
+    {
+      where: { establishmentId: id },
+      attributes: { exclude: ["id", "establishmentId"] }
+    },
     Activities,
     "getActivitiesByEstablishmentId"
   );
@@ -203,7 +216,8 @@ const getFullRegistration = async (registration, fields = []) => {
   const metadata = fields.includes("metadata")
     ? await getFullMetadata(registration.id)
     : {};
-
+  delete registration.dataValues.id;
+  delete establishment.id;
   return Object.assign(
     registration.dataValues,
     { establishment },
