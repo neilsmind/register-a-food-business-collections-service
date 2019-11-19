@@ -10,7 +10,9 @@ module.exports = (sequelize, DataTypes) => {
       partner_name: { type: DataTypes.STRING },
       partner_is_primary_contact: { type: DataTypes.BOOLEAN }
     },
-    {}
+    {
+      timestamps: false
+    }
   );
   Partner.associate = function(models) {
     Partner.belongsTo(models.operator);
