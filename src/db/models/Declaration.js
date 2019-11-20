@@ -1,6 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
-  const Metadata = sequelize.define(
-    "metadata",
+  const Declaration = sequelize.define(
+    "declaration",
     {
       id: {
         type: DataTypes.INTEGER,
@@ -15,8 +15,8 @@ module.exports = (sequelize, DataTypes) => {
       timestamps: false
     }
   );
-  Metadata.associate = function(models) {
-    Metadata.belongsTo(models.registration);
+  Declaration.associate = function(models) {
+    Declaration.belongsTo(models.registration);
   };
-  return Metadata;
+  return Declaration;
 };

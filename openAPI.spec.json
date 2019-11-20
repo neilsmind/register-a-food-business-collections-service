@@ -273,8 +273,8 @@
         "establishment": {
           "$ref": "#/definitions/Establishment"
         },
-        "metadata": {
-          "$ref": "#/definitions/Metadata"
+        "declaration": {
+          "$ref": "#/definitions/Declaration"
         }
       }
     },
@@ -615,7 +615,7 @@
         }
       }
     },
-    "Metadata": {
+    "Declaration": {
       "type": "object",
       "properties": {
         "declaration1": {

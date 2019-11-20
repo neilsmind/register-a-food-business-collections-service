@@ -80,7 +80,7 @@ const doubleResponse = [
         establishmentId: 68
       }
     },
-    metadata: {
+    declaration: {
       id: 62,
       declaration1: "Declaration",
       declaration2: "Declaration",

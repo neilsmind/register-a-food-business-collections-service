@@ -1,7 +1,7 @@
 const {
   Activities,
   Establishment,
-  Metadata,
+  Declaration,
   Operator,
   Partner,
   Premise,
@@ -39,14 +39,14 @@ const getEstablishmentByRegId = async id => {
   );
 };
 
-const getMetadataByRegId = async id => {
+const getDeclarationByRegId = async id => {
   return modelFindOne(
     {
       where: { registrationId: id },
       attributes: { exclude: ["id", "registrationId"] }
     },
-    Metadata,
-    "getMetadataByRegId"
+    Declaration,
+    "getDeclarationByRegId"
   );
 };
 
@@ -166,10 +166,10 @@ const getFullEstablishment = async id => {
   );
 };
 
-const getFullMetadata = async id => {
-  const metadata = await getMetadataByRegId(id);
+const getFullDeclaration = async id => {
+  const declaration = await getDeclarationByRegId(id);
 
-  return metadata.dataValues;
+  return declaration.dataValues;
 };
 
 const getSingleRegistration = async (fsa_rn, council) => {
@@ -199,7 +199,7 @@ const getSingleRegistration = async (fsa_rn, council) => {
   }
   const fullRegistration = await getFullRegistration(registration, [
     "establishment",
-    "metadata"
+    "declaration"
   ]);
   logEmitter.emit(
     "functionSuccess",
@@ -213,15 +213,15 @@ const getFullRegistration = async (registration, fields = []) => {
   const establishment = fields.includes("establishment")
     ? await getFullEstablishment(registration.id)
     : {};
-  const metadata = fields.includes("metadata")
-    ? await getFullMetadata(registration.id)
+  const declaration = fields.includes("declaration")
+    ? await getFullDeclaration(registration.id)
     : {};
   delete registration.dataValues.id;
   delete establishment.id;
   return Object.assign(
     registration.dataValues,
     { establishment },
-    { metadata }
+    { declaration }
   );
 };
 

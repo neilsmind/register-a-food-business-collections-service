@@ -8,7 +8,7 @@ jest.mock("../../db/db", () => ({
   Establishment: {
     findOne: jest.fn()
   },
-  Metadata: {
+  Declaration: {
     findOne: jest.fn()
   },
   Operator: {
@@ -29,7 +29,7 @@ jest.mock("../../db/db", () => ({
 const {
   Activities,
   Establishment,
-  Metadata,
+  Declaration,
   Operator,
   Premise,
   Registration
@@ -72,7 +72,7 @@ describe("collect.service", () => {
           id: 1,
           dataValues: { establishment_postcode: "ER1 56GF" }
         }));
-        Metadata.findOne.mockImplementation(() => ({
+        Declaration.findOne.mockImplementation(() => ({
           id: 1,
           dataValues: { declaration1: "yes" }
         }));
@@ -109,7 +109,7 @@ describe("collect.service", () => {
           id: 1,
           dataValues: { establishment_postcode: "ER1 56GF" }
         }));
-        Metadata.findOne.mockImplementation(() => ({
+        Declaration.findOne.mockImplementation(() => ({
           id: 1,
           dataValues: { declaration1: "yes" }
         }));
@@ -176,7 +176,7 @@ describe("collect.service", () => {
       it("should return just the registration fields", () => {
         expect(result[0].fsa_rn).toBe("1234");
         expect(result[0].establishment).toEqual({});
-        expect(result[0].metadata).toEqual({});
+        expect(result[0].declaration).toEqual({});
       });
     });
 
@@ -202,7 +202,7 @@ describe("collect.service", () => {
           id: 1,
           dataValues: { establishment_postcode: "ER1 56GF" }
         }));
-        Metadata.findOne.mockImplementation(() => ({
+        Declaration.findOne.mockImplementation(() => ({
           id: 1,
           dataValues: { declaration1: "yes" }
         }));
@@ -219,24 +219,24 @@ describe("collect.service", () => {
       });
     });
 
-    describe("when fields includes metadata", () => {
+    describe("when fields includes declaration", () => {
       beforeEach(async () => {
         Registration.findAll.mockImplementation(() => [
           { id: 1, dataValues: { fsa_rn: "1234" } },
           { id: 2, dataValues: { fsa_rn: "5678" } }
         ]);
-        Metadata.findOne.mockImplementation(async () => ({
+        Declaration.findOne.mockImplementation(async () => ({
           id: 1,
           dataValues: { declaration1: "yes" }
         }));
         result = await getAllRegistrationsByCouncil("cardiff", true, [
-          "metadata"
+          "declaration"
         ]);
       });
-      it("should return just the metadata fields", () => {
+      it("should return just the declaration fields", () => {
         expect(result[0].fsa_rn).toBe("1234");
         expect(result[0].establishment).toEqual({});
-        expect(result[0].metadata).toBeDefined();
+        expect(result[0].declaration).toBeDefined();
       });
     });
   });
@@ -358,7 +358,7 @@ describe("collect.service", () => {
           id: 1,
           dataValues: { establishment_postcode: "ER1 56GF" }
         }));
-        Metadata.findOne.mockImplementation(() => ({
+        Declaration.findOne.mockImplementation(() => ({
           id: 1,
           dataValues: { declaration1: "yes" }
         }));
@@ -414,7 +414,7 @@ describe("collect.service", () => {
       it("should return just the registration fields", () => {
         expect(result[0].fsa_rn).toBe("1234");
         expect(result[0].establishment).toEqual({});
-        expect(result[0].metadata).toEqual({});
+        expect(result[0].declaration).toEqual({});
       });
     });
 
@@ -440,7 +440,7 @@ describe("collect.service", () => {
           id: 1,
           dataValues: { establishment_postcode: "ER1 56GF" }
         }));
-        Metadata.findOne.mockImplementation(() => ({
+        Declaration.findOne.mockImplementation(() => ({
           id: 1,
           dataValues: { declaration1: "yes" }
         }));
@@ -460,26 +460,26 @@ describe("collect.service", () => {
       });
     });
 
-    describe("when fields includes metadata", () => {
+    describe("when fields includes declaration", () => {
       beforeEach(async () => {
         Registration.findAll.mockImplementation(() => [
           { id: 1, dataValues: { fsa_rn: "1234" } },
           { id: 2, dataValues: { fsa_rn: "5678" } }
         ]);
-        Metadata.findOne.mockImplementation(async () => ({
+        Declaration.findOne.mockImplementation(async () => ({
           id: 1,
           dataValues: { declaration1: "yes" }
         }));
         result = await getUnifiedRegistrations(
           "2019-01-01T13:00:00Z",
           "2019-04-01T13:00:00Z",
-          ["metadata"]
+          ["declaration"]
         );
       });
-      it("should return just the metadata fields", () => {
+      it("should return just the declaration fields", () => {
         expect(result[0].fsa_rn).toBe("1234");
         expect(result[0].establishment).toEqual({});
-        expect(result[0].metadata).toBeDefined();
+        expect(result[0].declaration).toBeDefined();
       });
     });
 
