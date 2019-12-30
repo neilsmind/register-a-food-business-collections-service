@@ -12,8 +12,8 @@ const { closeConnection } = require("../../src/db/db");
 let doubleResult;
 let realResult;
 
-afterAll(() => {
-  closeConnection();
+afterAll(async () => {
+  await closeConnection();
 });
 
 describe("registrationDb.connector integration: getRegistrationsByCouncil", () => {
