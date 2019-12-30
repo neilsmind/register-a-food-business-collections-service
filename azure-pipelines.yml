@@ -25,7 +25,7 @@ steps:
   - task: PublishTestResults@2
     inputs:
       testRunner: JUnit
-      testResultsFile: ./reports/TEST-unit.xml
+      testResultsFiles: ./reports/TEST-unit.xml
       testRunTitle: Unit tests
       mergeTestResults: false
 
@@ -34,6 +34,26 @@ steps:
       codeCoverageTool: Cobertura
       summaryFileLocation: "$(System.DefaultWorkingDirectory)/coverage/cobertura-coverage.xml"
       reportDirectory: "$(System.DefaultWorkingDirectory)/coverage/lcov-report"
+
+  - script: npm run test:integration:ci
+    displayName: "Integration tests"
+
+  - task: PublishTestResults@2
+    inputs:
+      testRunner: JUnit
+      testResultsFiles: ./reports/TEST-integration.xml
+      testRunTitle: Integration tests
+      mergeTestResults: false
+
+  - script: npm run test:contract:ci
+    displayName: "Contract tests"
+
+  - task: PublishTestResults@2
+    inputs:
+      testRunner: JUnit
+      testResultsFiles: ./reports/TEST-contract.xml
+      testRunTitle: Contract tests
+      mergeTestResults: false
 
   - script: npm prune --production
     displayName: Prune dev dependencies
