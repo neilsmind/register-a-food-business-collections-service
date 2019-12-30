@@ -45,16 +45,6 @@ steps:
       testRunTitle: Integration tests
       mergeTestResults: false
 
-  - script: npm run test:contract:ci
-    displayName: "Contract tests"
-
-  - task: PublishTestResults@2
-    inputs:
-      testRunner: JUnit
-      testResultsFiles: ./reports/TEST-contract.xml
-      testRunTitle: Contract tests
-      mergeTestResults: false
-
   - script: npm prune --production
     displayName: Prune dev dependencies
 
