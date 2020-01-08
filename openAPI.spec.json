@@ -395,6 +395,21 @@
           "description": "ASCII string.",
           "maximum": 255
         },
+        "operator_address_line_1": {
+          "type": "string",
+          "description": "ASCII string.",
+          "maximum": 255
+        },
+        "operator_address_line_2": {
+          "type": "string",
+          "description": "ASCII string.",
+          "maximum": 255
+        },
+        "operator_address_line_3": {
+          "type": "string",
+          "description": "ASCII string.",
+          "maximum": 255
+        },
         "operator_town": {
           "type": "string",
           "description": "ASCII string.",
@@ -513,6 +528,21 @@
           "maximum": 255
         },
         "establishment_dependent_locality": {
+          "type": "string",
+          "description": "ASCII string.",
+          "maximum": 255
+        },
+        "establishment_address_line_1": {
+          "type": "string",
+          "description": "ASCII string.",
+          "maximum": 255
+        },
+        "establiahment_address_line_2": {
+          "type": "string",
+          "description": "ASCII string.",
+          "maximum": 255
+        },
+        "establishment_address_line_3": {
           "type": "string",
           "description": "ASCII string.",
           "maximum": 255
