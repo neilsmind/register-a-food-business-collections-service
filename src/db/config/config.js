@@ -28,7 +28,7 @@ module.exports = {
     username: "postgres",
     password: process.env.POSTGRES_PASS,
     database: "postgres",
-    host: "localhost",
+    host: "temp-store",
     dialect: "postgres",
     logging: logger.debug
   }
