@@ -2,7 +2,7 @@
   "swagger": "2.0",
   "info": {
     "title": "Register a food business collections",
-    "version": "1.1"
+    "version": "1.3"
   },
   "host": "fsa-rof-gateway.azure-api.net",
   "basePath": "/api/registrations",
@@ -390,6 +390,11 @@
           "description": "ASCII string.",
           "maximum": 255
         },
+        "operator_dependent_locality": {
+          "type": "string",
+          "description": "ASCII string.",
+          "maximum": 255
+        },
         "operator_town": {
           "type": "string",
           "description": "ASCII string.",
@@ -507,6 +512,11 @@
           "description": "ASCII string.",
           "maximum": 255
         },
+        "establishment_dependent_locality": {
+          "type": "string",
+          "description": "ASCII string.",
+          "maximum": 255
+        },
         "establishment_town": {
           "type": "string",
           "description": "ASCII string.",
@@ -523,7 +533,8 @@
       "required": [
         "customer_type",
         "business_type",
-        "import_export_activities"
+        "import_export_activities",
+        "water_supply"
       ],
       "properties": {
         "customer_type": {
@@ -540,6 +551,10 @@
         "import_export_activities": {
           "type": "string",
           "description": "Possible values: 'Directly import', 'Directly export', 'Directly import and export', 'None'."
+        },
+        "water_supply": {
+          "type": "string",
+          "description": "Possible values: 'Public', 'Private', 'Public and private'."
         },
         "business_other_details": {
           "type": "string",
@@ -569,6 +584,34 @@
         },
         "opening_day_sunday": {
           "type": "boolean"
+        },
+        "opening_hours_monday": {
+          "type": "string",
+          "maximum": 50
+        },
+        "opening_hours_tuesday": {
+          "type": "string",
+          "maximum": 50
+        },
+        "opening_hours_wednesday": {
+          "type": "string",
+          "maximum": 50
+        },
+        "opening_hours_thursday": {
+          "type": "string",
+          "maximum": 50
+        },
+        "opening_hours_friday": {
+          "type": "string",
+          "maximum": 50
+        },
+        "opening_hours_saturday": {
+          "type": "string",
+          "maximum": 50
+        },
+        "opening_hours_sunday": {
+          "type": "string",
+          "maximum": 50
         }
       }
     },

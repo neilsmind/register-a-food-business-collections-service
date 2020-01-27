@@ -1,4 +1,5 @@
 const { validateOptions } = require("./registrations.service");
+jest.mock("../../services/logging.service");
 
 describe("registrations.service", () => {
   afterEach(() => {

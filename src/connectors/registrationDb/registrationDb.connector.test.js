@@ -1,3 +1,5 @@
+jest.mock("../../services/logging.service");
+
 const { isISO8601 } = require("validator");
 jest.mock("../../db/db", () => ({
   Activities: {
