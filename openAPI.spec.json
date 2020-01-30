@@ -285,8 +285,18 @@
       "description": "The unique reference number to identify this registration."
     },
     "council": {
-      "type": "string",
-      "description": "The local authority that the registration belongs to."
+      "type": "object",
+      "properties": {
+        "local_council_full_name": {
+          "$ref": "#/definitions/LocalCouncilFullName"
+        },
+        "competent_authority_id": {
+          "$ref": "#/definitions/CompetentAuthorityId"
+        },
+        "local_council_url": {
+          "$ref": "#/definitions/LocalCouncilUrl"
+        }
+      }
     },
     "collected": {
       "type": "boolean",
@@ -312,6 +322,18 @@
           "$ref": "#/definitions/Activities"
         }
       }
+    },
+    "LocalCouncilFullName": {
+      "type": "string",
+      "description": "The full name of the local authority."
+    },
+    "CompetentAuthorityId": {
+      "type": "integer",
+      "description": "The unique id for the local authority."
+    },
+    "LocalCouncilUrl": {
+      "type": "string",
+      "description": "The unique url for the local authority."
     },
     "EstablishmentDetails": {
       "type": "object",
