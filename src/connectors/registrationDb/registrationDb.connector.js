@@ -6,6 +6,7 @@ const {
   Partner,
   Premise,
   Registration,
+  Council,
   connectToDb
 } = require("../../db/db");
 const { logEmitter } = require("../../services/logging.service");
@@ -76,6 +77,14 @@ const getActivitiesByEstablishmentId = async id => {
   );
 };
 
+const getCouncilByRegCouncil = async council => {
+  return modelFindOne(
+    { where: { local_council_url: council } },
+    Council,
+    "getCouncilByRegCouncil"
+  );
+};
+
 const getRegistrationTableByCouncil = async (council, collected) => {
   logEmitter.emit(
     "functionCall",
@@ -136,6 +145,16 @@ const getRegistrationTable = async (before, after) => {
     );
     throw err;
   }
+};
+
+const getExtraCouncilFields = async council => {
+  const council = await getCouncilByRegCouncil(council);
+
+  return Object.assign(
+    council.local_council_full_name,
+    council.competent_authority_id,
+    council.local_council_url
+  );
 };
 
 const getFullEstablishment = async id => {
@@ -231,6 +250,7 @@ const getUnifiedRegistrations = async (
 
   const registrationPromises = [];
   registrations.forEach(registration => {
+    registration.council = getExtraCouncilFields(registration.council);
     registrationPromises.push(getFullRegistration(registration, fields));
   });
   const fullRegistrations = await Promise.all(registrationPromises);
