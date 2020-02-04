@@ -401,8 +401,24 @@ describe("collect.service", () => {
     describe("when fields is empty", () => {
       beforeEach(async () => {
         Registration.findAll.mockImplementation(() => [
-          { id: 1, dataValues: { fsa_rn: "1234" } },
-          { id: 2, dataValues: { fsa_rn: "5678" } }
+          {
+            id: 1,
+            dataValues: {
+              fsa_rn: "1234",
+              council: "Local Council",
+              competent_authority_id: "1234",
+              local_council_url: "Local"
+            }
+          },
+          {
+            id: 2,
+            dataValues: {
+              fsa_rn: "5678",
+              council: "Area Council",
+              compentent_authority_id: "5678",
+              local_council_url: "Area"
+            }
+          }
         ]);
         result = await getUnifiedRegistrations(
           "2019-01-01T13:00:00Z",
@@ -413,6 +429,9 @@ describe("collect.service", () => {
 
       it("should return just the registration fields", () => {
         expect(result[0].fsa_rn).toBe("1234");
+        expect(result[0].council).toBe("Local Council");
+        expect(result[0].competent_authority_id).toBe("1234");
+        expect(result[0].local_council_url).toBe("Local");
         expect(result[0].establishment).toEqual({});
         expect(result[0].metadata).toEqual({});
       });
