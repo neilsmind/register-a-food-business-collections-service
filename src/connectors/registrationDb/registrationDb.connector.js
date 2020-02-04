@@ -147,14 +147,22 @@ const getRegistrationTable = async (before, after) => {
   }
 };
 
-const getExtraCouncilFields = async council => {
-  const council = await getCouncilByRegCouncil(council);
+const getExtraCouncilFields = async registration => {
+  const council = await getCouncilByRegCouncil(registration.council);
 
-  return Object.assign(
-    council.local_council_full_name,
-    council.competent_authority_id,
-    council.local_council_url
-  );
+  registration = {
+    id: registration.id,
+    fsa_rn: registration.fsa_rn,
+    createdAt: registration.createdAt,
+    updatedAt: registration.updatedAt,
+    council: council.local_council_full_name,
+    competent_authority_id: council.competent_authority_id,
+    local_council_url: council.local_council_url,
+    collected: registration.collected,
+    collected_at: registration.collected_at
+  };
+
+  return registration;
 };
 
 const getFullEstablishment = async id => {
@@ -250,8 +258,10 @@ const getUnifiedRegistrations = async (
 
   const registrationPromises = [];
   registrations.forEach(registration => {
-    registration.council = getExtraCouncilFields(registration.council);
-    registrationPromises.push(getFullRegistration(registration, fields));
+    registrationWithCouncilFields = getExtraCouncilFields(registration);
+    registrationPromises.push(
+      getFullRegistration(registrationWithCouncilFields, fields)
+    );
   });
   const fullRegistrations = await Promise.all(registrationPromises);
 
