@@ -258,7 +258,7 @@ const getUnifiedRegistrations = async (
 
   const registrationPromises = [];
   registrations.forEach(registration => {
-    registrationWithCouncilFields = getExtraCouncilFields(registration);
+    const registrationWithCouncilFields = getExtraCouncilFields(registration);
     registrationPromises.push(
       getFullRegistration(registrationWithCouncilFields, fields)
     );
