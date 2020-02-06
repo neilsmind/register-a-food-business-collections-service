@@ -1,6 +1,6 @@
 {
   "name": "register-a-food-business-collections-service",
-  "version": "8.2.0",
+  "version": "8.3.1",
   "description": "",
   "main": "src/app.js",
   "scripts": {
@@ -9,7 +9,9 @@
     "test:component": "npm run reset-postgres && jest ./tests/component/*.js --runInBand",
     "test:component:ci": "export TEST_TYPE=component && jest ./tests/component/*.js --runInBand",
     "test:integration": "jest ./tests/integration/*.js",
+    "test:integration:ci": "export TEST_TYPE=integration && jest ./tests/integration/*.js",
     "test:contract": "npm run reset-postgres && jest ./tests/contract/*.js",
+    "test:contract:ci": "export TEST_TYPE=contract && npm run reset-postgres && jest ./tests/contract/*.js",
     "test:api:e2e": "jest ./tests/e2e/*.js --runInBand",
     "start": "node src/app.js",
     "start:docker": "export NODE_ENV=local && node src/db/check-connection.js && node src/app.js",
