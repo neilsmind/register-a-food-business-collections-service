@@ -148,21 +148,22 @@ const getRegistrationTable = async (before, after) => {
 };
 
 const getExtraCouncilFields = async registration => {
-  const council = await getCouncilByRegCouncil(registration.council);
+  const council = await getCouncilByRegCouncil(registration.dataValues.council);
 
-  registration = {
-    id: registration.id,
-    fsa_rn: registration.fsa_rn,
-    createdAt: registration.createdAt,
-    updatedAt: registration.updatedAt,
-    council: council.local_council_full_name,
-    competent_authority_id: council.competent_authority_id,
-    local_council_url: council.local_council_url,
-    collected: registration.collected,
-    collected_at: registration.collected_at
+  const registrationWithCouncilFields = {
+    dataValues: {
+      fsa_rn: registration.dataValues.fsa_rn,
+      createdAt: registration.dataValues.createdAt,
+      updatedAt: registration.dataValues.updatedAt,
+      council: council.local_council_full_name,
+      competent_authority_id: council.competent_authority_id,
+      local_council_url: council.local_council_url,
+      collected: registration.dataValues.collected,
+      collected_at: registration.dataValues.collected_at
+    }
   };
 
-  return registration;
+  return registrationWithCouncilFields;
 };
 
 const getFullEstablishment = async id => {
@@ -255,22 +256,28 @@ const getUnifiedRegistrations = async (
     registrationsBefore,
     registrationsAfter
   );
-
-  const registrationPromises = [];
+  const registrationCouncilPromises = [];
   registrations.forEach(registration => {
-    const registrationWithCouncilFields = getExtraCouncilFields(registration);
-    registrationPromises.push(
-      getFullRegistration(registrationWithCouncilFields, fields)
-    );
+    registrationCouncilPromises.push(getExtraCouncilFields(registration));
   });
-  const fullRegistrations = await Promise.all(registrationPromises);
+  const registrationsWithCouncil = await Promise.all(
+    registrationCouncilPromises
+  );
+
+  const registrationFullPromises = [];
+  registrationsWithCouncil.forEach(registration => {
+    registrationFullPromises.push(getFullRegistration(registration, fields));
+  });
+  const fullRegistrationsWithCouncil = await Promise.all(
+    registrationFullPromises
+  );
 
   logEmitter.emit(
     "functionSuccess",
     "registrationsDb.connector",
     "getUnifiedRegistrations"
   );
-  return fullRegistrations;
+  return fullRegistrationsWithCouncil;
 };
 
 const getAllRegistrationsByCouncil = async (
