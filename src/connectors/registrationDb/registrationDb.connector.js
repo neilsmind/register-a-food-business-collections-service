@@ -145,6 +145,17 @@ const getFullEstablishment = async id => {
     getActivitiesByEstablishmentId(establishment.id),
     getPremiseByEstablishmentId(establishment.id)
   ]);
+
+  let operatorNew = Object.assign(operator.dataValues);
+  operatorNew.first_line = operatorNew.address_line_1;
+  operatorNew.street = operatorNew.address_line_2;
+  operatorNew.dependentLocality = operatorNew.address_line_3;
+
+  let premiseNew = Object.assign(premise.dataValues);
+  premiseNew.first_line = premiseNew.address_line_1;
+  premiseNew.street = premiseNew.address_line_2;
+  premiseNew.dependentLocality = premiseNew.address_line_3;
+
   return Object.assign(
     establishment.dataValues,
     { operator: operator.dataValues },
