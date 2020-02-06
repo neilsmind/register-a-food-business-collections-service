@@ -5,6 +5,7 @@ RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 COPY . /usr/src/app
 
-RUN npm install
+RUN npm config set registry http://registry.npmjs.org/ && \
+    npm install --production --verbose --maxsockets=10
 
 EXPOSE 4001
