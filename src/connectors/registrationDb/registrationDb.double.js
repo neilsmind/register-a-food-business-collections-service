@@ -27,7 +27,6 @@ const doubleResponse = [
         operator_first_name: "Fred",
         operator_last_name: "Bloggs",
         operator_postcode: "SW12 9RQ",
-        operator_first_line: "335",
         operator_street: "Some St.",
         operator_town: "London",
         operator_primary_number: "9827235",
@@ -70,7 +69,6 @@ const doubleResponse = [
       },
       premise: {
         id: 62,
-        establishment_first_line: "123",
         establishment_street: "Street",
         establishment_town: "London",
         establishment_postcode: "SW12 9RQ",
