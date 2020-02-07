@@ -147,20 +147,23 @@ const getFullEstablishment = async id => {
   ]);
 
   let operatorNew = Object.assign(operator.dataValues);
-  operatorNew.first_line = operatorNew.address_line_1;
-  operatorNew.street = operatorNew.address_line_2;
-  operatorNew.dependentLocality = operatorNew.address_line_3;
+  operatorNew.operator_first_line = operatorNew.operator_address_line_1;
+  operatorNew.operator_street = operatorNew.operator_address_line_2;
+  operatorNew.operator_dependent_locality = operatorNew.operator_address_line_3;
 
   let premiseNew = Object.assign(premise.dataValues);
-  premiseNew.first_line = premiseNew.address_line_1;
-  premiseNew.street = premiseNew.address_line_2;
-  premiseNew.dependentLocality = premiseNew.address_line_3;
+  premiseNew.establishment_first_line = premiseNew.establishment_address_line_1;
+  premiseNew.establishment_street = premiseNew.establishment_address_line_2;
+  premiseNew.establishment_dependent_locality =
+    premiseNew.establishment_address_line_3;
+
+  //make sure value are assigned correctly from address line 1 to first_line
 
   return Object.assign(
     establishment.dataValues,
-    { operator: operator.dataValues },
+    { operator: operatorNew },
     { activities: activities.dataValues },
-    { premise: premise.dataValues }
+    { premise: premiseNew }
   );
 };
 
