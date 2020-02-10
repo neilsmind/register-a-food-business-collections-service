@@ -141,9 +141,9 @@ const getRegistrationTable = async (before, after) => {
 const getFullEstablishment = async id => {
   const establishment = await getEstablishmentByRegId(id);
   const [operator, activities, premise] = await Promise.all([
-    getOperatorByEstablishmentId(establishment.id),
-    getActivitiesByEstablishmentId(establishment.id),
-    getPremiseByEstablishmentId(establishment.id)
+    getOperatorByEstablishmentId(establishment && establishment.id),
+    getActivitiesByEstablishmentId(establishment && establishment.id),
+    getPremiseByEstablishmentId(establishment && establishment.id)
   ]);
 
   let operatorNew = {};

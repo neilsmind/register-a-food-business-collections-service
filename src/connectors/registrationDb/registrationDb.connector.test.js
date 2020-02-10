@@ -474,6 +474,63 @@ describe("collect.service", () => {
       });
     });
 
+    describe("when establishment data is missing", () => {
+      beforeEach(async () => {
+        Registration.findAll.mockImplementation(() => [
+          { id: 1, dataValues: { fsa_rn: "1234" } },
+          { id: 2, dataValues: { fsa_rn: "5678" } }
+        ]);
+        Establishment.findOne.mockImplementation(() => (null));
+        Operator.findOne.mockImplementation(() => (null));
+        Activities.findOne.mockImplementation(() => (null));
+        Premise.findOne.mockImplementation(() => (null));
+        Metadata.findOne.mockImplementation(() => (null));
+
+        result = await getUnifiedRegistrations(
+          "2019-01-01T15:00:00Z",
+          "2019-01-01T15:00:00Z",
+          ["establishment"]
+        );
+      });
+      it("should still return the establishment, operator, premise, activities fields", () => {
+        expect(result[0].fsa_rn).toBe("1234");
+        expect(result[0].establishment).toBeDefined();
+        expect(result[0].establishment.premise).toBeDefined();
+        expect(result[0].establishment.operator).toBeDefined();
+        expect(result[0].establishment.activities).toBeDefined();
+      });
+    });
+
+    describe("when establishment child data is missing", () => {
+      beforeEach(async () => {
+        Registration.findAll.mockImplementation(() => [
+          { id: 1, dataValues: { fsa_rn: "1234" } },
+          { id: 2, dataValues: { fsa_rn: "5678" } }
+        ]);
+        Establishment.findOne.mockImplementation(() => ({
+          id: 1,
+          dataValues: { establishment_trading_name: "taco" }
+        }));
+        Operator.findOne.mockImplementation(() => (null));
+        Activities.findOne.mockImplementation(() => (null));
+        Premise.findOne.mockImplementation(() => (null));
+        Metadata.findOne.mockImplementation(() => (null));
+
+        result = await getUnifiedRegistrations(
+          "2019-01-01T15:00:00Z",
+          "2019-01-01T15:00:00Z",
+          ["establishment"]
+        );
+      });
+      it("should still return the establishment, operator, premise, activities fields", () => {
+        expect(result[0].fsa_rn).toBe("1234");
+        expect(result[0].establishment).toBeDefined();
+        expect(result[0].establishment.premise).toBeDefined();
+        expect(result[0].establishment.operator).toBeDefined();
+        expect(result[0].establishment.activities).toBeDefined();
+      });
+    });
+
     describe("when fields includes metadata", () => {
       beforeEach(async () => {
         Registration.findAll.mockImplementation(() => [

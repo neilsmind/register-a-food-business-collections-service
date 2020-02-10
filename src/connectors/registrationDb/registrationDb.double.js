@@ -74,7 +74,7 @@ const doubleResponse = [
         id: 62,
         establishment_address_line_1: "12",
         establishment_address_line_2: "Street",
-        estabalishment_address_line_3: "Test",
+        establishment_address_line_3: "Test",
         establishment_town: "London",
         establishment_postcode: "SW12 9RQ",
         establishment_type: "Place",
