@@ -166,7 +166,7 @@ const getFullEstablishment = async id => {
   }
 
   return Object.assign(
-    establishment.dataValues,
+    establishment ? establishment.dataValues : {},
     { operator: operatorNew },
     { activities: activities ? activities.dataValues : {} },
     { premise: premiseNew }
@@ -176,7 +176,7 @@ const getFullEstablishment = async id => {
 const getFullMetadata = async id => {
   const metadata = await getMetadataByRegId(id);
 
-  return metadata.dataValues;
+  return metadata ? metadata.dataValues : {};
 };
 
 const getSingleRegistration = async (fsa_rn, council) => {
