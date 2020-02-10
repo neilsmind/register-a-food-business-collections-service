@@ -141,22 +141,42 @@ const getRegistrationTable = async (before, after) => {
 const getFullEstablishment = async id => {
   const establishment = await getEstablishmentByRegId(id);
   const [operator, activities, premise] = await Promise.all([
-    getOperatorByEstablishmentId(establishment.id),
-    getActivitiesByEstablishmentId(establishment.id),
-    getPremiseByEstablishmentId(establishment.id)
+    getOperatorByEstablishmentId(establishment && establishment.id),
+    getActivitiesByEstablishmentId(establishment && establishment.id),
+    getPremiseByEstablishmentId(establishment && establishment.id)
   ]);
+
+  let operatorNew = {};
+  if (operator) {
+    operatorNew = Object.assign(operator.dataValues);
+    operatorNew.operator_first_line = operatorNew.operator_address_line_1;
+    operatorNew.operator_street = operatorNew.operator_address_line_2;
+    operatorNew.operator_dependent_locality =
+      operatorNew.operator_address_line_3;
+  }
+
+  let premiseNew = {};
+  if (premise) {
+    premiseNew = Object.assign(premise.dataValues);
+    premiseNew.establishment_first_line =
+      premiseNew.establishment_address_line_1;
+    premiseNew.establishment_street = premiseNew.establishment_address_line_2;
+    premiseNew.establishment_dependent_locality =
+      premiseNew.establishment_address_line_3;
+  }
+
   return Object.assign(
-    establishment.dataValues,
-    { operator: operator.dataValues },
-    { activities: activities.dataValues },
-    { premise: premise.dataValues }
+    establishment ? establishment.dataValues : {},
+    { operator: operatorNew },
+    { activities: activities ? activities.dataValues : {} },
+    { premise: premiseNew }
   );
 };
 
 const getFullMetadata = async id => {
   const metadata = await getMetadataByRegId(id);
 
-  return metadata.dataValues;
+  return metadata ? metadata.dataValues : {};
 };
 
 const getSingleRegistration = async (fsa_rn, council) => {

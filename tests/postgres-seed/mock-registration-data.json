@@ -13,8 +13,6 @@
           "operator_first_name": "Darline",
           "operator_last_name": "Bridgewater",
           "operator_postcode": "WV98 1PS",
-          "operator_first_line": "1998",
-          "operator_street": "Bartelt",
           "operator_town": "Bas Goynuk",
           "operator_primary_number": "3757031885",
           "operator_secondary_number": "3562126616",
@@ -23,8 +21,6 @@
         },
         "premise": {
           "establishment_postcode": "CB22 4RX",
-          "establishment_first_line": "2634",
-          "establishment_street": "Moulton",
           "establishment_town": "Vermelha",
           "establishment_type": "Home or domestic premises"
         },
@@ -72,8 +68,12 @@
           "operator_first_name": "Pansie",
           "operator_last_name": "Finlay",
           "operator_postcode": "WA14 4HE",
+          "operator_address_line_1": "41321",
+          "operator_address_line_2": "Larry",
+          "operator_address_line_3": "Bristol",
           "operator_first_line": "41321",
           "operator_street": "Larry",
+          "operator_dependant_locality": "Bristol",
           "operator_town": "San Francisco",
           "operator_primary_number": "1439333058",
           "operator_secondary_number": "3607803759",
@@ -82,8 +82,12 @@
         },
         "premise": {
           "establishment_postcode": "CB22 4RX",
+          "establishment_address_line_1": "93",
+          "establishment_address_line_2": "Sunfield",
+          "establishment_address_line_3": "Bristol",
           "establishment_first_line": "93",
           "establishment_street": "Sunfield",
+          "establishment_dependant_locality": "Bristol",
           "establishment_town": "Balungao",
           "establishment_type": "Home or domestic premises"
         },
