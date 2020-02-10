@@ -480,11 +480,11 @@ describe("collect.service", () => {
           { id: 1, dataValues: { fsa_rn: "1234" } },
           { id: 2, dataValues: { fsa_rn: "5678" } }
         ]);
-        Establishment.findOne.mockImplementation(() => (null));
-        Operator.findOne.mockImplementation(() => (null));
-        Activities.findOne.mockImplementation(() => (null));
-        Premise.findOne.mockImplementation(() => (null));
-        Metadata.findOne.mockImplementation(() => (null));
+        Establishment.findOne.mockImplementation(() => null);
+        Operator.findOne.mockImplementation(() => null);
+        Activities.findOne.mockImplementation(() => null);
+        Premise.findOne.mockImplementation(() => null);
+        Metadata.findOne.mockImplementation(() => null);
 
         result = await getUnifiedRegistrations(
           "2019-01-01T15:00:00Z",
@@ -511,10 +511,10 @@ describe("collect.service", () => {
           id: 1,
           dataValues: { establishment_trading_name: "taco" }
         }));
-        Operator.findOne.mockImplementation(() => (null));
-        Activities.findOne.mockImplementation(() => (null));
-        Premise.findOne.mockImplementation(() => (null));
-        Metadata.findOne.mockImplementation(() => (null));
+        Operator.findOne.mockImplementation(() => null);
+        Activities.findOne.mockImplementation(() => null);
+        Premise.findOne.mockImplementation(() => null);
+        Metadata.findOne.mockImplementation(() => null);
 
         result = await getUnifiedRegistrations(
           "2019-01-01T15:00:00Z",
