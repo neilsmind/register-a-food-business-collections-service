@@ -146,23 +146,29 @@ const getFullEstablishment = async id => {
     getPremiseByEstablishmentId(establishment.id)
   ]);
 
-  let operatorNew = Object.assign(operator.dataValues);
-  operatorNew.operator_first_line = operatorNew.operator_address_line_1;
-  operatorNew.operator_street = operatorNew.operator_address_line_2;
-  operatorNew.operator_dependent_locality = operatorNew.operator_address_line_3;
+  let operatorNew = {};
+  if (operator) {
+    operatorNew = Object.assign(operator.dataValues);
+    operatorNew.operator_first_line = operatorNew.operator_address_line_1;
+    operatorNew.operator_street = operatorNew.operator_address_line_2;
+    operatorNew.operator_dependent_locality =
+      operatorNew.operator_address_line_3;
+  }
 
-  let premiseNew = Object.assign(premise.dataValues);
-  premiseNew.establishment_first_line = premiseNew.establishment_address_line_1;
-  premiseNew.establishment_street = premiseNew.establishment_address_line_2;
-  premiseNew.establishment_dependent_locality =
-    premiseNew.establishment_address_line_3;
-
-  //make sure value are assigned correctly from address line 1 to first_line
+  let premiseNew = {};
+  if (premise) {
+    premiseNew = Object.assign(premise.dataValues);
+    premiseNew.establishment_first_line =
+      premiseNew.establishment_address_line_1;
+    premiseNew.establishment_street = premiseNew.establishment_address_line_2;
+    premiseNew.establishment_dependent_locality =
+      premiseNew.establishment_address_line_3;
+  }
 
   return Object.assign(
     establishment.dataValues,
     { operator: operatorNew },
-    { activities: activities.dataValues },
+    { activities: activities ? activities.dataValues : {} },
     { premise: premiseNew }
   );
 };

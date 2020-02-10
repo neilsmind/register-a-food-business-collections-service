@@ -537,7 +537,7 @@
           "description": "ASCII string.",
           "maximum": 255
         },
-        "establiahment_address_line_2": {
+        "establishment_address_line_2": {
           "type": "string",
           "description": "ASCII string.",
           "maximum": 255
