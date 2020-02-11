@@ -286,7 +286,15 @@
     },
     "council": {
       "type": "string",
-      "description": "The local authority that the registration belongs to."
+      "description": "The full name of the local authority."
+    },
+    "competent_authority_id": {
+      "type": "integer",
+      "description": "The unique id for the local authority."
+    },
+    "local_council_url": {
+      "type": "string",
+      "description": "The unique url for the local authority."
     },
     "collected": {
       "type": "boolean",
