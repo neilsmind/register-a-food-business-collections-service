@@ -19,6 +19,8 @@
     "lint": "eslint ./src",
     "format:verify": "prettier --list-different '{src,tests}/**/*.js'",
     "format": "prettier --write '{src,tests}/**/*.js'",
+    "migrate": "sequelize db:migrate",
+    "migrate:local": "export NODE_ENV=local && sequelize db:migrate",
     "seed-postgres": "node tests/postgres-seed/postgres-seed.js",
     "clear-postgres": "node tests/postgres-seed/postgres-clear.js",
     "reset-postgres": "npm run clear-postgres && npm run seed-postgres"
