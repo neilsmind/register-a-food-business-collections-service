@@ -13,6 +13,8 @@
           "operator_first_name": "Darline",
           "operator_last_name": "Bridgewater",
           "operator_postcode": "WV98 1PS",
+          "operator_address_line_1": "1998",
+          "operator_address_line_2": "Bartelt",
           "operator_town": "Bas Goynuk",
           "operator_primary_number": "3757031885",
           "operator_secondary_number": "3562126616",
@@ -21,6 +23,8 @@
         },
         "premise": {
           "establishment_postcode": "CB22 4RX",
+          "establishment_address_line_1": "2634",
+          "establishment_address_line_2": "Moulton",
           "establishment_town": "Vermelha",
           "establishment_type": "Home or domestic premises"
         },
