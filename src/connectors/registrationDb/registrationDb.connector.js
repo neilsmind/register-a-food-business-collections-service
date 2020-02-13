@@ -226,22 +226,33 @@ const getSingleRegistration = async (fsa_rn, council) => {
 };
 
 const getFullRegistration = async (registration, fields = []) => {
+  const { id, fsa_rn } = registration;
+  const {
+    competent_authority_id,
+    local_council_full_name,
+    local_council_url
+  } = await getCouncilByRegCouncil(registration.dataValues.council);
+  const { collected, collected_at, createdAt, updatedAt } = registration;
   const establishment = fields.includes("establishment")
     ? await getFullEstablishment(registration.id)
     : {};
   const metadata = fields.includes("metadata")
     ? await getFullMetadata(registration.id)
     : {};
-  const council = await getCouncilByRegCouncil(registration.dataValues.council);
 
+  // Assign values in consistent order
   const newRegistration = Object.assign(
-    registration.dataValues,
+    { id, fsa_rn },
+    {
+      council: local_council_full_name,
+      competent_authority_id,
+      local_council_url
+    },
+    { collected, collected_at, createdAt, updatedAt },
     { establishment },
     { metadata }
   );
-  newRegistration.competent_authority_id = council.competent_authority_id;
-  newRegistration.local_council_url = council.local_council_url;
-  newRegistration.council = council.local_council_full_name;
+
   return newRegistration;
 };
 
