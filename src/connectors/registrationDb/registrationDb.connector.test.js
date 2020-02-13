@@ -152,6 +152,11 @@ describe("collect.service", () => {
           { id: 1, dataValues: { fsa_rn: "1234" } },
           { id: 2, dataValues: { fsa_rn: "5678" } }
         ]);
+        Council.findOne.mockImplementation(() => ({
+          local_council_full_name: "Area Council",
+          competent_authority_id: "5678",
+          local_council_url: "area"
+        }));
         Activities.findOne.mockImplementation(() => {
           throw new Error("Failed");
         });
@@ -176,10 +181,18 @@ describe("collect.service", () => {
           { id: 1, dataValues: { fsa_rn: "1234" } },
           { id: 2, dataValues: { fsa_rn: "5678" } }
         ]);
+        Council.findOne.mockImplementation(() => ({
+          local_council_full_name: "Area Council",
+          competent_authority_id: "5678",
+          local_council_url: "area"
+        }));
         result = await getAllRegistrationsByCouncil("cardiff", true, []);
       });
       it("should return just the registration fields", () => {
         expect(result[0].fsa_rn).toBe("1234");
+        expect(result[0].competent_authority_id).toBe("5678");
+        expect(result[0].local_council_url).toBe("area");
+        expect(result[0].council).toBe("Area Council");
         expect(result[0].establishment).toEqual({});
         expect(result[0].metadata).toEqual({});
       });

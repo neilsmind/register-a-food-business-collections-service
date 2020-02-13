@@ -147,25 +147,6 @@ const getRegistrationTable = async (before, after) => {
   }
 };
 
-const getExtraCouncilFields = async registration => {
-  const council = await getCouncilByRegCouncil(registration.dataValues.council);
-
-  const registrationWithCouncilFields = {
-    dataValues: {
-      fsa_rn: registration.dataValues.fsa_rn,
-      createdAt: registration.dataValues.createdAt,
-      updatedAt: registration.dataValues.updatedAt,
-      council: council.local_council_full_name,
-      competent_authority_id: council.competent_authority_id,
-      local_council_url: council.local_council_url,
-      collected: registration.dataValues.collected,
-      collected_at: registration.dataValues.collected_at
-    }
-  };
-
-  return registrationWithCouncilFields;
-};
-
 const getFullEstablishment = async id => {
   const establishment = await getEstablishmentByRegId(id);
   const [operator, activities, premise] = await Promise.all([
@@ -245,6 +226,18 @@ const getSingleRegistration = async (fsa_rn, council) => {
 };
 
 const getFullRegistration = async (registration, fields = []) => {
+  const { id, fsa_rn } = registration.dataValues;
+  const {
+    competent_authority_id,
+    local_council_full_name,
+    local_council_url
+  } = await getCouncilByRegCouncil(registration.dataValues.council);
+  const {
+    collected,
+    collected_at,
+    createdAt,
+    updatedAt
+  } = registration.dataValues;
   const establishment = fields.includes("establishment")
     ? await getFullEstablishment(registration.id)
     : {};
@@ -252,11 +245,20 @@ const getFullRegistration = async (registration, fields = []) => {
     ? await getFullMetadata(registration.id)
     : {};
 
-  return Object.assign(
-    registration.dataValues,
+  // Assign values in consistent order
+  const newRegistration = Object.assign(
+    { id, fsa_rn },
+    {
+      council: local_council_full_name,
+      competent_authority_id,
+      local_council_url
+    },
+    { collected, collected_at, createdAt, updatedAt },
     { establishment },
     { metadata }
   );
+
+  return newRegistration;
 };
 
 const getUnifiedRegistrations = async (
@@ -276,16 +278,9 @@ const getUnifiedRegistrations = async (
     registrationsBefore,
     registrationsAfter
   );
-  const registrationCouncilPromises = [];
-  registrations.forEach(registration => {
-    registrationCouncilPromises.push(getExtraCouncilFields(registration));
-  });
-  const registrationsWithCouncil = await Promise.all(
-    registrationCouncilPromises
-  );
 
   const registrationFullPromises = [];
-  registrationsWithCouncil.forEach(registration => {
+  registrations.forEach(registration => {
     registrationFullPromises.push(getFullRegistration(registration, fields));
   });
   const fullRegistrationsWithCouncil = await Promise.all(
