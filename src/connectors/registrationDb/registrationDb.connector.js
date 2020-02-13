@@ -226,13 +226,18 @@ const getSingleRegistration = async (fsa_rn, council) => {
 };
 
 const getFullRegistration = async (registration, fields = []) => {
-  const { id, fsa_rn } = registration;
+  const { id, fsa_rn } = registration.dataValues;
   const {
     competent_authority_id,
     local_council_full_name,
     local_council_url
   } = await getCouncilByRegCouncil(registration.dataValues.council);
-  const { collected, collected_at, createdAt, updatedAt } = registration;
+  const {
+    collected,
+    collected_at,
+    createdAt,
+    updatedAt
+  } = registration.dataValues;
   const establishment = fields.includes("establishment")
     ? await getFullEstablishment(registration.id)
     : {};

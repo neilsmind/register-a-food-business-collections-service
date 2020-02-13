@@ -152,6 +152,11 @@ describe("collect.service", () => {
           { id: 1, dataValues: { fsa_rn: "1234" } },
           { id: 2, dataValues: { fsa_rn: "5678" } }
         ]);
+        Council.findOne.mockImplementation(() => ({
+          local_council_full_name: "Area Council",
+          competent_authority_id: "5678",
+          local_council_url: "area"
+        }));
         Activities.findOne.mockImplementation(() => {
           throw new Error("Failed");
         });
