@@ -522,7 +522,8 @@
         "establishment_postcode",
         "establishment_first_line",
         "establishment_address_line_1",
-        "establishment_type"
+        "establishment_type",
+        "establishment_town"
       ],
       "properties": {
         "establishment_postcode": {
