@@ -2,7 +2,7 @@
   "swagger": "2.0",
   "info": {
     "title": "Register a food business collections",
-    "version": "1.3"
+    "version": "1.4"
   },
   "host": "fsa-rof-gateway.azure-api.net",
   "basePath": "/api/registrations",
@@ -264,6 +264,12 @@
         "council": {
           "$ref": "#/definitions/council"
         },
+        "competent_authority_id": {
+          "$ref": "#/definitions/competent_authority_id"
+        },
+        "local_council_url": {
+          "$ref": "#/definitions/local_council_url"
+        },
         "collected": {
           "$ref": "#/definitions/collected"
         },
@@ -362,10 +368,12 @@
       "type": "object",
       "required": [
         "operator_first_line",
+        "operator_address_line_1",
         "operator_primary_number",
         "operator_secondary_number",
         "operator_email",
         "operator_type",
+        "operator_town",
         "operator_postcode"
       ],
       "properties": {
@@ -513,7 +521,9 @@
       "required": [
         "establishment_postcode",
         "establishment_first_line",
-        "establishment_type"
+        "establishment_address_line_1",
+        "establishment_type",
+        "establishment_town"
       ],
       "properties": {
         "establishment_postcode": {
