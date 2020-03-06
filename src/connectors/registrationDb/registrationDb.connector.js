@@ -95,7 +95,11 @@ const getRegistrationTableByCouncil = async (council, collected) => {
     const response = await Registration.findAll({
       where: {
         council,
-        collected
+        collected,
+        createdAt: {
+          [Op.lt]: before,
+          [Op.gte]: after
+        }
       }
     });
     logEmitter.emit(
