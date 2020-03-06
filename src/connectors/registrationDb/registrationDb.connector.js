@@ -85,7 +85,12 @@ const getCouncilByRegCouncil = async council => {
   );
 };
 
-const getRegistrationTableByCouncil = async (council, collected) => {
+const getRegistrationTableByCouncil = async (
+  council,
+  collected,
+  before,
+  after
+) => {
   logEmitter.emit(
     "functionCall",
     "registration.connector.js",
@@ -302,7 +307,9 @@ const getUnifiedRegistrations = async (
 const getAllRegistrationsByCouncil = async (
   council,
   newRegistrations,
-  fields
+  fields,
+  before,
+  after
 ) => {
   logEmitter.emit(
     "functionCall",
@@ -317,7 +324,9 @@ const getAllRegistrationsByCouncil = async (
   const queryArray = newRegistrations === "true" ? [false] : [true, false];
   const registrations = await getRegistrationTableByCouncil(
     council,
-    queryArray
+    queryArray,
+    before,
+    after
   );
 
   registrations.forEach(registration => {

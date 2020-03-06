@@ -29,7 +29,9 @@ const getRegistrationsByCouncil = async options => {
     const registrations = await getAllRegistrationsByCouncil(
       options.council,
       options.new,
-      options.fields
+      options.fields,
+      options.before,
+      options.after
     );
     logEmitter.emit(
       "functionSuccess",
