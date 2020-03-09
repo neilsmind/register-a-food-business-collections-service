@@ -83,7 +83,7 @@ const validationFields = {
   }
 };
 
-const validateOptions = options => {
+const validateOptions = (options, unlimitedDateRange) => {
   logEmitter.emit("functionCall", "registrations.service", "validateOptions");
 
   for (const key in options) {
@@ -94,6 +94,7 @@ const validateOptions = options => {
   }
 
   if (
+    !unlimitedDateRange &&
     options.before &&
     options.after &&
     !dateRange(options.after, options.before)

@@ -20,7 +20,7 @@ const getRegistrationsByCouncil = async options => {
     "getRegistrationsByCouncil"
   );
 
-  const validationResult = validateOptions(options);
+  const validationResult = validateOptions(options, true);
 
   if (validationResult === true) {
     if (options.double_mode) {
