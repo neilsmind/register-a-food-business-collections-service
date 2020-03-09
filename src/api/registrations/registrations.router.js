@@ -54,7 +54,7 @@ const registrationsRouter = () => {
         fields,
         council: req.params.lc,
         after: req.query.after || "2000-01-01",
-        before: req.query.before || Date.now
+        before: req.query.before || Date.now()
       };
 
       registrations = await getRegistrationsByCouncil(options);
