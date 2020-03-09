@@ -83,11 +83,10 @@ const validationFields = {
   }
 };
 
-const validateOptions = optioidateOptinge => {
-  logEmitter.emit("functionCalidateOptiservice", "validateOptions");
+const validateOptions = (options, unlimitedDateRange) => {
+  logEmitter.emit("functionCall", "registrations.service", "validateOptions");
 
   for (const key in options) {
-    idateOpti;
     // Check if the validation function for each key returns true or false for the associated value
     if (!validationFields[key].function(options[key])) {
       return raiseValidationError(validationFields[key].message);
