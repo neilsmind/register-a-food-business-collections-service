@@ -113,6 +113,20 @@
             "description": "Return a hard-coded test result according to the value specified instead of querying the database.",
             "type": "string",
             "enum": ["success", "fail", "single", "update"]
+          },
+          {
+            "name": "after",
+            "in": "query",
+            "description": "Filter registrations to those created/updated after an ISO formatted UTC date-time e.g. 2019-04-29T16:01:12Z.",
+            "type": "string",
+            "format": "date-time"
+          },
+          {
+            "name": "before",
+            "in": "query",
+            "description": "Filter registrations to those created/updated before an ISO formatted UTC date-time e.g. 2019-04-30T16:01:12Z.",
+            "type": "string",
+            "format": "date-time"
           }
         ],
         "responses": {
