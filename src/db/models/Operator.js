@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       operator_type: { type: DataTypes.STRING },
       operator_company_name: { type: DataTypes.STRING },
-      operator_company_house_number: { type: DataTypes.STRING },
+      operator_companies_house_number: { type: DataTypes.STRING },
       operator_charity_name: { type: DataTypes.STRING },
       operator_charity_number: { type: DataTypes.STRING },
       operator_first_name: { type: DataTypes.STRING },
@@ -28,7 +28,9 @@ module.exports = (sequelize, DataTypes) => {
       contact_representative_number: { type: DataTypes.STRING },
       contact_representative_email: { type: DataTypes.STRING }
     },
-    {}
+    {
+      timestamps: false
+    }
   );
   Operator.associate = function(models) {
     Operator.belongsTo(models.establishment);

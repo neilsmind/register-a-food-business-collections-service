@@ -1,7 +1,7 @@
 const {
   Activities,
   Establishment,
-  Metadata,
+  Declaration,
   Operator,
   Partner,
   Premise,
@@ -31,17 +31,23 @@ const convertJSDateToISODate = () => {
 
 const getEstablishmentByRegId = async id => {
   return modelFindOne(
-    { where: { registrationId: id } },
+    {
+      where: { registrationId: id },
+      attributes: { exclude: ["registrationId"] }
+    },
     Establishment,
     "getEstablishmentByRegId"
   );
 };
 
-const getMetadataByRegId = async id => {
+const getDeclarationByRegId = async id => {
   return modelFindOne(
-    { where: { registrationId: id } },
-    Metadata,
-    "getMetadataByRegId"
+    {
+      where: { registrationId: id },
+      attributes: { exclude: ["id", "registrationId"] }
+    },
+    Declaration,
+    "getDeclarationByRegId"
   );
 };
 
@@ -54,7 +60,8 @@ const getOperatorByEstablishmentId = async id => {
           model: Partner,
           as: "partners"
         }
-      ]
+      ],
+      attributes: { exclude: ["id", "establishmentId"] }
     },
     Operator,
     "getOperatorByEstablishmentId"
@@ -63,7 +70,10 @@ const getOperatorByEstablishmentId = async id => {
 
 const getPremiseByEstablishmentId = async id => {
   return modelFindOne(
-    { where: { establishmentId: id } },
+    {
+      where: { establishmentId: id },
+      attributes: { exclude: ["id", "establishmentId"] }
+    },
     Premise,
     "getPremiseByEstablishmentId"
   );
@@ -71,7 +81,10 @@ const getPremiseByEstablishmentId = async id => {
 
 const getActivitiesByEstablishmentId = async id => {
   return modelFindOne(
-    { where: { establishmentId: id } },
+    {
+      where: { establishmentId: id },
+      attributes: { exclude: ["id", "establishmentId"] }
+    },
     Activities,
     "getActivitiesByEstablishmentId"
   );
@@ -191,10 +204,10 @@ const getFullEstablishment = async id => {
   );
 };
 
-const getFullMetadata = async id => {
-  const metadata = await getMetadataByRegId(id);
+const getFullDeclaration = async id => {
+  const declaration = await getDeclarationByRegId(id);
 
-  return metadata ? metadata.dataValues : {};
+  return declaration ? declaration.dataValues : {};
 };
 
 const getSingleRegistration = async (fsa_rn, council) => {
@@ -224,7 +237,7 @@ const getSingleRegistration = async (fsa_rn, council) => {
   }
   const fullRegistration = await getFullRegistration(registration, [
     "establishment",
-    "metadata"
+    "declaration"
   ]);
   logEmitter.emit(
     "functionSuccess",
@@ -250,8 +263,8 @@ const getFullRegistration = async (registration, fields = []) => {
   const establishment = fields.includes("establishment")
     ? await getFullEstablishment(registration.id)
     : {};
-  const metadata = fields.includes("metadata")
-    ? await getFullMetadata(registration.id)
+  const declaration = fields.includes("declaration")
+    ? await getFullDeclaration(registration.id)
     : {};
 
   // Assign values in consistent order
@@ -264,7 +277,7 @@ const getFullRegistration = async (registration, fields = []) => {
     },
     { collected, collected_at, createdAt, updatedAt },
     { establishment },
-    { metadata }
+    { declaration }
   );
 
   return newRegistration;

@@ -293,8 +293,8 @@
         "establishment": {
           "$ref": "#/definitions/Establishment"
         },
-        "metadata": {
-          "$ref": "#/definitions/Metadata"
+        "declaration": {
+          "$ref": "#/definitions/Declaration"
         }
       }
     },
@@ -491,7 +491,7 @@
           "maximum": 50,
           "description": "Required if operator_type is 'A company (registered by a representative)'."
         },
-        "operator_company_house_number": {
+        "operator_companies_house_number": {
           "type": "string",
           "maximum": 8,
           "minimum": 8,
@@ -677,7 +677,7 @@
         }
       }
     },
-    "Metadata": {
+    "Declaration": {
       "type": "object",
       "properties": {
         "declaration1": {
