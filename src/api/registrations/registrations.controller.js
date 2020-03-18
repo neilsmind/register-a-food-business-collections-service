@@ -20,7 +20,7 @@ const getRegistrationsByCouncil = async options => {
     "getRegistrationsByCouncil"
   );
 
-  const validationResult = validateOptions(options);
+  const validationResult = validateOptions(options, true);
 
   if (validationResult === true) {
     if (options.double_mode) {
@@ -29,7 +29,9 @@ const getRegistrationsByCouncil = async options => {
     const registrations = await getAllRegistrationsByCouncil(
       options.council,
       options.new,
-      options.fields
+      options.fields,
+      options.before,
+      options.after
     );
     logEmitter.emit(
       "functionSuccess",

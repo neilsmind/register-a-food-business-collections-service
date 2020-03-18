@@ -24,6 +24,7 @@ module.exports = {
   Partner: db.partner,
   Premise: db.premise,
   Registration: db.registration,
+  Council: db.council,
   db,
   connectToDb,
   closeConnection

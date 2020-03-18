@@ -2,7 +2,7 @@
   "swagger": "2.0",
   "info": {
     "title": "Register a food business collections",
-    "version": "1.3"
+    "version": "1.4"
   },
   "host": "fsa-rof-gateway.azure-api.net",
   "basePath": "/api/registrations",
@@ -113,6 +113,20 @@
             "description": "Return a hard-coded test result according to the value specified instead of querying the database.",
             "type": "string",
             "enum": ["success", "fail", "single", "update"]
+          },
+          {
+            "name": "after",
+            "in": "query",
+            "description": "Filter registrations to those created/updated after an ISO formatted UTC date-time e.g. 2019-04-29T16:01:12Z.",
+            "type": "string",
+            "format": "date-time"
+          },
+          {
+            "name": "before",
+            "in": "query",
+            "description": "Filter registrations to those created/updated before an ISO formatted UTC date-time e.g. 2019-04-30T16:01:12Z.",
+            "type": "string",
+            "format": "date-time"
           }
         ],
         "responses": {
@@ -264,6 +278,12 @@
         "council": {
           "$ref": "#/definitions/council"
         },
+        "competent_authority_id": {
+          "$ref": "#/definitions/competent_authority_id"
+        },
+        "local_council_url": {
+          "$ref": "#/definitions/local_council_url"
+        },
         "collected": {
           "$ref": "#/definitions/collected"
         },
@@ -286,7 +306,15 @@
     },
     "council": {
       "type": "string",
-      "description": "The local authority that the registration belongs to."
+      "description": "The full name of the local authority."
+    },
+    "competent_authority_id": {
+      "type": "integer",
+      "description": "The unique id for the local authority."
+    },
+    "local_council_url": {
+      "type": "string",
+      "description": "The unique url for the local authority."
     },
     "collected": {
       "type": "boolean",
@@ -354,10 +382,12 @@
       "type": "object",
       "required": [
         "operator_first_line",
+        "operator_address_line_1",
         "operator_primary_number",
         "operator_secondary_number",
         "operator_email",
         "operator_type",
+        "operator_town",
         "operator_postcode"
       ],
       "properties": {
@@ -391,6 +421,21 @@
           "maximum": 255
         },
         "operator_dependent_locality": {
+          "type": "string",
+          "description": "ASCII string.",
+          "maximum": 255
+        },
+        "operator_address_line_1": {
+          "type": "string",
+          "description": "ASCII string.",
+          "maximum": 255
+        },
+        "operator_address_line_2": {
+          "type": "string",
+          "description": "ASCII string.",
+          "maximum": 255
+        },
+        "operator_address_line_3": {
           "type": "string",
           "description": "ASCII string.",
           "maximum": 255
@@ -490,7 +535,9 @@
       "required": [
         "establishment_postcode",
         "establishment_first_line",
-        "establishment_type"
+        "establishment_address_line_1",
+        "establishment_type",
+        "establishment_town"
       ],
       "properties": {
         "establishment_postcode": {
@@ -513,6 +560,21 @@
           "maximum": 255
         },
         "establishment_dependent_locality": {
+          "type": "string",
+          "description": "ASCII string.",
+          "maximum": 255
+        },
+        "establishment_address_line_1": {
+          "type": "string",
+          "description": "ASCII string.",
+          "maximum": 255
+        },
+        "establishment_address_line_2": {
+          "type": "string",
+          "description": "ASCII string.",
+          "maximum": 255
+        },
+        "establishment_address_line_3": {
           "type": "string",
           "description": "ASCII string.",
           "maximum": 255
