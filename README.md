@@ -43,7 +43,7 @@ A successful `GET` request to the `/:lc/:fsa_rn` route accepts the following inp
 
 A successful `GET` request to the `/:lc/:fsa_rn` route performs the following actions:
 
-1. Fetches the entry in the `Registrations` database table that has a matching local council and FSA registration number
+1. Fetches the entry in the `Registrations` database table that has a matching local council and FSA registration application reference
 2. Fetches the detailed information from other database tables for the single record returned in step 1
 3. Returns the combined data to the user
 
