@@ -152,7 +152,7 @@
       "/{lc}/{fsa_rn}": {
           "get": {
               "summary": "Get a single registration in full.",
-              "description": "Returns a single registration in full from the supplied reference number.",
+              "description": "Returns a single registration in full from the supplied registration application reference.",
               "operationId": "get-single-registration-for-local-authority",
               "parameters": [
                   {
@@ -167,7 +167,7 @@
                   {
                       "name": "fsa_rn",
                       "in": "path",
-                      "description": "The reference number of the registration.",
+                      "description": "The registration application reference.",
                       "required": true,
                       "schema": {
                           "type": "string"
@@ -212,7 +212,7 @@
           },
           "put": {
               "summary": "Update the collected status of a single registration.",
-              "description": "Updates a single registration according to the supplied reference number and collection status.",
+              "description": "Updates a single registration according to the supplied registration application reference and collection status.",
               "operationId": "update-single-registration-for-local-authority",
               "parameters": [
                   {
@@ -227,7 +227,7 @@
                   {
                       "name": "fsa_rn",
                       "in": "path",
-                      "description": "The reference number for the registration.",
+                      "description": "The registration application reference.",
                       "required": true,
                       "schema": {
                           "type": "string"
@@ -271,7 +271,7 @@
                               "type": "boolean"
                             },
                             "fsa_rn": {
-                              "description": "The reference number for the registration.",
+                              "description": "The registration application reference.",
                               "type": "string"
                             }
                           }
@@ -333,7 +333,7 @@
               "maximum": 20,
               "minimum": 20,
               "type": "string",
-              "description": "The unique reference number to identify this registration."
+              "description": "The unique registration application reference that identifies this registration."
           },
           "council": {
               "type": "string",
