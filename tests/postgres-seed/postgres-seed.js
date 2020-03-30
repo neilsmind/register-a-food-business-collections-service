@@ -24,19 +24,19 @@ const submitRegistration = async () => {
     const response = await request(requestOptions);
     responses.push(response);
   }
+
+  return responses;
 };
 
 const forceRegistrationSubmission = async submissionResult => {
-  const url = process.env.COMPONENT_TEST_BASE_URL + "/savetotempstore/";
-
-  const responses = [];
-
-  for (let registration in submissionResult) {
+  const url = process.env.COMPONENT_TEST_BASE_URL + "/api/tasks/savetotempstore/";
+  console.log(submissionResult);
+  responses = Promise.all(submissionResult.map(registration => {
+    console.log(registration);
+    console.log(url + registration["fsa-rn"]);
     const requestOptions = {
-      uri: url + "?fsaID=" + registration.fsa - rn,
+      uri: url + registration["fsa-rn"],
       method: "GET",
-      json: true,
-      body: null,
       headers: {
         "api-secret": process.env.SERVICE_API_SECRET,
         "client-name": process.env.SERVICE_API_CLIENT_NAME,
@@ -44,9 +44,8 @@ const forceRegistrationSubmission = async submissionResult => {
       }
     };
 
-    const response = await request(requestOptions);
-    responses.push(response);
-  }
+    return request(requestOptions);
+  }));
 
   return responses;
 };
