@@ -30,7 +30,7 @@ const submitRegistration = async () => {
 
 const forceRegistrationSubmission = async submissionResult => {
   const url =
-    process.env.COMPONENT_TEST_BASE_URL + "/api/tasks/savetotempstore/";
+    process.env.SERVICE_BASE_URL + "/api/tasks/savetotempstore/";
   console.log(submissionResult);
   responses = Promise.all(
     submissionResult.map(registration => {
