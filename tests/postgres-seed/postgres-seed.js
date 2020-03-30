@@ -29,23 +29,26 @@ const submitRegistration = async () => {
 };
 
 const forceRegistrationSubmission = async submissionResult => {
-  const url = process.env.COMPONENT_TEST_BASE_URL + "/api/tasks/savetotempstore/";
+  const url =
+    process.env.COMPONENT_TEST_BASE_URL + "/api/tasks/savetotempstore/";
   console.log(submissionResult);
-  responses = Promise.all(submissionResult.map(registration => {
-    console.log(registration);
-    console.log(url + registration["fsa-rn"]);
-    const requestOptions = {
-      uri: url + registration["fsa-rn"],
-      method: "GET",
-      headers: {
-        "api-secret": process.env.SERVICE_API_SECRET,
-        "client-name": process.env.SERVICE_API_CLIENT_NAME,
-        "registration-data-version": process.env.REGISTRATION_DATA_VERSION
-      }
-    };
+  responses = Promise.all(
+    submissionResult.map(registration => {
+      console.log(registration);
+      console.log(url + registration["fsa-rn"]);
+      const requestOptions = {
+        uri: url + registration["fsa-rn"],
+        method: "GET",
+        headers: {
+          "api-secret": process.env.SERVICE_API_SECRET,
+          "client-name": process.env.SERVICE_API_CLIENT_NAME,
+          "registration-data-version": process.env.REGISTRATION_DATA_VERSION
+        }
+      };
 
-    return request(requestOptions);
-  }));
+      return request(requestOptions);
+    })
+  );
 
   return responses;
 };
