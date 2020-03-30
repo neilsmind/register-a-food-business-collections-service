@@ -24,16 +24,16 @@ const submitRegistration = async () => {
     const response = await request(requestOptions);
     responses.push(response);
   }
-}
+};
 
-const forceRegistrationSubmission = async (submissionResult) => {
+const forceRegistrationSubmission = async submissionResult => {
   const url = process.env.COMPONENT_TEST_BASE_URL + "/savetotempstore/";
 
   const responses = [];
 
   for (let registration in submissionResult) {
     const requestOptions = {
-      uri: url + "?fsaID=" + registration.fsa-rn,
+      uri: url + "?fsaID=" + registration.fsa - rn,
       method: "GET",
       json: true,
       body: null,
@@ -54,4 +54,3 @@ const forceRegistrationSubmission = async (submissionResult) => {
 submitRegistration()
   .then(submissionResult => forceRegistrationSubmission(submissionResult))
   .then(seedResult => console.log(seedResult));
-
