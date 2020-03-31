@@ -194,7 +194,7 @@ describe("collect.service", () => {
         expect(result[0].local_council_url).toBe("area");
         expect(result[0].council).toBe("Area Council");
         expect(result[0].establishment).toEqual({});
-        expect(result[0].declaration).toEqual({});
+        expect(result[0].metadata).toEqual({});
       });
     });
 
@@ -262,13 +262,13 @@ describe("collect.service", () => {
           dataValues: { declaration1: "yes" }
         }));
         result = await getAllRegistrationsByCouncil("cardiff", true, [
-          "declaration"
+          "metadata"
         ]);
       });
       it("should return just the declaration fields", () => {
         expect(result[0].fsa_rn).toBe("1234");
         expect(result[0].establishment).toEqual({});
-        expect(result[0].declaration).toBeDefined();
+        expect(result[0].metadata).toBeDefined();
       });
     });
   });
@@ -459,7 +459,7 @@ describe("collect.service", () => {
         expect(result[0].competent_authority_id).toBe("5678");
         expect(result[0].local_council_url).toBe("area");
         expect(result[0].establishment).toEqual({});
-        expect(result[0].declaration).toEqual({});
+        expect(result[0].metadata).toEqual({});
       });
     });
 
@@ -585,13 +585,13 @@ describe("collect.service", () => {
         result = await getUnifiedRegistrations(
           "2019-01-01T13:00:00Z",
           "2019-04-01T13:00:00Z",
-          ["declaration"]
+          ["metadata"]
         );
       });
       it("should return just the declaration fields", () => {
         expect(result[0].fsa_rn).toBe("1234");
         expect(result[0].establishment).toEqual({});
-        expect(result[0].declaration).toBeDefined();
+        expect(result[0].metadata).toBeDefined();
       });
     });
 
