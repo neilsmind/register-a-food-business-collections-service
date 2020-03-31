@@ -69,7 +69,6 @@ const populateCouncils = async transaction => {
   await connectToDb();
   const data = await getLocalCouncils();
   const promises = [];
-  console.log(data);
   try {
     data.forEach(async record => {
       promises.push(modelCreate(record, Council, transaction));

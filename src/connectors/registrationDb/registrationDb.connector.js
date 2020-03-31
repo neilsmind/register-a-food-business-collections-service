@@ -184,6 +184,10 @@ const getFullEstablishment = async id => {
     operatorNew.operator_street = operatorNew.operator_address_line_2;
     operatorNew.operator_dependent_locality =
       operatorNew.operator_address_line_3;
+    // TODO: remove the next two lines once company house rename is finalised
+    operatorNew.operator_company_house_number =
+      operatorNew.operator_companies_house_number;
+    delete operatorNew.operator_companies_house_number;
   }
 
   let premiseNew = {};
@@ -205,9 +209,9 @@ const getFullEstablishment = async id => {
 };
 
 const getFullDeclaration = async id => {
-  const declaration = await getDeclarationByRegId(id);
+  const metadata = await getDeclarationByRegId(id);
 
-  return declaration ? declaration.dataValues : {};
+  return metadata ? metadata.dataValues : {};
 };
 
 const getSingleRegistration = async (fsa_rn, council) => {
@@ -237,7 +241,7 @@ const getSingleRegistration = async (fsa_rn, council) => {
   }
   const fullRegistration = await getFullRegistration(registration, [
     "establishment",
-    "declaration"
+    "metadata"
   ]);
   logEmitter.emit(
     "functionSuccess",
@@ -263,7 +267,7 @@ const getFullRegistration = async (registration, fields = []) => {
   const establishment = fields.includes("establishment")
     ? await getFullEstablishment(registration.id)
     : {};
-  const declaration = fields.includes("declaration")
+  const metadata = fields.includes("metadata")
     ? await getFullDeclaration(registration.id)
     : {};
 
@@ -277,7 +281,7 @@ const getFullRegistration = async (registration, fields = []) => {
     },
     { collected, collected_at, createdAt, updatedAt },
     { establishment },
-    { declaration }
+    { metadata }
   );
 
   return newRegistration;
