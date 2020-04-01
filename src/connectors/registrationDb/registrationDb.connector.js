@@ -272,7 +272,7 @@ const getFullRegistration = async (registration, fields = []) => {
     : {};
 
   delete establishment.id;
-  
+
   // Assign values in consistent order
   const newRegistration = Object.assign(
     { fsa_rn },
