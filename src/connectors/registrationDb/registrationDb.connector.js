@@ -33,7 +33,7 @@ const getEstablishmentByRegId = async id => {
   return modelFindOne(
     {
       where: { registrationId: id },
-      attributes: { exclude: ["id", "registrationId"] }
+      attributes: { exclude: ["registrationId"] }
     },
     Establishment,
     "getEstablishmentByRegId"
@@ -271,6 +271,8 @@ const getFullRegistration = async (registration, fields = []) => {
     ? await getFullDeclaration(registration.id)
     : {};
 
+  delete establishment.id;
+  
   // Assign values in consistent order
   const newRegistration = Object.assign(
     { fsa_rn },
