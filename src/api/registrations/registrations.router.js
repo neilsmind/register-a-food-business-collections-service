@@ -52,7 +52,9 @@ const registrationsRouter = () => {
         double_mode: req.headers["double-mode"] || "",
         new: req.query.new || "true",
         fields,
-        council: req.params.lc
+        council: req.params.lc,
+        after: req.query.after || "2000-01-01",
+        before: req.query.before || new Date(Date.now()).toISOString()
       };
 
       registrations = await getRegistrationsByCouncil(options);

@@ -1,11 +1,12 @@
 const {
   Activities,
   Establishment,
-  Metadata,
+  Declaration,
   Operator,
   Partner,
   Premise,
   Registration,
+  Council,
   connectToDb
 } = require("../../db/db");
 const { logEmitter } = require("../../services/logging.service");
@@ -30,17 +31,23 @@ const convertJSDateToISODate = () => {
 
 const getEstablishmentByRegId = async id => {
   return modelFindOne(
-    { where: { registrationId: id } },
+    {
+      where: { registrationId: id },
+      attributes: { exclude: ["registrationId"] }
+    },
     Establishment,
     "getEstablishmentByRegId"
   );
 };
 
-const getMetadataByRegId = async id => {
+const getDeclarationByRegId = async id => {
   return modelFindOne(
-    { where: { registrationId: id } },
-    Metadata,
-    "getMetadataByRegId"
+    {
+      where: { registrationId: id },
+      attributes: { exclude: ["id", "registrationId"] }
+    },
+    Declaration,
+    "getDeclarationByRegId"
   );
 };
 
@@ -53,7 +60,8 @@ const getOperatorByEstablishmentId = async id => {
           model: Partner,
           as: "partners"
         }
-      ]
+      ],
+      attributes: { exclude: ["id", "establishmentId"] }
     },
     Operator,
     "getOperatorByEstablishmentId"
@@ -62,7 +70,10 @@ const getOperatorByEstablishmentId = async id => {
 
 const getPremiseByEstablishmentId = async id => {
   return modelFindOne(
-    { where: { establishmentId: id } },
+    {
+      where: { establishmentId: id },
+      attributes: { exclude: ["id", "establishmentId"] }
+    },
     Premise,
     "getPremiseByEstablishmentId"
   );
@@ -70,13 +81,29 @@ const getPremiseByEstablishmentId = async id => {
 
 const getActivitiesByEstablishmentId = async id => {
   return modelFindOne(
-    { where: { establishmentId: id } },
+    {
+      where: { establishmentId: id },
+      attributes: { exclude: ["id", "establishmentId"] }
+    },
     Activities,
     "getActivitiesByEstablishmentId"
   );
 };
 
-const getRegistrationTableByCouncil = async (council, collected) => {
+const getCouncilByRegCouncil = async council => {
+  return modelFindOne(
+    { where: { local_council_url: council } },
+    Council,
+    "getCouncilByRegCouncil"
+  );
+};
+
+const getRegistrationTableByCouncil = async (
+  council,
+  collected,
+  before,
+  after
+) => {
   logEmitter.emit(
     "functionCall",
     "registration.connector.js",
@@ -86,7 +113,11 @@ const getRegistrationTableByCouncil = async (council, collected) => {
     const response = await Registration.findAll({
       where: {
         council,
-        collected
+        collected,
+        createdAt: {
+          [Op.lt]: before,
+          [Op.gte]: after
+        }
       }
     });
     logEmitter.emit(
@@ -141,22 +172,46 @@ const getRegistrationTable = async (before, after) => {
 const getFullEstablishment = async id => {
   const establishment = await getEstablishmentByRegId(id);
   const [operator, activities, premise] = await Promise.all([
-    getOperatorByEstablishmentId(establishment.id),
-    getActivitiesByEstablishmentId(establishment.id),
-    getPremiseByEstablishmentId(establishment.id)
+    getOperatorByEstablishmentId(establishment && establishment.id),
+    getActivitiesByEstablishmentId(establishment && establishment.id),
+    getPremiseByEstablishmentId(establishment && establishment.id)
   ]);
+
+  let operatorNew = {};
+  if (operator) {
+    operatorNew = Object.assign(operator.dataValues);
+    operatorNew.operator_first_line = operatorNew.operator_address_line_1;
+    operatorNew.operator_street = operatorNew.operator_address_line_2;
+    operatorNew.operator_dependent_locality =
+      operatorNew.operator_address_line_3;
+    // TODO: remove the next two lines once company house rename is finalised
+    operatorNew.operator_company_house_number =
+      operatorNew.operator_companies_house_number;
+    delete operatorNew.operator_companies_house_number;
+  }
+
+  let premiseNew = {};
+  if (premise) {
+    premiseNew = Object.assign(premise.dataValues);
+    premiseNew.establishment_first_line =
+      premiseNew.establishment_address_line_1;
+    premiseNew.establishment_street = premiseNew.establishment_address_line_2;
+    premiseNew.establishment_dependent_locality =
+      premiseNew.establishment_address_line_3;
+  }
+
   return Object.assign(
-    establishment.dataValues,
-    { operator: operator.dataValues },
-    { activities: activities.dataValues },
-    { premise: premise.dataValues }
+    establishment ? establishment.dataValues : {},
+    { operator: operatorNew },
+    { activities: activities ? activities.dataValues : {} },
+    { premise: premiseNew }
   );
 };
 
-const getFullMetadata = async id => {
-  const metadata = await getMetadataByRegId(id);
+const getFullDeclaration = async id => {
+  const metadata = await getDeclarationByRegId(id);
 
-  return metadata.dataValues;
+  return metadata ? metadata.dataValues : {};
 };
 
 const getSingleRegistration = async (fsa_rn, council) => {
@@ -197,18 +252,41 @@ const getSingleRegistration = async (fsa_rn, council) => {
 };
 
 const getFullRegistration = async (registration, fields = []) => {
+  const { fsa_rn } = registration.dataValues;
+  const {
+    competent_authority_id,
+    local_council_full_name,
+    local_council_url
+  } = await getCouncilByRegCouncil(registration.dataValues.council);
+  const {
+    collected,
+    collected_at,
+    createdAt,
+    updatedAt
+  } = registration.dataValues;
   const establishment = fields.includes("establishment")
     ? await getFullEstablishment(registration.id)
     : {};
   const metadata = fields.includes("metadata")
-    ? await getFullMetadata(registration.id)
+    ? await getFullDeclaration(registration.id)
     : {};
 
-  return Object.assign(
-    registration.dataValues,
+  delete establishment.id;
+
+  // Assign values in consistent order
+  const newRegistration = Object.assign(
+    { fsa_rn },
+    {
+      council: local_council_full_name,
+      competent_authority_id,
+      local_council_url
+    },
+    { collected, collected_at, createdAt, updatedAt },
     { establishment },
     { metadata }
   );
+
+  return newRegistration;
 };
 
 const getUnifiedRegistrations = async (
@@ -229,24 +307,28 @@ const getUnifiedRegistrations = async (
     registrationsAfter
   );
 
-  const registrationPromises = [];
+  const registrationFullPromises = [];
   registrations.forEach(registration => {
-    registrationPromises.push(getFullRegistration(registration, fields));
+    registrationFullPromises.push(getFullRegistration(registration, fields));
   });
-  const fullRegistrations = await Promise.all(registrationPromises);
+  const fullRegistrationsWithCouncil = await Promise.all(
+    registrationFullPromises
+  );
 
   logEmitter.emit(
     "functionSuccess",
     "registrationsDb.connector",
     "getUnifiedRegistrations"
   );
-  return fullRegistrations;
+  return fullRegistrationsWithCouncil;
 };
 
 const getAllRegistrationsByCouncil = async (
   council,
   newRegistrations,
-  fields
+  fields,
+  before,
+  after
 ) => {
   logEmitter.emit(
     "functionCall",
@@ -261,7 +343,9 @@ const getAllRegistrationsByCouncil = async (
   const queryArray = newRegistrations === "true" ? [false] : [true, false];
   const registrations = await getRegistrationTableByCouncil(
     council,
-    queryArray
+    queryArray,
+    before,
+    after
   );
 
   registrations.forEach(registration => {

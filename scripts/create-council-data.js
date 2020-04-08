@@ -4,7 +4,7 @@ const flatten = require("lodash.flatten");
 const {
   Activities,
   Establishment,
-  Metadata,
+  Declaration,
   Operator,
   Premise,
   Registration,
@@ -30,9 +30,9 @@ const createEstablishment = async (establishment, registrationId) => {
   return modelCreate(data, Establishment, "Establishment");
 };
 
-const createMetadata = async (metadata, registrationId) => {
-  const data = Object.assign({}, metadata, { registrationId });
-  return modelCreate(data, Metadata, "Metadata");
+const createDeclaration = async (declaration, registrationId) => {
+  const data = Object.assign({}, declaration, { registrationId });
+  return modelCreate(data, Declaration, "Declaration");
 };
 
 const createOperator = async (operator, establishmentId) => {
@@ -69,14 +69,14 @@ const saveRegistration = async (registration, fsa_rn, council) => {
     registration.establishment.premise,
     establishment.id
   );
-  const metadata = await createMetadata(registration.metadata, reg.id);
+  const declaration = await createDeclaration(registration.declaration, reg.id);
   return {
     regId: reg.id,
     establishmentId: establishment.id,
     operatorId: operator.id,
     activitiesId: activities.id,
     premiseId: premise.id,
-    metadataId: metadata.id
+    declarationId: declaration.id
   };
 };
 
