@@ -252,7 +252,7 @@ const getSingleRegistration = async (fsa_rn, council) => {
 };
 
 const getFullRegistration = async (registration, fields = []) => {
-  const { id, fsa_rn } = registration.dataValues;
+  const { fsa_rn } = registration.dataValues;
   const {
     competent_authority_id,
     local_council_full_name,
@@ -271,9 +271,11 @@ const getFullRegistration = async (registration, fields = []) => {
     ? await getFullDeclaration(registration.id)
     : {};
 
+  delete establishment.id;
+
   // Assign values in consistent order
   const newRegistration = Object.assign(
-    { id, fsa_rn },
+    { fsa_rn },
     {
       council: local_council_full_name,
       competent_authority_id,
