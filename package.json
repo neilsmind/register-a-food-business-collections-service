@@ -132,7 +132,6 @@
       "node_modules",
       "tests",
       "scripts",
-      "features",
       "docs"
     ],
     "watch": [
