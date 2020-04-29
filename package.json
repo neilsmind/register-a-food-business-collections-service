@@ -3,6 +3,9 @@
   "version": "9.0.0",
   "description": "",
   "main": "src/app.js",
+  "engines": {
+    "node": ">=12.16"
+  },
   "scripts": {
     "test": "jest ./src --coverage",
     "test:unit:ci": "export TEST_TYPE=unit && jest ./src --coverage",
@@ -17,6 +20,7 @@
     "start:local": "export $(grep -v '^#' .env | xargs -d '\n') && node src/app.js",
     "start:docker": "export NODE_ENV=local && node src/db/check-connection.js && node src/app.js",
     "lint": "eslint ./src",
+    "lint:fix": "eslint --fix ./src ",
     "format:verify": "prettier --list-different '{src,tests}/**/*.js'",
     "format": "prettier --write '{src,tests}/**/*.js'",
     "migrate": "sequelize db:migrate",
@@ -37,6 +41,8 @@
   "homepage": "https://github.com/FoodStandardsAgency/register-a-food-business-collections-service#readme",
   "dependencies": {
     "body-parser": "1.18.3",
+    "eslint-plugin-jest": "^23.8.2",
+    "eslint-plugin-node": "^11.1.0",
     "express": "4.16.4",
     "helmet": "3.14.0",
     "lodash.flatten": "4.4.0",
@@ -53,11 +59,68 @@
   },
   "devDependencies": {
     "dotenv": "6.2.0",
-    "eslint": "5.8.0",
-    "eslint-config-prettier": "3.1.0",
-    "eslint-plugin-prettier": "3.0.0",
+    "eslint": "^5.16.0",
+    "eslint-config-prettier": "^2.9.0",
+    "eslint-plugin-prettier": "^2.6.1",
     "jest": "24.8.0",
     "jest-junit": "7.0.0",
-    "prettier": "1.14.3"
+    "prettier": "^2.0.5"
+  },
+  "prettier": {
+    "trailingComma": "none",
+    "tabWidth": 2,
+    "semi": true
+  },
+  "eslintConfig": {
+    "extends": [
+      "eslint:recommended",
+      "plugin:node/recommended"
+    ],
+    "env": {
+      "jest/globals": true
+    },
+    "plugins": [
+      "jest"
+    ],
+    "parserOptions": {
+      "ecmaVersion": 2019
+    },
+    "rules": {
+      "jest/no-disabled-tests": "warn",
+      "jest/no-focused-tests": "error",
+      "jest/no-identical-title": "error",
+      "jest/prefer-to-have-length": "warn",
+      "jest/valid-expect": "error",
+      "node/exports-style": [
+        "error",
+        "module.exports"
+      ],
+      "node/file-extension-in-import": [
+        "error",
+        "always"
+      ],
+      "node/prefer-global/buffer": [
+        "error",
+        "always"
+      ],
+      "node/prefer-global/console": [
+        "error",
+        "always"
+      ],
+      "node/prefer-global/process": [
+        "error",
+        "always"
+      ],
+      "node/prefer-global/url-search-params": [
+        "error",
+        "always"
+      ],
+      "node/prefer-global/url": [
+        "error",
+        "always"
+      ],
+      "node/prefer-promises/dns": "error",
+      "node/prefer-promises/fs": "error"
+    }
   }
 }

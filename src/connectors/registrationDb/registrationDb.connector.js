@@ -29,7 +29,7 @@ const convertJSDateToISODate = () => {
   return isoDate;
 };
 
-const getEstablishmentByRegId = async id => {
+const getEstablishmentByRegId = async (id) => {
   return modelFindOne(
     {
       where: { registrationId: id },
@@ -40,7 +40,7 @@ const getEstablishmentByRegId = async id => {
   );
 };
 
-const getDeclarationByRegId = async id => {
+const getDeclarationByRegId = async (id) => {
   return modelFindOne(
     {
       where: { registrationId: id },
@@ -51,7 +51,7 @@ const getDeclarationByRegId = async id => {
   );
 };
 
-const getOperatorByEstablishmentId = async id => {
+const getOperatorByEstablishmentId = async (id) => {
   return modelFindOne(
     {
       where: { establishmentId: id },
@@ -68,7 +68,7 @@ const getOperatorByEstablishmentId = async id => {
   );
 };
 
-const getPremiseByEstablishmentId = async id => {
+const getPremiseByEstablishmentId = async (id) => {
   return modelFindOne(
     {
       where: { establishmentId: id },
@@ -79,7 +79,7 @@ const getPremiseByEstablishmentId = async id => {
   );
 };
 
-const getActivitiesByEstablishmentId = async id => {
+const getActivitiesByEstablishmentId = async (id) => {
   return modelFindOne(
     {
       where: { establishmentId: id },
@@ -90,7 +90,7 @@ const getActivitiesByEstablishmentId = async id => {
   );
 };
 
-const getCouncilByRegCouncil = async council => {
+const getCouncilByRegCouncil = async (council) => {
   return modelFindOne(
     { where: { local_council_url: council } },
     Council,
@@ -169,7 +169,7 @@ const getRegistrationTable = async (before, after) => {
   }
 };
 
-const getFullEstablishment = async id => {
+const getFullEstablishment = async (id) => {
   const establishment = await getEstablishmentByRegId(id);
   const [operator, activities, premise] = await Promise.all([
     getOperatorByEstablishmentId(establishment && establishment.id),
@@ -208,7 +208,7 @@ const getFullEstablishment = async id => {
   );
 };
 
-const getFullDeclaration = async id => {
+const getFullDeclaration = async (id) => {
   const metadata = await getDeclarationByRegId(id);
 
   return metadata ? metadata.dataValues : {};
@@ -308,7 +308,7 @@ const getUnifiedRegistrations = async (
   );
 
   const registrationFullPromises = [];
-  registrations.forEach(registration => {
+  registrations.forEach((registration) => {
     registrationFullPromises.push(getFullRegistration(registration, fields));
   });
   const fullRegistrationsWithCouncil = await Promise.all(
@@ -348,7 +348,7 @@ const getAllRegistrationsByCouncil = async (
     after
   );
 
-  registrations.forEach(registration => {
+  registrations.forEach((registration) => {
     registrationPromises.push(getFullRegistration(registration, fields));
   });
   const fullRegistrations = await Promise.all(registrationPromises);

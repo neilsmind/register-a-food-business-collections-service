@@ -22,7 +22,7 @@ describe("registrations.service", () => {
 
     describe("When given invalid council", () => {
       const invalidCouncils = [1233, [], {}, false, null, undefined];
-      invalidCouncils.forEach(council => {
+      invalidCouncils.forEach((council) => {
         result = validateOptions({ council });
         expect(result).not.toBe(true);
       });
@@ -51,7 +51,7 @@ describe("registrations.service", () => {
         undefined,
         "thing"
       ];
-      invalidDoubleModes.forEach(double_mode => {
+      invalidDoubleModes.forEach((double_mode) => {
         result = validateOptions({ double_mode });
         expect(result).not.toBe(true);
       });
@@ -80,7 +80,7 @@ describe("registrations.service", () => {
         undefined,
         "normal string"
       ];
-      invalidNew.forEach(newOption => {
+      invalidNew.forEach((newOption) => {
         result = validateOptions({ new: newOption });
         expect(result).not.toBe(true);
       });
@@ -109,7 +109,7 @@ describe("registrations.service", () => {
         undefined,
         "thing"
       ];
-      invalidFields.forEach(fields => {
+      invalidFields.forEach((fields) => {
         result = validateOptions({ fields });
         expect(result).not.toBe(true);
       });
@@ -138,7 +138,7 @@ describe("registrations.service", () => {
         undefined,
         "thing"
       ];
-      invalidCollected.forEach(collected => {
+      invalidCollected.forEach((collected) => {
         result = validateOptions({ collected });
         expect(result).not.toBe(true);
       });
@@ -153,7 +153,7 @@ describe("registrations.service", () => {
         "2020-06-30 23:15:00"
       ];
 
-      validBefore.forEach(before => {
+      validBefore.forEach((before) => {
         result = validateOptions({ before });
         expect(result).toBe(true);
       });
@@ -174,7 +174,7 @@ describe("registrations.service", () => {
         "2020-06-30 7:1:8",
         "20-6-1"
       ];
-      invalidBefore.forEach(before => {
+      invalidBefore.forEach((before) => {
         result = validateOptions({ before });
         expect(result).not.toBe(true);
       });
@@ -189,7 +189,7 @@ describe("registrations.service", () => {
         "2020-06-30 23:15:00"
       ];
 
-      validAfter.forEach(after => {
+      validAfter.forEach((after) => {
         result = validateOptions({ after });
         expect(result).toBe(true);
       });
@@ -210,7 +210,7 @@ describe("registrations.service", () => {
         "2020-06-30 7:1:8",
         "20-6-1"
       ];
-      invalidAfter.forEach(after => {
+      invalidAfter.forEach((after) => {
         result = validateOptions({ after });
         expect(result).not.toBe(true);
       });

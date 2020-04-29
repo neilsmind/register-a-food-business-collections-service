@@ -17,7 +17,7 @@ module.exports = (sequelize, DataTypes) => {
       timestamps: false
     }
   );
-  Establishment.associate = function(models) {
+  Establishment.associate = function (models) {
     Establishment.belongsTo(models.registration);
   };
   return Establishment;

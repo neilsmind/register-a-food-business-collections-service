@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
       timestamps: false
     }
   );
-  Declaration.associate = function(models) {
+  Declaration.associate = function (models) {
     Declaration.belongsTo(models.registration);
   };
   return Declaration;

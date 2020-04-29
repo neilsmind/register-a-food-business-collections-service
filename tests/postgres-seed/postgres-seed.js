@@ -28,11 +28,11 @@ const submitRegistration = async () => {
   return responses;
 };
 
-const forceRegistrationSubmission = async submissionResult => {
+const forceRegistrationSubmission = async (submissionResult) => {
   const url = process.env.SERVICE_BASE_URL + "/api/tasks/savetotempstore/";
   console.log(submissionResult);
   responses = Promise.all(
-    submissionResult.map(registration => {
+    submissionResult.map((registration) => {
       console.log(registration);
       console.log(url + registration["fsa-rn"]);
       const requestOptions = {
@@ -53,5 +53,5 @@ const forceRegistrationSubmission = async submissionResult => {
 };
 
 submitRegistration()
-  .then(submissionResult => forceRegistrationSubmission(submissionResult))
-  .then(seedResult => console.log(seedResult));
+  .then((submissionResult) => forceRegistrationSubmission(submissionResult))
+  .then((seedResult) => console.log(seedResult));
