@@ -40,7 +40,7 @@ describe("Retrieve all registrations through API", () => {
         }
       };
 
-      await request(requestOptions).catch(function(body) {
+      await request(requestOptions).catch(function (body) {
         response = body;
       });
     });
@@ -63,7 +63,7 @@ describe("Retrieve all registrations through API", () => {
           "Ocp-Apim-Subscription-Key": "incorrectKey"
         }
       };
-      await request(requestOptions).catch(function(body) {
+      await request(requestOptions).catch(function (body) {
         response = body;
       });
     });
@@ -81,7 +81,7 @@ describe("Retrieve all registrations through API", () => {
         uri: `${cardiffUrl}?env=${process.env.NODE_ENV}`,
         json: true
       };
-      await request(requestOptions).catch(function(body) {
+      await request(requestOptions).catch(function (body) {
         response = body;
       });
     });
@@ -104,7 +104,7 @@ describe("Retrieve all registrations through API", () => {
           "Ocp-Apim-Subscription-Key": cardiffAPIKey
         }
       };
-      await request(requestOptions).catch(function(body) {
+      await request(requestOptions).catch(function (body) {
         response = body;
       });
     });

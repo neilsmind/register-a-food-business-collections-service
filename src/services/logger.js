@@ -1,6 +1,6 @@
 const winston = require("winston");
 
-const createLogger = level =>
+const createLogger = (level) =>
   winston.createLogger({
     level: level || "info",
     format: winston.format.colorize(),

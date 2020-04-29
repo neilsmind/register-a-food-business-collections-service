@@ -1,31 +1,31 @@
 const { logEmitter } = require("../../services/logging.service");
 const { isISO8601 } = require("validator");
 
-const validateString = value => {
+const validateString = (value) => {
   return typeof value === "string";
 };
 
-const validateBoolean = value => {
+const validateBoolean = (value) => {
   return typeof value === "boolean";
 };
 
-const validateBooleanString = value => {
+const validateBooleanString = (value) => {
   const validValues = ["true", "false"];
   return validValues.includes(value);
 };
 
 const doubleModes = ["success", "fail", "update", "single", ""];
-const validateDoubleMode = value => {
+const validateDoubleMode = (value) => {
   return doubleModes.includes(value);
 };
 
 const allowedFields = ["metadata", "establishment"];
-const validateFields = value => {
+const validateFields = (value) => {
   if (!Array.isArray(value)) {
     return false;
   }
   // Checks allowedFields.includes for every element of array. Array.every returns true for empty array
-  return value.every(val => allowedFields.includes(val));
+  return value.every((val) => allowedFields.includes(val));
 };
 
 const dateRange = (afterValue, beforeValue) => {
@@ -36,7 +36,7 @@ const dateRange = (afterValue, beforeValue) => {
   return after >= before;
 };
 
-const validateDateTime = value => {
+const validateDateTime = (value) => {
   if (!validateString(value)) {
     return false;
   }
@@ -109,7 +109,7 @@ const validateOptions = (options, unlimitedDateRange) => {
   return true;
 };
 
-const raiseValidationError = message => {
+const raiseValidationError = (message) => {
   logEmitter.emit(
     "functionFail",
     "registrations.service",

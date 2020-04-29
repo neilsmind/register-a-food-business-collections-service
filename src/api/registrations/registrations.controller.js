@@ -13,7 +13,7 @@ const {
 
 const { logEmitter } = require("../../services/logging.service");
 
-const getRegistrationsByCouncil = async options => {
+const getRegistrationsByCouncil = async (options) => {
   logEmitter.emit(
     "functionCall",
     "registrations.controller",
@@ -47,7 +47,7 @@ const getRegistrationsByCouncil = async options => {
   }
 };
 
-const getRegistration = async options => {
+const getRegistration = async (options) => {
   logEmitter.emit(
     "functionCall",
     "registrations.controller",
@@ -78,7 +78,7 @@ const getRegistration = async options => {
   }
 };
 
-const getRegistrations = async options => {
+const getRegistrations = async (options) => {
   logEmitter.emit(
     "functionCall",
     "registrations.controller",
@@ -111,7 +111,7 @@ const getRegistrations = async options => {
   }
 };
 
-const updateRegistration = async options => {
+const updateRegistration = async (options) => {
   logEmitter.emit(
     "functionCall",
     "registrations.controller",

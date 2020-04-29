@@ -19,7 +19,7 @@ module.exports = (sequelize, DataTypes) => {
       timestamps: false
     }
   );
-  Premise.associate = function(models) {
+  Premise.associate = function (models) {
     Premise.belongsTo(models.establishment);
   };
   return Premise;

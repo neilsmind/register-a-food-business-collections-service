@@ -53,7 +53,7 @@ describe("Retrieve all registrations through API", () => {
         }
       };
 
-      await request(requestOptions).catch(function(body) {
+      await request(requestOptions).catch(function (body) {
         response = body;
       });
     });
@@ -77,7 +77,7 @@ describe("Retrieve all registrations through API", () => {
         json: true
       };
 
-      await request(requestOptions).catch(function(body) {
+      await request(requestOptions).catch(function (body) {
         response = body;
       });
     });
@@ -103,7 +103,7 @@ describe("Retrieve all registrations through API", () => {
           "Ocp-Apim-Subscription-Key": unifiedAPIKey
         }
       };
-      await request(requestOptions).catch(function(body) {
+      await request(requestOptions).catch(function (body) {
         response = body;
       });
     });

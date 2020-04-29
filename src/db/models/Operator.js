@@ -32,7 +32,7 @@ module.exports = (sequelize, DataTypes) => {
       timestamps: false
     }
   );
-  Operator.associate = function(models) {
+  Operator.associate = function (models) {
     Operator.belongsTo(models.establishment);
     Operator.hasMany(models.partner);
   };
