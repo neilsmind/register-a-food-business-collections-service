@@ -17,9 +17,9 @@
     "test:contract": "npm run reset-postgres && jest ./tests/contract/*.js",
     "test:contract:ci": "export TEST_TYPE=contract && npm run reset-postgres && jest ./tests/contract/*.js",
     "test:api:e2e": "jest ./tests/e2e/*.js --runInBand",
-    "start": "node src/app.js",
-    "start:local": "export $(grep -v '^#' .env | xargs -d '\n') && node src/app.js",
-    "start:docker": "export NODE_ENV=local && node src/db/check-connection.js && node src/app.js",
+    "start": "nodemon src/app.js",
+    "start:local": "export $(grep -v '^#' .env | xargs -d '\n') && nodemon src/app.js",
+    "start:docker": "export NODE_ENV=local && node src/db/check-connection.js && nodemon src/app.js",
     "lint": "eslint ./src",
     "lint:fix": "eslint --fix ./src ",
     "format:verify": "prettier --list-different '{src,tests}/**/*.js'",
@@ -44,14 +44,17 @@
     "body-parser": "^1.19.0",
     "express": "^4.17.1",
     "helmet": "^3.22.0",
+    "lodash": "^4.17.15",
     "lodash.flatten": "^4.4.0",
     "mongodb": "^3.5.6",
+    "nodemon": "^2.0.3",
     "path": "^0.12.7",
     "pg": "^8.0.3",
     "request": "^2.88.2",
     "request-promise-native": "^1.0.8",
     "sequelize": "^5.21.7",
     "swagger-ui-express": "^4.1.4",
+    "typescript": "^3.8.3",
     "validator": "^13.0.0",
     "winston": "^3.2.1",
     "yargs": "^15.3.1"
@@ -123,5 +126,18 @@
       "node/prefer-promises/dns": "error",
       "node/prefer-promises/fs": "error"
     }
+  },
+  "nodemonConfig": {
+    "verbose": true,
+    "ignore": [
+      "node_modules",
+      "tests",
+      "scripts",
+      "docs"
+    ],
+    "watch": [
+      "src"
+    ],
+    "ext": "js json"
   }
 }
