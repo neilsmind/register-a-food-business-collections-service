@@ -9,7 +9,7 @@ pool:
 steps:
   - task: NodeTool@0
     inputs:
-      versionSpec: '12.16'
+      versionSpec: '12.9'
 
   - script: npm -v
     displayName: "Npm version"
