@@ -7,6 +7,11 @@
     "node": ">=12.16"
   },
   "scripts": {
+    "start": "node src/app.js",
+    "local:start": "export $(grep -v '^#' .env | xargs -d '\n') && nodemon src/app.js",
+    "local:start:docker": "export NODE_ENV=local && node src/db/check-connection.js && nodemon src/app.js",
+    "local:debug": "export $(grep -v '^#' .env | xargs -d '\n') && nodemon --inspect src/app.js",
+    "local:migrate": "export NODE_ENV=local && sequelize db:migrate",
     "test": "jest ./src --coverage",
     "test:raw": "export TEST_TYPE=unit && jest",
     "test:unit:ci": "export TEST_TYPE=unit && jest ./src --coverage",
@@ -17,15 +22,11 @@
     "test:contract": "npm run reset-postgres && jest ./tests/contract/*.js",
     "test:contract:ci": "export TEST_TYPE=contract && npm run reset-postgres && jest ./tests/contract/*.js",
     "test:api:e2e": "jest ./tests/e2e/*.js --runInBand",
-    "start": "nodemon src/app.js",
-    "start:local": "export $(grep -v '^#' .env | xargs -d '\n') && nodemon src/app.js",
-    "start:docker": "export NODE_ENV=local && node src/db/check-connection.js && nodemon src/app.js",
     "lint": "eslint ./src",
     "lint:fix": "eslint --fix ./src ",
     "format:verify": "prettier --list-different '{src,tests}/**/*.js'",
     "format": "prettier --write '{src,tests}/**/*.js'",
     "migrate": "sequelize db:migrate",
-    "migrate:local": "export NODE_ENV=local && sequelize db:migrate",
     "seed-postgres": "node tests/postgres-seed/postgres-seed.js",
     "clear-postgres": "node tests/postgres-seed/postgres-clear.js",
     "reset-postgres": "npm run clear-postgres && npm run seed-postgres"
