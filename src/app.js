@@ -4,13 +4,12 @@ const bodyParser = require("body-parser");
 const logger = require("winston");
 
 const { format, transports } = logger;
-const { combine, printf, colorize } = format;
 
 logger.add(
-    new transports.Console({
-      level: "info",
-      format: format.combine(format.colorize(), format.json())
-    })
+  new transports.Console({
+    level: "info",
+    format: format.combine(format.colorize(), format.json())
+  })
 );
 
 const { routers } = require("./api/routers");
