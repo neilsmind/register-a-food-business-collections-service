@@ -1,5 +1,3 @@
-const { debug } = require("winston");
-
 module.exports = {
   production: {
     username: process.env.POSTGRES_USER,
@@ -7,7 +5,6 @@ module.exports = {
     database: process.env.POSTGRES_DB,
     host: process.env.POSTGRES_HOST,
     dialect: "postgres",
-    logging: debug,
     dialectOptions: {
       ssl: true
     },
@@ -19,7 +16,6 @@ module.exports = {
     database: process.env.POSTGRES_DB,
     host: process.env.POSTGRES_HOST,
     dialect: "postgres",
-    logging: debug,
     dialectOptions: {
       ssl: true
     }
@@ -30,7 +26,6 @@ module.exports = {
     database: process.env.POSTGRES_DB,
     host: process.env.POSTGRES_HOST,
     dialect: "postgres",
-    logging: debug
   },
   local: {
     username: process.env.POSTGRES_USER,
@@ -38,6 +33,5 @@ module.exports = {
     database: process.env.POSTGRES_DB,
     host: process.env.POSTGRES_HOST,
     dialect: "postgres",
-    logging: debug
   }
 };
