@@ -1,3 +1,6 @@
+"use strict";
+const logger = require("winston");
+
 require("dotenv").config();
 const {
   Registration,
@@ -11,4 +14,5 @@ const clearTables = async () => {
   closeConnection();
 };
 
+logger.info(`Clearing tables`);
 clearTables();
