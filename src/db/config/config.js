@@ -1,4 +1,4 @@
-const debug = require("winston");
+const { debug } = require("winston");
 
 module.exports = {
   production: {
