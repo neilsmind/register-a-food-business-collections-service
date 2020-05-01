@@ -1,5 +1,4 @@
-const { createLogger } = require("../../services/logger");
-const logger = createLogger(process.env.LOG_LEVEL);
+const debug = require("winston");
 
 module.exports = {
   production: {
@@ -8,7 +7,7 @@ module.exports = {
     database: process.env.POSTGRES_DB,
     host: process.env.POSTGRES_HOST,
     dialect: "postgres",
-    logging: logger.debug,
+    logging: debug,
     dialectOptions: {
       ssl: true
     },
@@ -20,7 +19,7 @@ module.exports = {
     database: process.env.POSTGRES_DB,
     host: process.env.POSTGRES_HOST,
     dialect: "postgres",
-    logging: logger.debug,
+    logging: debug,
     dialectOptions: {
       ssl: true
     }
@@ -31,7 +30,7 @@ module.exports = {
     database: process.env.POSTGRES_DB,
     host: process.env.POSTGRES_HOST,
     dialect: "postgres",
-    logging: logger.debug
+    logging: debug
   },
   local: {
     username: process.env.POSTGRES_USER,
@@ -39,6 +38,6 @@ module.exports = {
     database: process.env.POSTGRES_DB,
     host: process.env.POSTGRES_HOST,
     dialect: "postgres",
-    logging: logger.debug
+    logging: debug
   }
 };

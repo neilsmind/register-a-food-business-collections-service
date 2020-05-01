@@ -11,9 +11,7 @@ const {
   connectToDb,
   closeConnection
 } = require("../src/db/db");
-const { createLogger } = require("../src/services/logger");
-
-const logger = createLogger("info");
+const logger = require("winston");
 
 const modelCreate = async (data, model) => {
   const response = await model.create(data);

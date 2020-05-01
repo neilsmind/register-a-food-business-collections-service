@@ -3,11 +3,11 @@ const mockLogger = {
   error: jest.fn()
 };
 
-jest.mock("./logger", () => ({
-  createLogger: () => mockLogger
+jest.mock("winston", () => ({
+  info: mockLogger.info,
+  error: mockLogger.error
 }));
 
-// const { logger } = require("./logger");
 const { logEmitter } = require("./logging.service");
 
 describe("logEmitter", () => {
