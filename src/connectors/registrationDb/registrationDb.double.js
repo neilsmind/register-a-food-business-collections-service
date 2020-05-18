@@ -97,7 +97,7 @@ const doubleResponse = [
 
 const updateResponse = { fsa_rn: "1234", collected: true };
 
-const registrationDbDouble = double_mode => {
+const registrationDbDouble = (double_mode) => {
   if (double_mode === "success") {
     return doubleResponse;
   } else if (double_mode === "fail") {

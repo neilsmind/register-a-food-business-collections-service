@@ -431,7 +431,7 @@ describe("collect.service", () => {
       });
 
       it("Should return two registrations", () => {
-        expect(result.length).toBe(2);
+        expect(result).toHaveLength(2);
       });
     });
 

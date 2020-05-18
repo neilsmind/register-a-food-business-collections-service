@@ -1,7 +1,5 @@
-const { createLogger } = require("../services/logger");
 const db = require("./models");
-
-const logger = createLogger(process.env.LOG_LEVEL);
+const logger = require("winston");
 
 const connectToDb = async () => {
   try {

@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
       timestamps: false
     }
   );
-  Partner.associate = function(models) {
+  Partner.associate = function (models) {
     Partner.belongsTo(models.operator);
   };
   return Partner;

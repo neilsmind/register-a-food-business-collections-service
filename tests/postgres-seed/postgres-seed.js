@@ -1,12 +1,25 @@
+"use strict";
+const logger = require("winston");
+const { format, transports } = logger;
+const { combine, printf, colorize } = format;
+
+logger.add(
+  new transports.Console({
+    level: "info",
+    format: format.combine(format.colorize(), format.json())
+  })
+);
+
+logger.info(`Seeding tables`);
+
 require("dotenv").config();
 
 const request = require("request-promise-native");
 const mockRegistrationData = require("./mock-registration-data.json");
+let responses = [];
 
 const submitRegistration = async () => {
   const url = process.env.SERVICE_API_URL;
-
-  const responses = [];
 
   for (let index in mockRegistrationData) {
     const requestOptions = {
@@ -28,15 +41,13 @@ const submitRegistration = async () => {
   return responses;
 };
 
-const forceRegistrationSubmission = async submissionResult => {
-  const url = process.env.SERVICE_BASE_URL + "/api/tasks/savetotempstore/";
-  console.log(submissionResult);
+const forceRegistrationSubmission = async (submissionResult) => {
+  const url = process.env.SERVICE_BASE_URL + "/api/tasks/savetotempstore";
+
   responses = Promise.all(
-    submissionResult.map(registration => {
-      console.log(registration);
-      console.log(url + registration["fsa-rn"]);
+    submissionResult.map((registration) => {
       const requestOptions = {
-        uri: url + registration["fsa-rn"],
+        uri: url + "/" + registration["fsa-rn"],
         method: "GET",
         headers: {
           "api-secret": process.env.SERVICE_API_SECRET,
@@ -53,5 +64,5 @@ const forceRegistrationSubmission = async submissionResult => {
 };
 
 submitRegistration()
-  .then(submissionResult => forceRegistrationSubmission(submissionResult))
-  .then(seedResult => console.log(seedResult));
+  .then((submissionResult) => forceRegistrationSubmission(submissionResult))
+  .then((seedResult) => console.log(seedResult));

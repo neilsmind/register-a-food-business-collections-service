@@ -6,8 +6,10 @@ const defaultError = {
   statusCode: 500
 };
 
+/* eslint-disable */
 const errorHandler = (err, req, res, next) => {
-  const errorDetail = errors.find(error => {
+  /* eslint-enable */
+  const errorDetail = errors.find((error) => {
     return error.name === err.name;
   });
   const errorToSend = errorDetail
