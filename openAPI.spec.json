@@ -359,7 +359,8 @@
         "description": "The date and time that the registration was created."
       },
       "updatedAt": {
-        "type": "The date and time that the registration was updated."
+        "type": "string",
+        "description": "The date and time that the registration was updated."
       },
       "Establishment": {
         "type": "object",
