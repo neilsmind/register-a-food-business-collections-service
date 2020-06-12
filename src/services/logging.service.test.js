@@ -1,12 +1,9 @@
-
-
-
 jest.mock("./winston", () => ({
   logger: {
     info: jest.fn(),
     error: jest.fn(),
     debug: jest.fn(),
-    warn: jest.fn(),
+    warn: jest.fn()
   }
 }));
 
@@ -23,7 +20,6 @@ const {
   DEBUG,
   WARN
 } = require("./logging.service");
-
 
 describe("logEmitter", () => {
   describe("on functionCall event", () => {
