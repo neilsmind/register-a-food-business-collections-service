@@ -79,20 +79,6 @@ describe("logEmitter", () => {
     });
   });
 
-  describe("on doubleMode event", () => {
-    it("should call winston info", async () => {
-      let message = DOUBLE_MODE;
-      let moduleMessage = "someModule";
-      let funcMessage = "someFunction";
-      let expected = `${moduleMessage}: ${funcMessage}: running in double mode`;
-      logger.info.mockImplementation(() => {});
-
-      await logEmitter.emit(message, moduleMessage, funcMessage);
-
-      await expect(logger.info).toBeCalledWith(expected);
-    });
-  });
-
   describe("simple logging", () => {
     it("should call winston info", async () => {
       let message = INFO;
@@ -124,7 +110,7 @@ describe("logEmitter", () => {
       await expect(logger.debug).toBeCalledWith(expected);
     });
 
-    it("should call winston debug", async () => {
+    it("should call winston warn", async () => {
       let message = WARN;
       let expected = "someModule";
       logger.warn.mockImplementation(() => {});

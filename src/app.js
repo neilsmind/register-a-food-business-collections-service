@@ -4,7 +4,6 @@ if (
   "APPINSIGHTS_INSTRUMENTATIONKEY" in process.env &&
   process.env["APPINSIGHTS_INSTRUMENTATIONKEY"] !== ""
 ) {
-  console.log(`Setting up application insights modules`);
   appInsights.setup().start();
 }
 
