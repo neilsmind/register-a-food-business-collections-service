@@ -1,16 +1,16 @@
+const appInsights = require("applicationinsights");
+
+if (
+  "APPINSIGHTS_INSTRUMENTATIONKEY" in process.env &&
+  process.env["APPINSIGHTS_INSTRUMENTATIONKEY"] !== ""
+) {
+  appInsights.setup().start();
+}
+
+const { logger } = require("./services/winston");
 const express = require("express");
 const helmet = require("helmet");
 const bodyParser = require("body-parser");
-const logger = require("winston");
-
-const { format, transports } = logger;
-
-logger.add(
-  new transports.Console({
-    level: "info",
-    format: format.combine(format.colorize(), format.json())
-  })
-);
 
 const { routers } = require("./api/routers");
 const { errorHandler } = require("./middleware/errorHandler");
