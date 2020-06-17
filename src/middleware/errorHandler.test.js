@@ -7,6 +7,15 @@ jest.mock("./errors.json", () => [
   }
 ]);
 
+jest.mock("../services/winston", () => ({
+  logger: {
+    info: jest.fn(),
+    error: jest.fn(),
+    debug: jest.fn(),
+    warn: jest.fn()
+  }
+}));
+
 const { errorHandler } = require("./errorHandler");
 
 const res = {
