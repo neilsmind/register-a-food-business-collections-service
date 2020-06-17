@@ -1,16 +1,7 @@
 "use strict";
-const logger = require("winston");
-const { format, transports } = logger;
-const { combine, printf, colorize } = format;
+const { logEmitter, INFO } = require("../../src/services/logging.service");
 
-logger.add(
-  new transports.Console({
-    level: "info",
-    format: format.combine(format.colorize(), format.json())
-  })
-);
-
-logger.info(`Seeding tables`);
+logEmitter.emit(INFO, `Seeding tables`);
 
 require("dotenv").config();
 
@@ -66,3 +57,5 @@ const forceRegistrationSubmission = async (submissionResult) => {
 submitRegistration()
   .then((submissionResult) => forceRegistrationSubmission(submissionResult))
   .then((seedResult) => console.log(seedResult));
+
+logEmitter.emit(INFO, `Done tables`);
