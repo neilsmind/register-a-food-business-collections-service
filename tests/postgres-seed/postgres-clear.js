@@ -1,14 +1,7 @@
 "use strict";
-const logger = require("winston");
-const { format, transports } = logger;
-const { combine, printf, colorize } = format;
+const { logEmitter, INFO } = require("../../src/services/logging.service");
 
-logger.add(
-  new transports.Console({
-    level: "info",
-    format: format.combine(format.colorize(), format.json())
-  })
-);
+logEmitter.emit(INFO, `Seeding tables`);
 
 require("dotenv").config();
 const {
@@ -23,5 +16,5 @@ const clearTables = async () => {
   closeConnection();
 };
 
-logger.info(`Clearing tables`);
+logEmitter.emit(INFO, `Clearing tables`);
 clearTables();
