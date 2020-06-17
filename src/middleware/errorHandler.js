@@ -9,7 +9,7 @@ const defaultError = {
 
 /* eslint-disable */
 const errorHandler = (err, req, res, next) => {
-    /* eslint-enable */
+  /* eslint-enable */
   logger.error(`Application error handled...`);
   const errorDetail = errors.find((error) => {
     return error.name === err.name;
