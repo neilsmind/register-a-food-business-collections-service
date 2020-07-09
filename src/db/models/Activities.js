@@ -30,7 +30,8 @@ module.exports = (sequelize, DataTypes) => {
       opening_hours_sunday: { type: DataTypes.STRING(50) }
     },
     {
-      timestamps: false
+      timestamps: false,
+      schema: "registrations"
     }
   );
   Activities.associate = function (models) {
