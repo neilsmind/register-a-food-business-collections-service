@@ -1,12 +1,16 @@
 const cls = require("cls-hooked");
 const appInsights = require("applicationinsights");
 const morgan = require("morgan");
+const packageJson = require("../package.json");
 
 if (
   "APPINSIGHTS_INSTRUMENTATIONKEY" in process.env &&
   process.env["APPINSIGHTS_INSTRUMENTATIONKEY"] !== ""
 ) {
   appInsights.setup().start();
+  appInsights.defaultClient.addTelemetryProcessor(envelope => {
+    envelope.tags["ai.cloud.role"] = packageJson.name;
+  });
 }
 
 const clsNamespace = cls.createNamespace("application");
