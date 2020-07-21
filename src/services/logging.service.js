@@ -74,7 +74,9 @@ logEmitter.on(FUNCTION_SUCCESS_WITH, (module, functionName, data = {}) => {
 logEmitter.on(
   FUNCTION_FAIL,
   (module, functionName, err = { message: null }) => {
-    let message = `${module}: ${functionName} failed with: ${err.message || err}`;
+    let message = `${module}: ${functionName} failed with: ${
+      err.message || err
+    }`;
     logStuff(message, {}, "error");
   }
 );
