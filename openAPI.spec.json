@@ -533,7 +533,7 @@
             "maximum": 8,
             "minimum": 8,
             "type": "string",
-            "description": "Uses [npm Validator](https://www.npmjs.com/package/validator) isAlphanumeric (GB), first two characters can be letters - Required if operator_type is 'A company (registered by a representative)'."
+            "description": "Uses [npm Validator](https://www.npmjs.com/package/validator) isAlphanumeric (GB). - Required if operator_type is 'A company (registered by a representative)'."
           },
           "operator_charity_name": {
             "maximum": 50,
