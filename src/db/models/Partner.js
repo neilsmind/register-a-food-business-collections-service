@@ -11,7 +11,8 @@ module.exports = (sequelize, DataTypes) => {
       partner_is_primary_contact: { type: DataTypes.BOOLEAN }
     },
     {
-      timestamps: false
+      timestamps: false,
+      schema: "registrations"
     }
   );
   Partner.associate = function (models) {

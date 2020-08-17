@@ -29,7 +29,8 @@ module.exports = (sequelize, DataTypes) => {
       contact_representative_email: { type: DataTypes.STRING }
     },
     {
-      timestamps: false
+      timestamps: false,
+      schema: "registrations"
     }
   );
   Operator.associate = function (models) {
