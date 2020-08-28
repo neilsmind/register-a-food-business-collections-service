@@ -14,7 +14,8 @@ module.exports = (sequelize, DataTypes) => {
       establishment_email: { type: DataTypes.STRING }
     },
     {
-      timestamps: false
+      timestamps: false,
+      schema: "registrations"
     }
   );
   Establishment.associate = function (models) {
