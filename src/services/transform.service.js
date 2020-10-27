@@ -23,17 +23,17 @@ const applyTransforms = (registration, transform) => {
 
 const transformToKey = (enumType, value) => {
   let transformedValue = value;
-  enumType.enums.forEach(function (enumItem) {
-    if (enumItem.value === value) {
-      transformedValue = enumItem.key;
+  Object.keys(enumType).forEach(function (enumKey) {
+    if (enumType[enumKey].value === value) {
+      transformedValue = enumType[enumKey].key;
     }
   });
   return transformedValue;
 };
 
 const transformToValue = (enumType, key) => {
-  if (enumType.get(key)) {
-    return enumType.get(key).value;
+  if (enumType[key]) {
+    return enumType[key].value;
   }
   return key;
 };
