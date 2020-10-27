@@ -1,6 +1,6 @@
 {
   "name": "register-a-food-business-collections-service",
-  "version": "9.4.0",
+  "version": "10.0.0",
   "description": "",
   "main": "src/app.js",
   "engines": {
@@ -46,6 +46,7 @@
     "applicationinsights-native-metrics": "0.0.5",
     "body-parser": "^1.19.0",
     "cls-hooked": "^4.2.2",
+    "enum": "^3.0.4",
     "express": "^4.17.1",
     "helmet": "^3.23.1",
     "lodash": "^4.17.19",

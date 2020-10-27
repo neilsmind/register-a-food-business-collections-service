@@ -19,6 +19,7 @@ const registrationsRouter = () => {
     try {
       let registrations;
       const options = {
+        version: req.headers["version"] || "latest",
         double_mode: req.headers["double-mode"] || "",
         after: req.query.after,
         before: req.query.before
@@ -49,6 +50,7 @@ const registrationsRouter = () => {
       let registrations;
       const fields = req.query.fields ? req.query.fields.split(",") : [];
       const options = {
+        version: req.headers["version"] || "latest",
         double_mode: req.headers["double-mode"] || "",
         new: req.query.new || "true",
         fields,
@@ -84,6 +86,7 @@ const registrationsRouter = () => {
     );
     try {
       const options = {
+        version: req.headers["version"] || "latest",
         double_mode: req.headers["double-mode"] || "",
         fsa_rn: req.params.fsa_rn,
         council: req.params.lc

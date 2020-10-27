@@ -9,6 +9,10 @@ const validateBoolean = (value) => {
   return typeof value === "boolean";
 };
 
+const validateVersion = (value) => {
+  return value === "latest" || !isNaN(Number(value));
+};
+
 const validateBooleanString = (value) => {
   const validValues = ["true", "false"];
   return validValues.includes(value);
@@ -53,6 +57,10 @@ const validationFields = {
   double_mode: {
     function: validateDoubleMode,
     message: `double mode option must be one of ${doubleModes}`
+  },
+  version: {
+    function: validateVersion,
+    message: "version must be numeric"
   },
   new: {
     function: validateBooleanString,

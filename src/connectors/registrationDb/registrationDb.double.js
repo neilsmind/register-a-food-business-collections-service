@@ -1,3 +1,5 @@
+const { OperatorTypeEnum } = require("../../enums");
+
 const doubleResponse = [
   {
     id: 69,
@@ -19,7 +21,7 @@ const doubleResponse = [
       registrationId: 69,
       operator: {
         id: 68,
-        operator_type: "Sole trader",
+        operator_type: OperatorTypeEnum.SOLETRADER.key,
         operator_company_name: "name",
         operator_company_house_number: null,
         operator_charity_name: null,
