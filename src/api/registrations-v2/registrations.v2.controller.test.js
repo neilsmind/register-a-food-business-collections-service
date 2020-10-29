@@ -7,9 +7,9 @@ jest.mock("../../connectors/registrationDb/registrationDb.connector", () => ({
 }));
 
 jest.mock("../../services/logging.service");
-jest.mock("./registrations.service");
+jest.mock("./registrations.v2.service");
 
-const { validateOptions } = require("./registrations.service");
+const { validateOptions } = require("./registrations.v2.service");
 
 const {
   getAllRegistrationsByCouncils,
@@ -23,9 +23,9 @@ const {
   getRegistration,
   getRegistrations,
   updateRegistration
-} = require("./registrations.controller");
+} = require("./registrations.v2.controller");
 
-describe("registrations.controller", () => {
+describe("registrations.v2.controller", () => {
   let result;
   describe("Function: getRegistrationsByCouncil", () => {
     describe("When given invalid getNewRegistrations option", () => {

@@ -5,7 +5,7 @@ const {
   updateRegistrationCollectedByCouncil
 } = require("../../connectors/registrationDb/registrationDb.connector");
 
-const { validateOptions } = require("./registrations.service");
+const { validateOptions } = require("./registrations.v2.service");
 
 const {
   registrationDbDouble
@@ -20,14 +20,14 @@ const getRegistrationsByCouncil = async (options) => {
     "getRegistrationsByCouncil"
   );
 
-  const validationResult = validateOptions(options, true);
+  const validationResult = await validateOptions(options, true);
 
   if (validationResult === true) {
     if (options.double_mode) {
       return registrationDbDouble(options.double_mode);
     }
     const registrations = await getAllRegistrationsByCouncils(
-      [options.council],
+      options.requestedCouncils,
       options.new,
       options.fields,
       options.before,
@@ -54,7 +54,7 @@ const getRegistration = async (options) => {
     "getRegistration"
   );
 
-  const validationResult = validateOptions(options);
+  const validationResult = await validateOptions(options);
 
   if (validationResult === true) {
     if (options.double_mode) {
@@ -62,7 +62,7 @@ const getRegistration = async (options) => {
     }
     const registration = await getSingleRegistration(
       options.fsa_rn,
-      options.council
+      options.requestedCouncil
     );
     logEmitter.emit(
       "functionSuccess",
@@ -85,7 +85,7 @@ const getRegistrations = async (options) => {
     "getRegistrations"
   );
 
-  const validationResult = validateOptions(options);
+  const validationResult = await validateOptions(options);
 
   if (validationResult === true) {
     if (options.double_mode) {
@@ -118,7 +118,7 @@ const updateRegistration = async (options) => {
     "updateRegistration"
   );
 
-  const validationResult = validateOptions(options);
+  const validationResult = await validateOptions(options);
 
   if (validationResult === true) {
     if (options.double_mode) {
@@ -128,7 +128,7 @@ const updateRegistration = async (options) => {
     const response = await updateRegistrationCollectedByCouncil(
       options.fsa_rn,
       options.collected,
-      options.council
+      options.requestedCouncil
     );
 
     logEmitter.emit(

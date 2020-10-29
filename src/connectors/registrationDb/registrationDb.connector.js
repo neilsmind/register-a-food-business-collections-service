@@ -98,8 +98,8 @@ const getCouncilByRegCouncil = async (council) => {
   );
 };
 
-const getRegistrationTableByCouncil = async (
-  council,
+const getRegistrationTableByCouncils = async (
+  councils,
   collected,
   before,
   after
@@ -107,12 +107,14 @@ const getRegistrationTableByCouncil = async (
   logEmitter.emit(
     "functionCall",
     "registration.connector.js",
-    "getRegistrationTableByCouncil"
+    "getRegistrationTableByCouncils"
   );
   try {
     const response = await Registration.findAll({
       where: {
-        council,
+        council: {
+          [Op.in]: councils
+        },
         collected,
         createdAt: {
           [Op.lt]: before,
@@ -123,14 +125,14 @@ const getRegistrationTableByCouncil = async (
     logEmitter.emit(
       "functionSuccess",
       "registration.connector.js",
-      "getRegistrationTableByCouncil"
+      "getRegistrationTableByCouncils"
     );
     return response;
   } catch (err) {
     logEmitter.emit(
       "functionFail",
       "registration.connector.js",
-      "getRegistrationTableByCouncil",
+      "getRegistrationTableByCouncils",
       err
     );
     throw err;
@@ -323,8 +325,8 @@ const getUnifiedRegistrations = async (
   return fullRegistrationsWithCouncil;
 };
 
-const getAllRegistrationsByCouncil = async (
-  council,
+const getAllRegistrationsByCouncils = async (
+  councils,
   newRegistrations,
   fields,
   before,
@@ -333,7 +335,7 @@ const getAllRegistrationsByCouncil = async (
   logEmitter.emit(
     "functionCall",
     "registrationsDb.connector",
-    "getAllRegistrationsByCouncil"
+    "getAllRegistrationsByCouncils"
   );
 
   await connectToDb();
@@ -341,8 +343,8 @@ const getAllRegistrationsByCouncil = async (
   const registrationPromises = [];
   // get NEW [false, null] or EVERYTHING [true, false, null]
   const queryArray = newRegistrations === "true" ? [false] : [true, false];
-  const registrations = await getRegistrationTableByCouncil(
-    council,
+  const registrations = await getRegistrationTableByCouncils(
+    councils,
     queryArray,
     before,
     after
@@ -355,7 +357,7 @@ const getAllRegistrationsByCouncil = async (
   logEmitter.emit(
     "functionSuccess",
     "registrationsDb.connector",
-    "getAllRegistrationsByCouncil"
+    "getAllRegistrationsByCouncils"
   );
   return fullRegistrations;
 };
@@ -408,7 +410,7 @@ const updateRegistrationCollectedByCouncil = async (
 
 module.exports = {
   getUnifiedRegistrations,
-  getAllRegistrationsByCouncil,
+  getAllRegistrationsByCouncils,
   getSingleRegistration,
   updateRegistrationCollectedByCouncil
 };
