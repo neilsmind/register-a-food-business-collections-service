@@ -10,6 +10,11 @@ const {
 const registrationsRouter = () => {
   const router = Router();
 
+  router.use(function (req, res, next) {
+    res.set("Sunset", new Date(2021, 6, 1));
+    next();
+  });
+
   router.get("/unified", async (req, res, next) => {
     logEmitter.emit(
       "functionCall",

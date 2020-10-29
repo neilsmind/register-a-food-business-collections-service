@@ -35,7 +35,7 @@ describe("registrations.v2.service", () => {
 
     describe("When given valid requestedCouncils", () => {
       beforeEach(async () => {
-        const validCouncils = ["cardiff","bath"];
+        const validCouncils = ["cardiff", "bath"];
         getCouncilsForSupplier.mockImplementation(() => validCouncils);
         const options = {
           requester: validrequestor,
@@ -62,7 +62,7 @@ describe("registrations.v2.service", () => {
 
     describe("When given unauthorized requestedCouncils", () => {
       beforeEach(async () => {
-        getCouncilsForSupplier.mockImplementation(() => ["cardiff","bath"]);
+        getCouncilsForSupplier.mockImplementation(() => ["cardiff", "bath"]);
         const options = {
           requester: validrequestor,
           requestedCouncils: ["west-dorset"]
