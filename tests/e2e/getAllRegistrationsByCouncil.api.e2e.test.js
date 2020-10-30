@@ -5,6 +5,9 @@ const baseUrl =
   "https://integration-fsa-rof-gateway.azure-api.net/registrations/v1/";
 const cardiffUrl = `${baseUrl}cardiff`;
 const cardiffAPIKey = "b175199d420448fc87baa714e458ce6e";
+const supplierUrl = `${baseUrl}test-supplier`;
+const supplierAPIKey = "7e6a81e395cd47ff9e9402e7ccfd5125";
+const supplierValidCouncils = "cardiff";
 
 describe("Retrieve all registrations through API", () => {
   describe("Given no extra parameters", () => {
@@ -26,6 +29,50 @@ describe("Retrieve all registrations through API", () => {
       expect(response.body[0].fsa_rn).toBeDefined();
       expect(response.body[0].collected).toBe(false);
       expect(response.statusCode).toBe(200);
+    });
+  });
+
+  describe("Given supplier and valid council", () => {
+    let response;
+    beforeEach(async () => {
+      const requestOptions = {
+        uri: `${supplierUrl}?env=${process.env.NODE_ENV}&councils=${supplierValidCouncils}`,
+        json: true,
+        resolveWithFullResponse: true,
+        headers: {
+          "Ocp-Apim-Subscription-Key": supplierAPIKey
+        }
+      };
+      response = await request(requestOptions);
+    });
+
+    it("should return all the new registrations for that council", () => {
+      expect(response.body.length).toBeGreaterThanOrEqual(1);
+      expect(response.body[0].fsa_rn).toBeDefined();
+      expect(response.body[0].collected).toBe(false);
+      expect(response.statusCode).toBe(200);
+    });
+  });
+
+  describe("Given supplier and invalid requested council", () => {
+    let response;
+    beforeEach(async () => {
+      const requestOptions = {
+        uri: `${supplierUrl}?env=${process.env.NODE_ENV}&councils=invalid`,
+        json: true,
+        resolveWithFullResponse: true,
+        headers: {
+          "Ocp-Apim-Subscription-Key": supplierAPIKey
+        }
+      };
+      response = await request(requestOptions);
+    });
+
+    it("Should return the appropriate error", () => {
+      expect(response.statusCode).toBe(400);
+      expect(response.error.message).toContain(
+        "requested councils must only contain authorized councils"
+      );
     });
   });
 

@@ -5,6 +5,9 @@ const baseUrl =
   "https://integration-fsa-rof-gateway.azure-api.net/registrations/v1/";
 const cardiffUrl = `${baseUrl}cardiff`;
 const cardiffAPIKey = "b175199d420448fc87baa714e458ce6e";
+const supplierUrl = `${baseUrl}test-supplier`;
+const supplierAPIKey = "7e6a81e395cd47ff9e9402e7ccfd5125";
+const supplierValidCouncils = "cardiff";
 
 describe("Update single registration through API", () => {
   let availableRegistrations;
@@ -39,6 +42,51 @@ describe("Update single registration through API", () => {
       expect(response.establishment.operator).toBeDefined();
       expect(response.establishment.premise).toBeDefined();
       expect(response.metadata).toBeDefined();
+    });
+  });
+
+  describe("Given supplier and valid council", () => {
+    let response;
+    beforeEach(async () => {
+      const requestOptions = {
+        uri: `${supplierUrl}?env=${process.env.NODE_ENV}&council=${supplierValidCouncils}`,
+        json: true,
+        resolveWithFullResponse: true,
+        headers: {
+          "Ocp-Apim-Subscription-Key": supplierAPIKey
+        }
+      };
+      response = await request(requestOptions);
+    });
+
+    it("should return all the new registrations for that council", () => {
+      expect(response.fsa_rn).toBe(availableRegistrations[0].fsa_rn);
+      expect(response.establishment).toBeDefined();
+      expect(response.establishment.operator).toBeDefined();
+      expect(response.establishment.premise).toBeDefined();
+      expect(response.metadata).toBeDefined();
+    });
+  });
+
+  describe("Given supplier and invalid requested council", () => {
+    let response;
+    beforeEach(async () => {
+      const requestOptions = {
+        uri: `${supplierUrl}?env=${process.env.NODE_ENV}&council=invalid`,
+        json: true,
+        resolveWithFullResponse: true,
+        headers: {
+          "Ocp-Apim-Subscription-Key": supplierAPIKey
+        }
+      };
+      response = await request(requestOptions);
+    });
+
+    it("Should return the appropriate error", () => {
+      expect(response.statusCode).toBe(400);
+      expect(response.error.message).toContain(
+        "requested councils must only contain authorized councils"
+      );
     });
   });
 
