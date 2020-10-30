@@ -1,6 +1,7 @@
 const { Router } = require("express");
 const swaggerUi = require("swagger-ui-express");
-const swaggerDocument = require("../../openAPI.spec.json");
+const swaggerV1Document = require("../../openAPI.spec.json");
+const swaggerV2Document = require("../../openAPI-v2.spec.json");
 const { registrationsRouter } = require("./registrations/registrations.router");
 const {
   registrationsV2Router
@@ -14,10 +15,12 @@ const routers = () => {
   router.use("/api/v2/registrations", registrationsV2Router());
 
   router.use("/api-docs", swaggerUi.serve);
-  router.get("/api-docs", swaggerUi.setup(swaggerDocument));
+  router.get("/api-docs", swaggerUi.setup(swaggerV2Document));
+  router.get("/api-docs/v1", swaggerUi.setup(swaggerV1Document));
+  router.get("/api-docs/v2", swaggerUi.setup(swaggerV2Document));
 
   router.use("/", (req, res) => {
-    res.send(swaggerDocument);
+    res.send(swaggerV2Document);
   });
 
   return router;
