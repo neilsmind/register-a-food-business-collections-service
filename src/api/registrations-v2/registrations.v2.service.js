@@ -97,7 +97,7 @@ const validationFields = {
     message: "requested councils must be a valid list of councils"
   },
   authorizedCouncils: {
-    message: "requested councils must only contain allowed councils"
+    message: "requested councils must only contain authorized councils"
   }
 };
 
