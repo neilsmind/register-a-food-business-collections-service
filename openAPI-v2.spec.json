@@ -623,7 +623,11 @@
           },
           "establishment_type": {
             "type": "string",
-            "description": "Possible values: 'Place of business or commercial premises', 'Mobile or moveable premises', 'Home or domestic premises'."
+            "enum": [
+              "COMMERCIAL",
+              "MOBILE",
+              "DOMESTIC"
+            ]
           }
         }
       },
@@ -638,7 +642,11 @@
         "properties": {
           "customer_type": {
             "type": "string",
-            "description": "Possible values: 'Other businesses', 'End consumer', 'End consumer and other businesses'."
+            "enum": [
+              "OTHER_BUSINESSES",
+              "END_CONSUMER",
+              "BOTH"
+            ]
           },
           "business_type": {
             "type": "string",
@@ -649,11 +657,20 @@
           },
           "import_export_activities": {
             "type": "string",
-            "description": "Possible values: 'Directly import', 'Directly export', 'Directly import and export', 'None'."
+            "enum": [
+              "IMPORT",
+              "EXPORT",
+              "BOTH",
+              "NONE"
+            ]
           },
           "water_supply": {
             "type": "string",
-            "description": "Possible values: 'Public', 'Private', 'Public and private'."
+            "enum": [
+              "PUBLIC",
+              "PRIVATE",
+              "BOTH"
+            ]
           },
           "business_other_details": {
             "maximum": 1500,
