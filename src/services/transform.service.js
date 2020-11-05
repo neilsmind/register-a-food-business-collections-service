@@ -1,5 +1,10 @@
-const { RegistrationRoleEnum } = require("../../../register-a-food-business-front-end/src/enums");
-const { OperatorTypeEnum, EstablishmentTypeEnum, CustomerTypeEnum, ImportExportActivitiesEnum, WaterSupplyEnum } = require("../enums");
+const {
+  OperatorTypeEnum,
+  EstablishmentTypeEnum,
+  CustomerTypeEnum,
+  ImportExportActivitiesEnum,
+  WaterSupplyEnum
+} = require("../enums");
 
 const transformEnums = (apiVersion, registrations) => {
   let transform =
