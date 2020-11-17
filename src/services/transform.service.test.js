@@ -1,7 +1,7 @@
 const { transformEnums } = require("./transform.service");
 
 let registrations = [
-  (registration1 = {
+  {
     establishment: {
       establishment_details: {
         establishment_trading_name: "Testing name",
@@ -25,8 +25,8 @@ let registrations = [
         water_supply: "Private"
       }
     }
-  }),
-  (registration2 = {
+  },
+  {
     establishment: {
       establishment_details: {
         establishment_trading_name: "Trading name",
@@ -44,13 +44,13 @@ let registrations = [
         establishment_address_line_1: "Test 2 Ltd"
       },
       activities: {
-        customer_type: "ENMD_CONSUMER",
+        customer_type: "END_CONSUMER",
         business_type: "Any other retailer",
         import_export_activities: "NONE",
         water_supply: "PRIVATE"
       }
     }
-  })
+  }
 ];
 
 describe("transform.service", () => {
@@ -60,13 +60,13 @@ describe("transform.service", () => {
         transformEnums("2", registrations[0]);
       });
 
-      it("Should only tranform enum values to enum keys", () => {
-        expect(registrations[0].establishment.operator.operator_type).toEqual(
+      it("Should not perform any transform", () => {
+        expect(registrations[1].establishment.operator.operator_type).toEqual(
           "SOLETRADER"
         );
         expect(
-          registrations[0].establishment.operator.operator_first_name
-        ).toEqual("Tom");
+          registrations[1].establishment.operator.operator_first_name
+        ).toEqual("Jeff");
       });
     });
     describe("When passed an array of registration", () => {
@@ -74,10 +74,10 @@ describe("transform.service", () => {
         transformEnums("2", registrations);
       });
 
-      it("Should only tranform enum values to enum keys", () => {
+      it("Should not perform any transform", () => {
         expect(
           registrations[0].establishment.premise.establishment_type
-        ).toEqual("MOBILE");
+        ).toEqual("Mobile or moveable premises");
         expect(
           registrations[1].establishment.premise.establishment_type
         ).toEqual("MOBILE");
@@ -92,23 +92,23 @@ describe("transform.service", () => {
       beforeEach(() => {
         transformEnums("latest", registrations[0]);
       });
-      it("Should only tranform enum values to enum keys", () => {
-        expect(registrations[0].establishment.activities.customer_type).toEqual(
+      it("Should not perform any transform", () => {
+        expect(registrations[1].establishment.activities.customer_type).toEqual(
           "END_CONSUMER"
         );
         expect(
-          registrations[0].establishment.operator.operator_first_name
-        ).toEqual("Tom");
+          registrations[1].establishment.operator.operator_first_name
+        ).toEqual("Jeff");
       });
     });
     describe("When passed an array of registration", () => {
       beforeEach(() => {
         transformEnums("latest", registrations);
       });
-      it("Should only tranform enum values to enum keys", () => {
+      it("Should not perform any transform", () => {
         expect(
           registrations[0].establishment.activities.import_export_activities
-        ).toEqual("NONE");
+        ).toEqual("None");
         expect(
           registrations[1].establishment.activities.import_export_activities
         ).toEqual("NONE");
