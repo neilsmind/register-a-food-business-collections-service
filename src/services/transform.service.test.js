@@ -45,7 +45,7 @@ let registrations = [
       },
       activities: {
         customer_type: "END_CONSUMER",
-        business_type: "Any other retailer",
+        business_type: "048",
         import_export_activities: "NONE",
         water_supply: "PRIVATE"
       }
@@ -84,6 +84,9 @@ describe("transform.service", () => {
         expect(
           registrations[1].establishment.operator.operator_first_name
         ).toEqual("Jeff");
+        expect(registrations[1].establishment.activities.business_type).toEqual(
+          "048"
+        );
       });
     });
   });
@@ -115,6 +118,9 @@ describe("transform.service", () => {
         expect(
           registrations[1].establishment.operator.operator_first_name
         ).toEqual("Jeff");
+        expect(registrations[1].establishment.activities.business_type).toEqual(
+          "048"
+        );
       });
     });
   });
@@ -147,6 +153,9 @@ describe("transform.service", () => {
         expect(
           registrations[1].establishment.operator.operator_first_name
         ).toEqual("Jeff");
+        expect(registrations[1].establishment.activities.business_type).toEqual(
+          "Market stalls with permanent pitch"
+        );
       });
     });
   });

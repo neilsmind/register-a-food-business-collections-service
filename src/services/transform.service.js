@@ -8,6 +8,17 @@ const {
 } = require("@slice-and-dice/register-a-food-business-validation");
 const { logEmitter } = require("./logging.service");
 
+// Mapping V2 Business Type strings to V1 strings
+const v1BusinessTypesMapping = {
+  "Hunter and trapper": "Hunting and trapping",
+  "Dairy and cheese manufacturer": "Dairies and cheese manufacturer",
+  "Sweet shop or confectioner": "Sweet shop or Confectioner",
+  "Market stall with permanent location": "Market stalls with permanent pitch",
+  "Restaurant, cafe, canteen, or fast food restaurant":
+    "Restaurant, cafe, canteen or fast food",
+  "Hostel or bed & breakfast": "Hostel or bed and breakfast"
+};
+
 const transformEnums = (apiVersion, registrations) => {
   logEmitter.emit("functionCall", "transform.service", "transformEnums");
   let transform =
@@ -53,6 +64,9 @@ const applyTransforms = (registration, transform) => {
     businessTypeEnum,
     registration.establishment.activities.business_type
   );
+  registration.establishment.activities.business_type = transformV2BusinessTypeString(
+    registration.establishment.activities.business_type
+  );
 };
 
 const transformToKey = (enumType, value) => {
@@ -68,10 +82,16 @@ const transformToKey = (enumType, value) => {
 
 const transformToValue = (enumType, key) => {
   logEmitter.emit("functionCall", "transform.service", "transformToValue");
-  if (enumType[key]) {
-    return enumType[key].value;
-  }
-  return key;
+  return enumType[key] ? enumType[key].value : key;
+};
+
+const transformV2BusinessTypeString = (value) => {
+  logEmitter.emit(
+    "functionCall",
+    "transform.service",
+    "transformV2BusinessTypeString"
+  );
+  return v1BusinessTypesMapping[value] ? v1BusinessTypesMapping[value] : value;
 };
 
 module.exports = { transformEnums };
