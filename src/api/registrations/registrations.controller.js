@@ -1,6 +1,6 @@
 const {
   getUnifiedRegistrations,
-  getAllRegistrationsByCouncils,
+  getAllRegistrationsByCouncil,
   getSingleRegistration,
   updateRegistrationCollectedByCouncil
 } = require("../../connectors/registrationDb/registrationDb.connector");
@@ -26,8 +26,8 @@ const getRegistrationsByCouncil = async (options) => {
     if (options.double_mode) {
       return registrationDbDouble(options.double_mode);
     }
-    const registrations = await getAllRegistrationsByCouncils(
-      [options.council],
+    const registrations = await getAllRegistrationsByCouncil(
+      options.council,
       options.new,
       options.fields,
       options.before,

@@ -1,5 +1,5 @@
 jest.mock("../../connectors/registrationDb/registrationDb.connector", () => ({
-  getAllRegistrationsByCouncils: jest.fn(),
+  getAllRegistrationsByCouncil: jest.fn(),
   getUnifiedRegistrations: jest.fn(),
   getSingleRegistration: jest.fn(),
   updateRegistrationCollectedByCouncil: jest.fn(),
@@ -12,7 +12,7 @@ jest.mock("./registrations.service");
 const { validateOptions } = require("./registrations.service");
 
 const {
-  getAllRegistrationsByCouncils,
+  getAllRegistrationsByCouncil,
   getSingleRegistration,
   getUnifiedRegistrations,
   updateRegistrationCollectedByCouncil
@@ -59,7 +59,7 @@ describe("registrations.controller", () => {
     describe("When successful", () => {
       beforeEach(async () => {
         validateOptions.mockImplementation(() => true);
-        getAllRegistrationsByCouncils.mockImplementation(() => [
+        getAllRegistrationsByCouncil.mockImplementation(() => [
           { id: 1, data: "data" }
         ]);
         result = await getRegistrationsByCouncil({
@@ -68,7 +68,7 @@ describe("registrations.controller", () => {
         });
       });
 
-      it("Should return the result of getAllRegistrationsByCouncils", () => {
+      it("Should return the result of getAllRegistrationsByCouncil", () => {
         expect(result).toEqual([{ id: 1, data: "data" }]);
       });
     });

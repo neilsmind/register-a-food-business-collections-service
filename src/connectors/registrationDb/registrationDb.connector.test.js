@@ -42,7 +42,7 @@ const {
 
 const {
   getUnifiedRegistrations,
-  getAllRegistrationsByCouncils,
+  getAllRegistrationsByCouncil,
   getSingleRegistration,
   updateRegistrationCollectedByCouncil
 } = require("./registrationDb.connector");
@@ -52,7 +52,7 @@ describe("collect.service", () => {
     jest.clearAllMocks();
   });
 
-  describe("Function: getAllRegistrationsByCouncils", () => {
+  describe("Function: getAllRegistrationsByCouncil", () => {
     let result;
     describe("when newRegistrations is true", () => {
       beforeEach(() => {
@@ -81,7 +81,7 @@ describe("collect.service", () => {
           id: 1,
           dataValues: { declaration1: "yes" }
         }));
-        result = getAllRegistrationsByCouncils(["cardiff"], "true");
+        result = getAllRegistrationsByCouncil("cardiff", "true");
       });
 
       it("should call registration.findAll with queryArray [false, null]", () => {
@@ -118,7 +118,7 @@ describe("collect.service", () => {
           id: 1,
           dataValues: { declaration1: "yes" }
         }));
-        result = getAllRegistrationsByCouncils(["cardiff"], "false");
+        result = getAllRegistrationsByCouncil("cardiff", "false");
       });
 
       it("should call registration.findAll with queryArray [true, false, null]", () => {
@@ -136,7 +136,7 @@ describe("collect.service", () => {
         });
 
         try {
-          await getAllRegistrationsByCouncils(["west-dorset"], false);
+          await getAllRegistrationsByCouncil("west-dorset", false);
         } catch (err) {
           result = err;
         }
@@ -162,7 +162,7 @@ describe("collect.service", () => {
         });
 
         try {
-          await getAllRegistrationsByCouncils(["west-dorset"], false, [
+          await getAllRegistrationsByCouncil("west-dorset", false, [
             "establishment"
           ]);
         } catch (err) {
@@ -186,7 +186,7 @@ describe("collect.service", () => {
           competent_authority_id: "5678",
           local_council_url: "area"
         }));
-        result = await getAllRegistrationsByCouncils(["cardiff"], true, []);
+        result = await getAllRegistrationsByCouncil("cardiff", true, []);
       });
       it("should return just the registration fields", () => {
         expect(result[0].fsa_rn).toBe("1234");
@@ -230,7 +230,7 @@ describe("collect.service", () => {
           id: 1,
           dataValues: { declaration1: "yes" }
         }));
-        result = await getAllRegistrationsByCouncils(["cardiff"], true, [
+        result = await getAllRegistrationsByCouncil("cardiff", true, [
           "establishment"
         ]);
       });
@@ -261,7 +261,7 @@ describe("collect.service", () => {
           id: 1,
           dataValues: { declaration1: "yes" }
         }));
-        result = await getAllRegistrationsByCouncils(["cardiff"], true, [
+        result = await getAllRegistrationsByCouncil("cardiff", true, [
           "metadata"
         ]);
       });
