@@ -3,13 +3,13 @@ const {
   getAllRegistrationsByCouncils,
   getSingleRegistration,
   updateRegistrationCollectedByCouncil
-} = require("../../connectors/registrationDb/registrationDb.connector");
+} = require("../../connectors/registrationDb-v2/registrationDb.v2.connector");
 
 const { validateOptions } = require("./registrations.v2.service");
 
 const {
   registrationDbDouble
-} = require("../../connectors/registrationDb/registrationDb.double");
+} = require("../../connectors/registrationDb-v2/registrationDb.v2.double");
 
 const { logEmitter } = require("../../services/logging.service");
 

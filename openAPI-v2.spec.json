@@ -464,21 +464,6 @@
             "type": "string",
             "description": "Unique Property Reference Number."
           },
-          "operator_first_line": {
-            "maximum": 255,
-            "type": "string",
-            "description": "ASCII string."
-          },
-          "operator_street": {
-            "maximum": 255,
-            "type": "string",
-            "description": "ASCII string."
-          },
-          "operator_dependent_locality": {
-            "maximum": 255,
-            "type": "string",
-            "description": "ASCII string."
-          },
           "operator_address_line_1": {
             "maximum": 255,
             "type": "string",
@@ -606,21 +591,6 @@
             "maximum": 12,
             "type": "string",
             "description": "Unique Property Reference Number."
-          },
-          "establishment_first_line": {
-            "maximum": 255,
-            "type": "string",
-            "description": "ASCII string."
-          },
-          "establishment_street": {
-            "maximum": 255,
-            "type": "string",
-            "description": "ASCII string."
-          },
-          "establishment_dependent_locality": {
-            "maximum": 255,
-            "type": "string",
-            "description": "ASCII string."
           },
           "establishment_address_line_1": {
             "maximum": 255,

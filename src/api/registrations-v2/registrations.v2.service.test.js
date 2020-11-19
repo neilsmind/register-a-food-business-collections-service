@@ -263,24 +263,34 @@ describe("registrations.v2.service", () => {
       });
     });
 
-    describe("When given a valid range (no longer than 7 days)", async () => {
-      const options = {
-        after: "2019-01-15T12:00:00",
-        before: "2019-01-22T12:00:00"
-      };
+    describe("When given a valid range (no longer than 7 days)", () => {
+      beforeEach(async () => {
+        const options = {
+          after: "2019-01-15T12:00:00",
+          before: "2019-01-22T12:00:00"
+        };
 
-      result = await validateOptions(options);
-      expect(result).toBe(true);
+        result = await validateOptions(options);
+      });
+
+      it("should return true", () => {
+        expect(result).toBe(true);
+      });
     });
 
-    describe("When given an invalid range (longer than 7 days)", async () => {
-      const options = {
-        after: "2019-01-15T12:00:00",
-        before: "2019-01-22T12:00:01"
-      };
+    describe("When given an invalid range (longer than 7 days)", () => {
+      beforeEach(async () => {
+        const options = {
+          after: "2019-01-15T12:00:00",
+          before: "2019-01-22T12:00:01"
+        };
 
-      result = await validateOptions(options);
-      expect(result).not.toBe(true);
+        result = await validateOptions(options);
+      });
+
+      it("should return true", () => {
+        expect(result).not.toBe(true);
+      });
     });
   });
 });
