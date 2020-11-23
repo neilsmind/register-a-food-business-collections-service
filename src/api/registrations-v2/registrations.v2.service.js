@@ -53,9 +53,9 @@ const validateDateTime = (value) => {
 const dateTimeFormat = "yyyy-MM-ddTHH:mm:ssZ";
 
 const validationFields = {
-  requester: {
+  subscriber: {
     function: validateString,
-    message: "lc option must be a string"
+    message: "subscriber option must be a string"
   },
   double_mode: {
     function: validateDoubleMode,
@@ -123,17 +123,17 @@ const validateOptions = async (options, unlimitedDateRange) => {
     return raiseValidationError(validationFields["dateRange"].message);
   }
 
-  // validate requester has access to requested councils
+  // validate subscriber has access to requested councils
   const requestedCouncils = options.requestedCouncil
     ? [options.requestedCouncil]
     : options.requestedCouncils;
-  if (options.requester && requestedCouncils && requestedCouncils.length > 0) {
+  if (options.subscriber && requestedCouncils && requestedCouncils.length > 0) {
     // No need to validate if council is just looking for their own registrations
     if (
       requestedCouncils.length > 1 ||
-      requestedCouncils[0] !== options.requester
+      requestedCouncils[0] !== options.subscriber
     ) {
-      const validCouncils = await getCouncilsForSupplier(options.requester);
+      const validCouncils = await getCouncilsForSupplier(options.subscriber);
       if (
         !requestedCouncils.every(function (val) {
           return validCouncils.indexOf(val) >= 0;

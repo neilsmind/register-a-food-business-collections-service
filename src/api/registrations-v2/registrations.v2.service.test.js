@@ -10,12 +10,12 @@ describe("registrations.v2.service", () => {
     jest.clearAllMocks();
   });
   let result;
-  const validrequestor = "cardiff";
+  const validsubscriber = "cardiff";
   describe("Function: validateOptions", () => {
-    describe("When given valid requester", () => {
+    describe("When given valid subscriber", () => {
       beforeEach(async () => {
         const options = {
-          requester: validrequestor
+          subscriber: validsubscriber
         };
         result = await validateOptions(options);
       });
@@ -25,10 +25,10 @@ describe("registrations.v2.service", () => {
       });
     });
 
-    describe("When given invalid requester", () => {
+    describe("When given invalid subscriber", () => {
       const invalidCouncils = [1233, [], {}, false, null, undefined];
-      invalidCouncils.forEach(async (requester) => {
-        result = await validateOptions({ requester });
+      invalidCouncils.forEach(async (subscriber) => {
+        result = await validateOptions({ subscriber });
         expect(result).not.toBe(true);
       });
     });
@@ -38,7 +38,7 @@ describe("registrations.v2.service", () => {
         const validCouncils = ["cardiff", "bath"];
         getCouncilsForSupplier.mockImplementation(() => validCouncils);
         const options = {
-          requester: validrequestor,
+          subscriber: validsubscriber,
           requestedCouncils: validCouncils
         };
         result = await validateOptions(options);
@@ -53,7 +53,7 @@ describe("registrations.v2.service", () => {
       const invalidCouncils = [1233, "council", false, null, undefined];
       invalidCouncils.forEach(async (requestedCouncils) => {
         result = await validateOptions({
-          requester: validrequestor,
+          subscriber: validsubscriber,
           requestedCouncils: requestedCouncils
         });
         expect(result).not.toBe(true);
@@ -64,7 +64,7 @@ describe("registrations.v2.service", () => {
       beforeEach(async () => {
         getCouncilsForSupplier.mockImplementation(() => ["cardiff", "bath"]);
         const options = {
-          requester: validrequestor,
+          subscriber: validsubscriber,
           requestedCouncils: ["west-dorset"]
         };
         result = await validateOptions(options);

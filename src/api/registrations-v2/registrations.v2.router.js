@@ -43,8 +43,12 @@ const registrationsV2Router = () => {
     }
   });
 
-  router.get("/:lc", async (req, res, next) => {
-    logEmitter.emit("functionCall", "registrations.router", "/:lc route");
+  router.get("/:subscriber", async (req, res, next) => {
+    logEmitter.emit(
+      "functionCall",
+      "registrations.router",
+      "/:subscriber route"
+    );
     try {
       let registrations;
       const fields = req.query.fields ? req.query.fields.split(",") : [];
@@ -52,12 +56,12 @@ const registrationsV2Router = () => {
         double_mode: req.headers["double-mode"] || "",
         new: req.query.new || "true",
         fields,
-        requester: req.params.lc,
+        subscriber: req.params.subscriber,
         after: req.query.after || "2000-01-01",
         before: req.query.before || new Date(Date.now()).toISOString(),
         requestedCouncils: req.query["local-authorities"]
           ? req.query["local-authorities"].split(",")
-          : [req.params.lc]
+          : [req.params.subscriber]
       };
 
       registrations = await getRegistrationsByCouncil(options);
@@ -65,32 +69,32 @@ const registrationsV2Router = () => {
       logEmitter.emit(
         "functionSuccess",
         "registrations.router",
-        "GET /:lc route"
+        "GET /:subscriber route"
       );
       res.send(registrations);
     } catch (err) {
       logEmitter.emit(
         "functionFail",
         "registrations.router",
-        "GET /:lc route",
+        "GET /:subscriber route",
         err
       );
       next(err);
     }
   });
 
-  router.get("/:lc/:fsa_rn", async (req, res, next) => {
+  router.get("/:subscriber/:fsa_rn", async (req, res, next) => {
     logEmitter.emit(
       "functionCall",
       "registrations.router",
-      "GET /:lc/:fsa_rn route"
+      "GET /:subscriber/:fsa_rn route"
     );
     try {
       const options = {
         double_mode: req.headers["double-mode"] || "",
         fsa_rn: req.params.fsa_rn,
-        requester: req.params.lc,
-        requestedCouncil: req.query["local-authority"] || req.params.lc
+        subscriber: req.params.subscriber,
+        requestedCouncil: req.query["local-authority"] || req.params.subscriber
       };
 
       const registration = await getRegistration(options);
@@ -98,33 +102,33 @@ const registrationsV2Router = () => {
       logEmitter.emit(
         "functionSuccess",
         "registrations.router",
-        "GET /:lc/:fsa_rn route"
+        "GET /:subscriber/:fsa_rn route"
       );
       res.send(registration);
     } catch (err) {
       logEmitter.emit(
         "functionFail",
         "registrations.router",
-        "GET /:lc/:fsa_rn route",
+        "GET /:subscriber/:fsa_rn route",
         err
       );
       next(err);
     }
   });
 
-  router.put("/:lc/:fsa_rn", async (req, res, next) => {
+  router.put("/:subscriber/:fsa_rn", async (req, res, next) => {
     logEmitter.emit(
       "functionCall",
       "registrations.router",
-      "PUT /:lc/:fsa_rn route"
+      "PUT /:subscriber/:fsa_rn route"
     );
     try {
       const options = {
         double_mode: req.headers["double-mode"] || "",
         collected: req.body.collected,
         fsa_rn: req.params.fsa_rn,
-        requester: req.params.lc,
-        requestedCouncil: req.query["local-authority"] || req.params.lc
+        subscriber: req.params.subscriber,
+        requestedCouncil: req.query["local-authority"] || req.params.subscriber
       };
 
       const response = await updateRegistration(options);
@@ -132,14 +136,14 @@ const registrationsV2Router = () => {
       logEmitter.emit(
         "functionSuccess",
         "registrations.router",
-        "PUT /:lc/:fsa_rn route"
+        "PUT /:subscriber/:fsa_rn route"
       );
       res.send(response);
     } catch (err) {
       logEmitter.emit(
         "functionFail",
         "registrations.router",
-        "PUT /:lc/:fsa_rn route",
+        "PUT /:subscriber/:fsa_rn route",
         err
       );
       next(err);
