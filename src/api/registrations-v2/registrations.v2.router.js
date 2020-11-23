@@ -55,8 +55,8 @@ const registrationsV2Router = () => {
         requester: req.params.lc,
         after: req.query.after || "2000-01-01",
         before: req.query.before || new Date(Date.now()).toISOString(),
-        requestedCouncils: req.query.councils
-          ? req.query.councils.split(",")
+        requestedCouncils: req.query["local-authorities"]
+          ? req.query["local-authorities"].split(",")
           : [req.params.lc]
       };
 
@@ -90,7 +90,7 @@ const registrationsV2Router = () => {
         double_mode: req.headers["double-mode"] || "",
         fsa_rn: req.params.fsa_rn,
         requester: req.params.lc,
-        requestedCouncil: req.query.council || req.params.lc
+        requestedCouncil: req.query["local-authority"] || req.params.lc
       };
 
       const registration = await getRegistration(options);
@@ -124,7 +124,7 @@ const registrationsV2Router = () => {
         collected: req.body.collected,
         fsa_rn: req.params.fsa_rn,
         requester: req.params.lc,
-        requestedCouncil: req.query.council || req.params.lc
+        requestedCouncil: req.query["local-authority"] || req.params.lc
       };
 
       const response = await updateRegistration(options);

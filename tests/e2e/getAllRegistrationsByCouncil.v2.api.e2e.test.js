@@ -36,7 +36,7 @@ describe("Retrieve all registrations through API", () => {
     let response;
     beforeEach(async () => {
       const requestOptions = {
-        uri: `${supplierUrl}?env=${process.env.NODE_ENV}&councils=${supplierValidCouncils}`,
+        uri: `${supplierUrl}?env=${process.env.NODE_ENV}&local-authorities=${supplierValidCouncils}`,
         json: true,
         resolveWithFullResponse: true,
         headers: {
@@ -58,7 +58,7 @@ describe("Retrieve all registrations through API", () => {
     let response;
     beforeEach(async () => {
       const requestOptions = {
-        uri: `${supplierUrl}?env=${process.env.NODE_ENV}&councils=invalid`,
+        uri: `${supplierUrl}?env=${process.env.NODE_ENV}&local-authorities=invalid`,
         json: true,
         resolveWithFullResponse: true,
         headers: {

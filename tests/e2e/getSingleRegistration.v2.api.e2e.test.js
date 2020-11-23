@@ -49,7 +49,7 @@ describe("Update single registration through API", () => {
     let response;
     beforeEach(async () => {
       const requestOptions = {
-        uri: `${supplierUrl}?env=${process.env.NODE_ENV}&council=${supplierValidCouncils}`,
+        uri: `${supplierUrl}?env=${process.env.NODE_ENV}&local-authority=${supplierValidCouncils}`,
         json: true,
         resolveWithFullResponse: true,
         headers: {
@@ -72,7 +72,7 @@ describe("Update single registration through API", () => {
     let response;
     beforeEach(async () => {
       const requestOptions = {
-        uri: `${supplierUrl}?env=${process.env.NODE_ENV}&council=invalid`,
+        uri: `${supplierUrl}?env=${process.env.NODE_ENV}&local-authority=invalid`,
         json: true,
         resolveWithFullResponse: true,
         headers: {

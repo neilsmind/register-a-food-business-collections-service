@@ -55,7 +55,7 @@ const dateTimeFormat = "yyyy-MM-ddTHH:mm:ssZ";
 const validationFields = {
   requester: {
     function: validateString,
-    message: "council option must be a string"
+    message: "lc option must be a string"
   },
   double_mode: {
     function: validateDoubleMode,
@@ -90,14 +90,16 @@ const validationFields = {
   },
   requestedCouncil: {
     function: validateString,
-    message: "council option must be a string"
+    message: "local-authority option must be a string"
   },
   requestedCouncils: {
     function: validateArray,
-    message: "requested councils must be a valid list of councils"
+    message:
+      "requested local-authorities must be a valid list of local authorities"
   },
   authorizedCouncils: {
-    message: "requested councils must only contain authorized councils"
+    message:
+      "requested local-authorities must only contain authorized local authorities"
   }
 };
 

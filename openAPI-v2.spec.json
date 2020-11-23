@@ -75,22 +75,22 @@
     "/{lc}": {
       "get": {
         "summary": "Get registrations for local authority.",
-        "description": "Returns registrations from the supplied local authority. By default, results are filtered to exclude data marked as collected.",
+        "description": "Returns registrations for the supplied local authority. By default, results are filtered to exclude data marked as collected.",
         "operationId": "get-registrations-for-local-authority",
         "parameters": [
           {
             "name": "lc",
             "in": "path",
-            "description": "The local authority name.",
+            "description": "The local authority or MIS provider name.",
             "required": true,
             "schema": {
               "type": "string"
             }
           },
           {
-            "name": "councils",
+            "name": "local-authorities",
             "in": "query",
-            "description": "If requested councils are different to the local authority or supplier in the URL.",
+            "description": "The local authorities for which to return data, if different to the organisation supplied in the lc parameter.",
             "schema": {
               "type": "array",
               "items": {
@@ -185,7 +185,7 @@
           {
             "name": "lc",
             "in": "path",
-            "description": "The local authority name.",
+            "description": "The local authority or MIS provider name.",
             "required": true,
             "schema": {
               "type": "string"
@@ -201,9 +201,9 @@
             }
           },
           {
-            "name": "council",
+            "name": "local-authority",
             "in": "query",
-            "description": "If requested council is different to the local authority or supplier in the URL.",
+            "description": "The local authority for which to return data, if different to the organisation supplied in the lc parameter.",
             "schema": {
               "type": "string"
             }
@@ -253,7 +253,7 @@
           {
             "name": "lc",
             "in": "path",
-            "description": "The local authority name.",
+            "description": "The local authority or MIS provider name.",
             "required": true,
             "schema": {
               "type": "string"
@@ -269,9 +269,9 @@
             }
           },
           {
-            "name": "council",
+            "name": "local-authority",
             "in": "query",
-            "description": "If requested council is different to the local authority or supplier in the URL.",
+            "description": "The local authority for which to return data, if different to the organisation supplied in the lc parameter.",
             "schema": {
               "type": "string"
             }
