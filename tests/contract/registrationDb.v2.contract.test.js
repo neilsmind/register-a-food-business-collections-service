@@ -5,7 +5,7 @@ const {
   getRegistration,
   getRegistrations,
   updateRegistration
-} = require("../../src/api/registrations/registrations.v2.controller");
+} = require("../../src/api/registrations-v2/registrations.v2.controller");
 
 const { closeConnection } = require("../../src/db/db");
 
