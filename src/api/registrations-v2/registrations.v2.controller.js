@@ -1,45 +1,41 @@
 const {
   getUnifiedRegistrations,
-  getAllRegistrationsByCouncil,
+  getAllRegistrationsByCouncils,
   getSingleRegistration,
   updateRegistrationCollectedByCouncil
-} = require("../../connectors/registrationDb/registrationDb.connector");
+} = require("../../connectors/registrationDb-v2/registrationDb.v2.connector");
 
-const { validateOptions } = require("./registrations.service");
+const { validateOptions } = require("./registrations.v2.service");
 
 const {
   registrationDbDouble
-} = require("../../connectors/registrationDb/registrationDb.double");
+} = require("../../connectors/registrationDb-v2/registrationDb.v2.double");
 
 const { logEmitter } = require("../../services/logging.service");
-
-const { transformEnums } = require("../../services/v1EnumTransform.service");
-const version = 1;
 
 const getRegistrationsByCouncil = async (options) => {
   logEmitter.emit(
     "functionCall",
-    "registrations.controller",
+    "registrations.v2.controller",
     "getRegistrationsByCouncil"
   );
 
-  const validationResult = validateOptions(options, true);
+  const validationResult = await validateOptions(options, true);
 
   if (validationResult === true) {
     if (options.double_mode) {
       return registrationDbDouble(options.double_mode);
     }
-    let registrations = await getAllRegistrationsByCouncil(
-      options.council,
+    const registrations = await getAllRegistrationsByCouncils(
+      options.requestedCouncils,
       options.new,
       options.fields,
       options.before,
       options.after
     );
-    transformEnums(version, registrations);
     logEmitter.emit(
       "functionSuccess",
-      "registrations.controller",
+      "registrations.v2.controller",
       "getRegistrationsByCouncil"
     );
     return registrations;
@@ -54,24 +50,23 @@ const getRegistrationsByCouncil = async (options) => {
 const getRegistration = async (options) => {
   logEmitter.emit(
     "functionCall",
-    "registrations.controller",
+    "registrations.v2.controller",
     "getRegistration"
   );
 
-  const validationResult = validateOptions(options);
+  const validationResult = await validateOptions(options);
 
   if (validationResult === true) {
     if (options.double_mode) {
       return registrationDbDouble(options.double_mode);
     }
-    let registration = await getSingleRegistration(
+    const registration = await getSingleRegistration(
       options.fsa_rn,
-      options.council
+      options.requestedCouncil
     );
-    transformEnums(version, registration);
     logEmitter.emit(
       "functionSuccess",
-      "registrations.controller",
+      "registrations.v2.controller",
       "getRegistration"
     );
     return registration;
@@ -86,26 +81,25 @@ const getRegistration = async (options) => {
 const getRegistrations = async (options) => {
   logEmitter.emit(
     "functionCall",
-    "registrations.controller",
+    "registrations.v2.controller",
     "getRegistrations"
   );
 
-  const validationResult = validateOptions(options);
+  const validationResult = await validateOptions(options);
 
   if (validationResult === true) {
     if (options.double_mode) {
       return registrationDbDouble(options.double_mode);
     }
 
-    let registrations = await getUnifiedRegistrations(
+    const registrations = await getUnifiedRegistrations(
       options.before,
       options.after,
       ["establishment", "metadata"]
     );
-    transformEnums(version, registrations);
     logEmitter.emit(
       "functionSuccess",
-      "registrations.controller",
+      "registrations.v2.controller",
       "getRegistrations"
     );
     return registrations;
@@ -120,11 +114,11 @@ const getRegistrations = async (options) => {
 const updateRegistration = async (options) => {
   logEmitter.emit(
     "functionCall",
-    "registrations.controller",
+    "registrations.v2.controller",
     "updateRegistration"
   );
 
-  const validationResult = validateOptions(options);
+  const validationResult = await validateOptions(options);
 
   if (validationResult === true) {
     if (options.double_mode) {
@@ -134,12 +128,12 @@ const updateRegistration = async (options) => {
     const response = await updateRegistrationCollectedByCouncil(
       options.fsa_rn,
       options.collected,
-      options.council
+      options.requestedCouncil
     );
 
     logEmitter.emit(
       "functionSuccess",
-      "registrations.controller",
+      "registrations.v2.controller",
       "updateRegistration"
     );
 

@@ -20,13 +20,13 @@ const v1BusinessTypesMapping = {
 };
 
 const transformEnums = (apiVersion, registrations) => {
-  logEmitter.emit("functionCall", "transform.service", "transformEnums");
+  logEmitter.emit("functionCall", "v1EnumTransform.service", "transformEnums");
   let transform =
     Number(apiVersion) >= 2 || apiVersion === "latest"
       ? transformToKey
       : transformToValue;
 
-  // DB data has been migrated to new format so only need to do this for pre-v1 APIs
+  // DB data has been migrated to new format so only need to do this for v1 APIs
   if (Number(apiVersion) < 2) {
     if (Array.isArray(registrations)) {
       registrations.forEach(function (reg) {
@@ -39,7 +39,7 @@ const transformEnums = (apiVersion, registrations) => {
 };
 
 const applyTransforms = (registration, transform) => {
-  logEmitter.emit("functionCall", "transform.service", "applyTransforms");
+  logEmitter.emit("functionCall", "v1EnumTransform.service", "applyTransforms");
   registration.establishment.operator.operator_type = transform(
     operatorTypeEnum,
     registration.establishment.operator.operator_type
@@ -69,8 +69,9 @@ const applyTransforms = (registration, transform) => {
   );
 };
 
+// From v1 value to v2 enum key
 const transformToKey = (enumType, value) => {
-  logEmitter.emit("functionCall", "transform.service", "transformToKey");
+  logEmitter.emit("functionCall", "v1EnumTransform.service", "transformToKey");
   let transformedValue = value;
   Object.keys(enumType).forEach(function (enumKey) {
     if (enumType[enumKey].value === value) {
@@ -80,15 +81,20 @@ const transformToKey = (enumType, value) => {
   return transformedValue;
 };
 
+// From v2 enum key to v1 value
 const transformToValue = (enumType, key) => {
-  logEmitter.emit("functionCall", "transform.service", "transformToValue");
+  logEmitter.emit(
+    "functionCall",
+    "v1EnumTransform.service",
+    "transformToValue"
+  );
   return enumType[key] ? enumType[key].value : key;
 };
 
 const transformV2BusinessTypeString = (value) => {
   logEmitter.emit(
     "functionCall",
-    "transform.service",
+    "v1EnumTransform.service",
     "transformV2BusinessTypeString"
   );
   return v1BusinessTypesMapping[value] ? v1BusinessTypesMapping[value] : value;

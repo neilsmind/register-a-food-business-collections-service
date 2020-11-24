@@ -1,35 +1,34 @@
-jest.mock("../../connectors/registrationDb/registrationDb.connector", () => ({
-  getAllRegistrationsByCouncil: jest.fn(),
-  getUnifiedRegistrations: jest.fn(),
-  getSingleRegistration: jest.fn(),
-  updateRegistrationCollectedByCouncil: jest.fn(),
-  registrationDbDouble: jest.fn()
-}));
-
-jest.mock("../../services/v1EnumTransform.service", () => ({
-  transformEnums: jest.fn()
-}));
+jest.mock(
+  "../../connectors/registrationDb-v2/registrationDb.v2.connector",
+  () => ({
+    getAllRegistrationsByCouncils: jest.fn(),
+    getUnifiedRegistrations: jest.fn(),
+    getSingleRegistration: jest.fn(),
+    updateRegistrationCollectedByCouncil: jest.fn(),
+    registrationDbDouble: jest.fn()
+  })
+);
 
 jest.mock("../../services/logging.service");
-jest.mock("./registrations.service");
+jest.mock("./registrations.v2.service");
 
-const { validateOptions } = require("./registrations.service");
+const { validateOptions } = require("./registrations.v2.service");
 
 const {
-  getAllRegistrationsByCouncil,
+  getAllRegistrationsByCouncils,
   getSingleRegistration,
   getUnifiedRegistrations,
   updateRegistrationCollectedByCouncil
-} = require("../../connectors/registrationDb/registrationDb.connector");
+} = require("../../connectors/registrationDb-v2/registrationDb.v2.connector");
 
 const {
   getRegistrationsByCouncil,
   getRegistration,
   getRegistrations,
   updateRegistration
-} = require("./registrations.controller");
+} = require("./registrations.v2.controller");
 
-describe("registrations.controller", () => {
+describe("registrations.v2.controller", () => {
   let result;
   describe("Function: getRegistrationsByCouncil", () => {
     describe("When given invalid getNewRegistrations option", () => {
@@ -63,7 +62,7 @@ describe("registrations.controller", () => {
     describe("When successful", () => {
       beforeEach(async () => {
         validateOptions.mockImplementation(() => true);
-        getAllRegistrationsByCouncil.mockImplementation(() => [
+        getAllRegistrationsByCouncils.mockImplementation(() => [
           { id: 1, data: "data" }
         ]);
         result = await getRegistrationsByCouncil({
@@ -72,7 +71,7 @@ describe("registrations.controller", () => {
         });
       });
 
-      it("Should return the result of getAllRegistrationsByCouncil", () => {
+      it("Should return the result of getAllRegistrationsByCouncils", () => {
         expect(result).toEqual([{ id: 1, data: "data" }]);
       });
     });

@@ -1,4 +1,4 @@
-const { transformEnums } = require("./transform.service");
+const { transformEnums } = require("./v1EnumTransform.service");
 
 let registrations = [
   {
@@ -53,7 +53,7 @@ let registrations = [
   }
 ];
 
-describe("transform.service", () => {
+describe("v1EnumTransform.service", () => {
   describe("When api version is >= 2", () => {
     describe("When passed a single registration", () => {
       beforeEach(() => {

@@ -72,19 +72,30 @@
         }
       }
     },
-    "/{lc}": {
+    "/{subscriber}": {
       "get": {
         "summary": "Get registrations for local authority.",
-        "description": "Returns registrations from the supplied local authority. By default, results are filtered to exclude data marked as collected.",
+        "description": "Returns registrations for the supplied local authority. By default, results are filtered to exclude data marked as collected.",
         "operationId": "get-registrations-for-local-authority",
         "parameters": [
           {
-            "name": "lc",
+            "name": "subscriber",
             "in": "path",
-            "description": "The local authority name.",
+            "description": "The local authority or MIS provider name.",
             "required": true,
             "schema": {
               "type": "string"
+            }
+          },
+          {
+            "name": "local-authorities",
+            "in": "query",
+            "description": "The local authorities for which to return data, if different to the organisation supplied in the subscriber parameter.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
             }
           },
           {
@@ -165,16 +176,16 @@
         }
       }
     },
-    "/{lc}/{fsa_rn}": {
+    "/{subscriber}/{fsa_rn}": {
       "get": {
         "summary": "Get a single registration in full.",
         "description": "Returns a single registration in full from the supplied registration application reference.",
         "operationId": "get-single-registration-for-local-authority",
         "parameters": [
           {
-            "name": "lc",
+            "name": "subscriber",
             "in": "path",
-            "description": "The local authority name.",
+            "description": "The local authority or MIS provider name.",
             "required": true,
             "schema": {
               "type": "string"
@@ -185,6 +196,14 @@
             "in": "path",
             "description": "The registration application reference.",
             "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "local-authority",
+            "in": "query",
+            "description": "The local authority for which to return data, if different to the organisation supplied in the subscriber parameter.",
             "schema": {
               "type": "string"
             }
@@ -232,9 +251,9 @@
         "operationId": "update-single-registration-for-local-authority",
         "parameters": [
           {
-            "name": "lc",
+            "name": "subscriber",
             "in": "path",
-            "description": "The local authority name.",
+            "description": "The local authority or MIS provider name.",
             "required": true,
             "schema": {
               "type": "string"
@@ -245,6 +264,14 @@
             "in": "path",
             "description": "The registration application reference.",
             "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "local-authority",
+            "in": "query",
+            "description": "The local authority for which to update data, if different to the organisation supplied in the subscriber parameter.",
             "schema": {
               "type": "string"
             }
@@ -437,21 +464,6 @@
             "type": "string",
             "description": "Unique Property Reference Number."
           },
-          "operator_first_line": {
-            "maximum": 255,
-            "type": "string",
-            "description": "ASCII string."
-          },
-          "operator_street": {
-            "maximum": 255,
-            "type": "string",
-            "description": "ASCII string."
-          },
-          "operator_dependent_locality": {
-            "maximum": 255,
-            "type": "string",
-            "description": "ASCII string."
-          },
           "operator_address_line_1": {
             "maximum": 255,
             "type": "string",
@@ -585,21 +597,6 @@
             "maximum": 12,
             "type": "string",
             "description": "Unique Property Reference Number."
-          },
-          "establishment_first_line": {
-            "maximum": 255,
-            "type": "string",
-            "description": "ASCII string."
-          },
-          "establishment_street": {
-            "maximum": 255,
-            "type": "string",
-            "description": "ASCII string."
-          },
-          "establishment_dependent_locality": {
-            "maximum": 255,
-            "type": "string",
-            "description": "ASCII string."
           },
           "establishment_address_line_1": {
             "maximum": 255,

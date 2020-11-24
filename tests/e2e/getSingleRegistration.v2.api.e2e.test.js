@@ -2,11 +2,14 @@ require("dotenv").config();
 const request = require("request-promise-native");
 
 const baseUrl =
-  "https://integration-fsa-rof-gateway.azure-api.net/registrations/";
+  "https://integration-fsa-rof-gateway.azure-api.net/registrations/v2/";
 const cardiffUrl = `${baseUrl}cardiff`;
 const cardiffAPIKey = "b175199d420448fc87baa714e458ce6e";
+const supplierUrl = `${baseUrl}test-supplier`;
+const supplierAPIKey = "7e6a81e395cd47ff9e9402e7ccfd5125";
+const supplierValidCouncils = "cardiff";
 
-describe("Update single registration through API", () => {
+describe("Get single registration through API", () => {
   let availableRegistrations;
   beforeAll(async () => {
     const requestOptions = {
@@ -25,70 +28,65 @@ describe("Update single registration through API", () => {
       const update = {
         uri: `${cardiffUrl}/${availableRegistrations[0].fsa_rn}?env=${process.env.NODE_ENV}`,
         json: true,
-        method: "put",
+        method: "get",
         headers: {
           "Ocp-Apim-Subscription-Key": cardiffAPIKey
-        },
-        body: {
-          collected: true
         }
       };
       response = await request(update);
     });
 
-    it("should return the updated object with collected true", () => {
+    it("should return the requested new registration for that council", () => {
       expect(response.fsa_rn).toBe(availableRegistrations[0].fsa_rn);
-      expect(response.collected).toBe(true);
+      expect(response.establishment).toBeDefined();
+      expect(response.establishment.operator).toBeDefined();
+      expect(response.establishment.premise).toBeDefined();
+      expect(response.metadata).toBeDefined();
     });
   });
 
-  describe("Given invalid body", () => {
+  describe("Given supplier and valid council", () => {
     let response;
     beforeEach(async () => {
       const requestOptions = {
-        method: "put",
-        uri: `${cardiffUrl}/${availableRegistrations[0].fsa_rn}?env=${process.env.NODE_ENV}`,
+        uri: `${supplierUrl}/${availableRegistrations[0].fsa_rn}?env=${process.env.NODE_ENV}&local-authority=${supplierValidCouncils}`,
         json: true,
         headers: {
-          "Ocp-Apim-Subscription-Key": cardiffAPIKey
-        },
-        body: {
-          incorrect: "true"
+          "Ocp-Apim-Subscription-Key": supplierAPIKey
         }
       };
-      await request(requestOptions).catch(function (body) {
-        response = body;
-      });
+      response = await request(requestOptions);
     });
 
-    it("Should throw an error", () => {
-      expect(response.statusCode).toBe(400);
-      expect(response.error.developerMessage).toBe(
-        "One of the supplied options is invalid"
-      );
+    it("should return the requested new registration for that council", () => {
+      expect(response.fsa_rn).toBe(availableRegistrations[0].fsa_rn);
+      expect(response.establishment).toBeDefined();
+      expect(response.establishment.operator).toBeDefined();
+      expect(response.establishment.premise).toBeDefined();
+      expect(response.metadata).toBeDefined();
     });
   });
 
-  describe("Given a false for flag collected in body", () => {
+  describe("Given supplier and invalid requested council", () => {
     let response;
-    beforeEach(async () => {
-      const update = {
-        uri: `${cardiffUrl}/${availableRegistrations[0].fsa_rn}?env=${process.env.NODE_ENV}`,
+
+    it("Should return the appropriate error", async () => {
+      const requestOptions = {
+        uri: `${supplierUrl}/${availableRegistrations[0].fsa_rn}?env=${process.env.NODE_ENV}&local-authority=invalid`,
         json: true,
-        method: "put",
         headers: {
-          "Ocp-Apim-Subscription-Key": cardiffAPIKey
-        },
-        body: {
-          collected: false
+          "Ocp-Apim-Subscription-Key": supplierAPIKey
         }
       };
-      response = await request(update);
-    });
 
-    it("should return false for collected flag", () => {
-      expect(response.fsa_rn).toBe(availableRegistrations[0].fsa_rn);
-      expect(response.collected).toBe(false);
+      try {
+        response = await request(requestOptions);
+      } catch (e) {
+        expect(e.statusCode).toBe(400);
+        expect(e.message).toContain(
+          "requested local-authorities must only contain authorized local authorities"
+        );
+      }
     });
   });
 
