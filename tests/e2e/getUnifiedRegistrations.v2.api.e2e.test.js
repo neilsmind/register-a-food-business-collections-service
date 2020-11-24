@@ -6,7 +6,7 @@ const request = require("request-promise-native");
 const baseUrl =
   "https://integration-fsa-rof-gateway.azure-api.net/registrations/v2/";
 const unifiedUrl = `${baseUrl}unified`;
-const unifiedAPIKey = "17b39522103540b29fb54f2c3da24168";
+const unifiedAPIKey = "022a06ae44724035abbdcd7d00074125";
 
 describe("Retrieve all registrations through API", () => {
   describe("Given no extra parameters", () => {

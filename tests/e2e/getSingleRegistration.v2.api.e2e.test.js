@@ -9,7 +9,7 @@ const supplierUrl = `${baseUrl}test-supplier`;
 const supplierAPIKey = "7e6a81e395cd47ff9e9402e7ccfd5125";
 const supplierValidCouncils = "cardiff";
 
-describe("Update single registration through API", () => {
+describe("Get single registration through API", () => {
   let availableRegistrations;
   beforeAll(async () => {
     const requestOptions = {
@@ -49,9 +49,8 @@ describe("Update single registration through API", () => {
     let response;
     beforeEach(async () => {
       const requestOptions = {
-        uri: `${supplierUrl}?env=${process.env.NODE_ENV}&local-authority=${supplierValidCouncils}`,
+        uri: `${supplierUrl}/${availableRegistrations[0].fsa_rn}?env=${process.env.NODE_ENV}&local-authority=${supplierValidCouncils}`,
         json: true,
-        resolveWithFullResponse: true,
         headers: {
           "Ocp-Apim-Subscription-Key": supplierAPIKey
         }
@@ -59,7 +58,7 @@ describe("Update single registration through API", () => {
       response = await request(requestOptions);
     });
 
-    it("should return all the new registrations for that council", () => {
+    it("should return the requested new registration for that council", () => {
       expect(response.fsa_rn).toBe(availableRegistrations[0].fsa_rn);
       expect(response.establishment).toBeDefined();
       expect(response.establishment.operator).toBeDefined();
@@ -70,23 +69,24 @@ describe("Update single registration through API", () => {
 
   describe("Given supplier and invalid requested council", () => {
     let response;
-    beforeEach(async () => {
+
+    it("Should return the appropriate error", async () => {
       const requestOptions = {
-        uri: `${supplierUrl}?env=${process.env.NODE_ENV}&local-authority=invalid`,
+        uri: `${supplierUrl}/${availableRegistrations[0].fsa_rn}?env=${process.env.NODE_ENV}&local-authority=invalid`,
         json: true,
-        resolveWithFullResponse: true,
         headers: {
           "Ocp-Apim-Subscription-Key": supplierAPIKey
         }
       };
-      response = await request(requestOptions);
-    });
 
-    it("Should return the appropriate error", () => {
-      expect(response.statusCode).toBe(400);
-      expect(response.error.message).toContain(
-        "requested councils must only contain authorized councils"
-      );
+      try {
+        response = await request(requestOptions);
+      } catch (e) {
+        expect(e.statusCode).toBe(400);
+        expect(e.message).toContain(
+          "requested local-authorities must only contain authorized local authorities"
+        );
+      }
     });
   });
 

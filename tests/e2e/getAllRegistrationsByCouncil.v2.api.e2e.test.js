@@ -7,7 +7,8 @@ const cardiffUrl = `${baseUrl}cardiff`;
 const cardiffAPIKey = "b175199d420448fc87baa714e458ce6e";
 const supplierUrl = `${baseUrl}test-supplier`;
 const supplierAPIKey = "7e6a81e395cd47ff9e9402e7ccfd5125";
-const supplierValidCouncils = "cardiff";
+const supplierValidCouncil = "cardiff";
+const supplierValidCouncils = "cardiff,bath";
 
 describe("Retrieve all registrations through API", () => {
   describe("Given no extra parameters", () => {
@@ -36,6 +37,28 @@ describe("Retrieve all registrations through API", () => {
     let response;
     beforeEach(async () => {
       const requestOptions = {
+        uri: `${supplierUrl}?env=${process.env.NODE_ENV}&local-authorities=${supplierValidCouncil}`,
+        json: true,
+        resolveWithFullResponse: true,
+        headers: {
+          "Ocp-Apim-Subscription-Key": supplierAPIKey
+        }
+      };
+      response = await request(requestOptions);
+    });
+
+    it("should return all the new registrations for that council", () => {
+      expect(response.body.length).toBeGreaterThanOrEqual(1);
+      expect(response.body[0].fsa_rn).toBeDefined();
+      expect(response.body[0].collected).toBe(false);
+      expect(response.statusCode).toBe(200);
+    });
+  });
+
+  describe("Given supplier and multiple valid councils", () => {
+    let response;
+    beforeEach(async () => {
+      const requestOptions = {
         uri: `${supplierUrl}?env=${process.env.NODE_ENV}&local-authorities=${supplierValidCouncils}`,
         json: true,
         resolveWithFullResponse: true,
@@ -56,7 +79,8 @@ describe("Retrieve all registrations through API", () => {
 
   describe("Given supplier and invalid requested council", () => {
     let response;
-    beforeEach(async () => {
+
+    it("Should return the appropriate error", async () => {
       const requestOptions = {
         uri: `${supplierUrl}?env=${process.env.NODE_ENV}&local-authorities=invalid`,
         json: true,
@@ -65,14 +89,14 @@ describe("Retrieve all registrations through API", () => {
           "Ocp-Apim-Subscription-Key": supplierAPIKey
         }
       };
-      response = await request(requestOptions);
-    });
-
-    it("Should return the appropriate error", () => {
-      expect(response.statusCode).toBe(400);
-      expect(response.error.message).toContain(
-        "requested councils must only contain authorized councils"
-      );
+      try {
+        response = await request(requestOptions);
+      } catch (e) {
+        expect(e.statusCode).toBe(400);
+        expect(e.message).toContain(
+          "requested local-authorities must only contain authorized local authorities"
+        );
+      }
     });
   });
 
