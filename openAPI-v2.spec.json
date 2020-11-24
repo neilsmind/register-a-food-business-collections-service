@@ -271,7 +271,7 @@
           {
             "name": "local-authority",
             "in": "query",
-            "description": "The local authority for which to return data, if different to the organisation supplied in the subscriber parameter.",
+            "description": "The local authority for which to update data, if different to the organisation supplied in the subscriber parameter.",
             "schema": {
               "type": "string"
             }

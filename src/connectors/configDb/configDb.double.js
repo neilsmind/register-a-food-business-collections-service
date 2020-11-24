@@ -1,9 +1,9 @@
-const mockLocalCouncilConfig = require("./mockLocalCouncilConfig.json");
+const mockSupplierConfig = require("./mockSupplierConfig.json");
 
-const lcConfigCollectionDouble = {
+const supplierCollectionDouble = {
   find: () => ({
-    toArray: () => mockLocalCouncilConfig
+    toArray: () => mockSupplierConfig
   })
 };
 
-module.exports = { lcConfigCollectionDouble };
+module.exports = { supplierCollectionDouble };

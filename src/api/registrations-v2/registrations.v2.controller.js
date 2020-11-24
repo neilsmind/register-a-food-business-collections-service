@@ -16,7 +16,7 @@ const { logEmitter } = require("../../services/logging.service");
 const getRegistrationsByCouncil = async (options) => {
   logEmitter.emit(
     "functionCall",
-    "registrations.controller",
+    "registrations.v2.controller",
     "getRegistrationsByCouncil"
   );
 
@@ -35,7 +35,7 @@ const getRegistrationsByCouncil = async (options) => {
     );
     logEmitter.emit(
       "functionSuccess",
-      "registrations.controller",
+      "registrations.v2.controller",
       "getRegistrationsByCouncil"
     );
     return registrations;
@@ -50,7 +50,7 @@ const getRegistrationsByCouncil = async (options) => {
 const getRegistration = async (options) => {
   logEmitter.emit(
     "functionCall",
-    "registrations.controller",
+    "registrations.v2.controller",
     "getRegistration"
   );
 
@@ -66,7 +66,7 @@ const getRegistration = async (options) => {
     );
     logEmitter.emit(
       "functionSuccess",
-      "registrations.controller",
+      "registrations.v2.controller",
       "getRegistration"
     );
     return registration;
@@ -81,7 +81,7 @@ const getRegistration = async (options) => {
 const getRegistrations = async (options) => {
   logEmitter.emit(
     "functionCall",
-    "registrations.controller",
+    "registrations.v2.controller",
     "getRegistrations"
   );
 
@@ -99,7 +99,7 @@ const getRegistrations = async (options) => {
     );
     logEmitter.emit(
       "functionSuccess",
-      "registrations.controller",
+      "registrations.v2.controller",
       "getRegistrations"
     );
     return registrations;
@@ -114,7 +114,7 @@ const getRegistrations = async (options) => {
 const updateRegistration = async (options) => {
   logEmitter.emit(
     "functionCall",
-    "registrations.controller",
+    "registrations.v2.controller",
     "updateRegistration"
   );
 
@@ -133,7 +133,7 @@ const updateRegistration = async (options) => {
 
     logEmitter.emit(
       "functionSuccess",
-      "registrations.controller",
+      "registrations.v2.controller",
       "updateRegistration"
     );
 

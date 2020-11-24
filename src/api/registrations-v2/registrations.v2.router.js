@@ -13,7 +13,7 @@ const registrationsV2Router = () => {
   router.get("/unified", async (req, res, next) => {
     logEmitter.emit(
       "functionCall",
-      "registrations.router",
+      "registrations.v2.router",
       "GET /unified route"
     );
     try {
@@ -28,14 +28,14 @@ const registrationsV2Router = () => {
 
       logEmitter.emit(
         "functionSuccess",
-        "registrations.router",
+        "registrations.v2.router",
         "GET /unified route"
       );
       res.send(registrations);
     } catch (err) {
       logEmitter.emit(
         "functionFail",
-        "registrations.router",
+        "registrations.v2.router",
         "GET /unified route",
         err
       );
@@ -46,7 +46,7 @@ const registrationsV2Router = () => {
   router.get("/:subscriber", async (req, res, next) => {
     logEmitter.emit(
       "functionCall",
-      "registrations.router",
+      "registrations.v2.router",
       "/:subscriber route"
     );
     try {
@@ -68,14 +68,14 @@ const registrationsV2Router = () => {
 
       logEmitter.emit(
         "functionSuccess",
-        "registrations.router",
+        "registrations.v2.router",
         "GET /:subscriber route"
       );
       res.send(registrations);
     } catch (err) {
       logEmitter.emit(
         "functionFail",
-        "registrations.router",
+        "registrations.v2.router",
         "GET /:subscriber route",
         err
       );
@@ -86,7 +86,7 @@ const registrationsV2Router = () => {
   router.get("/:subscriber/:fsa_rn", async (req, res, next) => {
     logEmitter.emit(
       "functionCall",
-      "registrations.router",
+      "registrations.v2.router",
       "GET /:subscriber/:fsa_rn route"
     );
     try {
@@ -101,14 +101,14 @@ const registrationsV2Router = () => {
 
       logEmitter.emit(
         "functionSuccess",
-        "registrations.router",
+        "registrations.v2.router",
         "GET /:subscriber/:fsa_rn route"
       );
       res.send(registration);
     } catch (err) {
       logEmitter.emit(
         "functionFail",
-        "registrations.router",
+        "registrations.v2.router",
         "GET /:subscriber/:fsa_rn route",
         err
       );
@@ -119,7 +119,7 @@ const registrationsV2Router = () => {
   router.put("/:subscriber/:fsa_rn", async (req, res, next) => {
     logEmitter.emit(
       "functionCall",
-      "registrations.router",
+      "registrations.v2.router",
       "PUT /:subscriber/:fsa_rn route"
     );
     try {
@@ -135,14 +135,14 @@ const registrationsV2Router = () => {
 
       logEmitter.emit(
         "functionSuccess",
-        "registrations.router",
+        "registrations.v2.router",
         "PUT /:subscriber/:fsa_rn route"
       );
       res.send(response);
     } catch (err) {
       logEmitter.emit(
         "functionFail",
-        "registrations.router",
+        "registrations.v2.router",
         "PUT /:subscriber/:fsa_rn route",
         err
       );

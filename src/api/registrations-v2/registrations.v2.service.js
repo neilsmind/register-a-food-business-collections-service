@@ -104,7 +104,11 @@ const validationFields = {
 };
 
 const validateOptions = async (options, unlimitedDateRange) => {
-  logEmitter.emit("functionCall", "registrations.service", "validateOptions");
+  logEmitter.emit(
+    "functionCall",
+    "registrations.v2.service",
+    "validateOptions"
+  );
 
   for (const key in options) {
     // Check if the validation function for each key returns true or false for the associated value
@@ -127,6 +131,7 @@ const validateOptions = async (options, unlimitedDateRange) => {
   const requestedCouncils = options.requestedCouncil
     ? [options.requestedCouncil]
     : options.requestedCouncils;
+  // This should always be true due to previous validation
   if (options.subscriber && requestedCouncils && requestedCouncils.length > 0) {
     // No need to validate if council is just looking for their own registrations
     if (
@@ -148,7 +153,7 @@ const validateOptions = async (options, unlimitedDateRange) => {
 
   logEmitter.emit(
     "functionSuccess",
-    "registrations.service",
+    "registrations.v2.service",
     "validateOptions"
   );
   return true;
@@ -157,7 +162,7 @@ const validateOptions = async (options, unlimitedDateRange) => {
 const raiseValidationError = (message) => {
   logEmitter.emit(
     "functionFail",
-    "registrations.service",
+    "registrations.v2.service",
     "validateOptions",
     new Error(message)
   );
