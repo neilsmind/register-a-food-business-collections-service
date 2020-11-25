@@ -74,8 +74,8 @@
     },
     "/{subscriber}": {
       "get": {
-        "summary": "Get registrations for local authority.",
-        "description": "Returns registrations for the supplied local authority. By default, results are filtered to exclude data marked as collected.",
+        "summary": "Get registrations for local authority or MIS provider.",
+        "description": "Returns registrations for the supplied local authority or MIS provider. By default, results are filtered to exclude data marked as collected.",
         "operationId": "get-registrations-for-local-authority",
         "parameters": [
           {
