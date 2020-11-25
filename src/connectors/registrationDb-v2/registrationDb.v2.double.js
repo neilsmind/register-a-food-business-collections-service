@@ -1,3 +1,12 @@
+const {
+  operatorTypeEnum,
+  establishmentTypeEnum,
+  customerTypeEnum,
+  importExportEnum,
+  waterSupplyEnum,
+  businessTypeEnum
+} = require("@slice-and-dice/register-a-food-business-validation");
+
 const doubleResponse = [
   {
     id: 69,
@@ -19,7 +28,7 @@ const doubleResponse = [
       registrationId: 69,
       operator: {
         id: 68,
-        operator_type: "Sole trader",
+        operator_type: operatorTypeEnum.SOLETRADER.key,
         operator_company_name: "name",
         operator_company_house_number: null,
         operator_charity_name: null,
@@ -44,11 +53,11 @@ const doubleResponse = [
       },
       activities: {
         id: 62,
-        customer_type: "End consumer",
-        business_type: "Livestock farm",
+        customer_type: customerTypeEnum.END_CONSUMER.key,
+        business_type: businessTypeEnum["001"].key,
         business_type_search_term: null,
-        import_export_activities: "None",
-        water_supply: "Public",
+        import_export_activities: importExportEnum.BOTH.key,
+        water_supply: waterSupplyEnum.PUBLIC.key,
         business_other_details: null,
         opening_days_irregular: null,
         opening_day_monday: true,
@@ -76,7 +85,7 @@ const doubleResponse = [
         establishment_address_line_3: "Test",
         establishment_town: "London",
         establishment_postcode: "SW12 9RQ",
-        establishment_type: "Place",
+        establishment_type: establishmentTypeEnum.DOMESTIC.key,
         createdAt: "2018-10-30T14:51:47.339Z",
         updatedAt: "2018-10-30T14:51:47.339Z",
         establishmentId: 68

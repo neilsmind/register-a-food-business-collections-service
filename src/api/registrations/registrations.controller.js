@@ -13,6 +13,9 @@ const {
 
 const { logEmitter } = require("../../services/logging.service");
 
+const { transformEnums } = require("../../services/v1EnumTransform.service");
+const version = 1;
+
 const getRegistrationsByCouncil = async (options) => {
   logEmitter.emit(
     "functionCall",
@@ -26,13 +29,14 @@ const getRegistrationsByCouncil = async (options) => {
     if (options.double_mode) {
       return registrationDbDouble(options.double_mode);
     }
-    const registrations = await getAllRegistrationsByCouncil(
+    let registrations = await getAllRegistrationsByCouncil(
       options.council,
       options.new,
       options.fields,
       options.before,
       options.after
     );
+    transformEnums(version, registrations);
     logEmitter.emit(
       "functionSuccess",
       "registrations.controller",
@@ -60,10 +64,11 @@ const getRegistration = async (options) => {
     if (options.double_mode) {
       return registrationDbDouble(options.double_mode);
     }
-    const registration = await getSingleRegistration(
+    let registration = await getSingleRegistration(
       options.fsa_rn,
       options.council
     );
+    transformEnums(version, registration);
     logEmitter.emit(
       "functionSuccess",
       "registrations.controller",
@@ -92,11 +97,12 @@ const getRegistrations = async (options) => {
       return registrationDbDouble(options.double_mode);
     }
 
-    const registrations = await getUnifiedRegistrations(
+    let registrations = await getUnifiedRegistrations(
       options.before,
       options.after,
       ["establishment", "metadata"]
     );
+    transformEnums(version, registrations);
     logEmitter.emit(
       "functionSuccess",
       "registrations.controller",

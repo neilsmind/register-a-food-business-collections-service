@@ -6,6 +6,10 @@ jest.mock("../../connectors/registrationDb/registrationDb.connector", () => ({
   registrationDbDouble: jest.fn()
 }));
 
+jest.mock("../../services/v1EnumTransform.service", () => ({
+  transformEnums: jest.fn()
+}));
+
 jest.mock("../../services/logging.service");
 jest.mock("./registrations.service");
 
