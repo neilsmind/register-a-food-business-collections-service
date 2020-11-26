@@ -50,6 +50,14 @@ let registrations = [
         water_supply: "PRIVATE"
       }
     }
+  },
+  {
+    establishment: {
+      establishment_details: {
+        establishment_trading_name: "Trading name",
+        establishment_primary_number: "01234 456789"
+      }
+    }
   }
 ];
 

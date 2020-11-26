@@ -40,33 +40,41 @@ const transformEnums = (apiVersion, registrations) => {
 
 const applyTransforms = (registration, transform) => {
   logEmitter.emit("functionCall", "v1EnumTransform.service", "applyTransforms");
-  registration.establishment.operator.operator_type = transform(
-    operatorTypeEnum,
-    registration.establishment.operator.operator_type
-  );
-  registration.establishment.premise.establishment_type = transform(
-    establishmentTypeEnum,
-    registration.establishment.premise.establishment_type
-  );
-  registration.establishment.activities.customer_type = transform(
-    customerTypeEnum,
-    registration.establishment.activities.customer_type
-  );
-  registration.establishment.activities.import_export_activities = transform(
-    importExportEnum,
-    registration.establishment.activities.import_export_activities
-  );
-  registration.establishment.activities.water_supply = transform(
-    waterSupplyEnum,
-    registration.establishment.activities.water_supply
-  );
-  registration.establishment.activities.business_type = transform(
-    businessTypeEnum,
-    registration.establishment.activities.business_type
-  );
-  registration.establishment.activities.business_type = transformV2BusinessTypeString(
-    registration.establishment.activities.business_type
-  );
+  if (registration.establishment) {
+    if (registration.establishment.operator) {
+      registration.establishment.operator.operator_type = transform(
+        operatorTypeEnum,
+        registration.establishment.operator.operator_type
+      );
+    }
+    if (registration.establishment.premise) {
+      registration.establishment.premise.establishment_type = transform(
+        establishmentTypeEnum,
+        registration.establishment.premise.establishment_type
+      );
+    }
+    if (registration.establishment.activities) {
+      registration.establishment.activities.customer_type = transform(
+        customerTypeEnum,
+        registration.establishment.activities.customer_type
+      );
+      registration.establishment.activities.import_export_activities = transform(
+        importExportEnum,
+        registration.establishment.activities.import_export_activities
+      );
+      registration.establishment.activities.water_supply = transform(
+        waterSupplyEnum,
+        registration.establishment.activities.water_supply
+      );
+      registration.establishment.activities.business_type = transform(
+        businessTypeEnum,
+        registration.establishment.activities.business_type
+      );
+      registration.establishment.activities.business_type = transformV2BusinessTypeString(
+        registration.establishment.activities.business_type
+      );
+    }
+  }
 };
 
 // From v1 value to v2 enum key
