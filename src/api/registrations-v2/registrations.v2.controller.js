@@ -12,6 +12,9 @@ const {
 } = require("../../connectors/registrationDb-v2/registrationDb.v2.double");
 
 const { logEmitter } = require("../../services/logging.service");
+const {
+  getCouncilsForSupplier
+} = require("../../connectors/configDb/configDb.connector");
 
 const getRegistrationsByCouncil = async (options) => {
   logEmitter.emit(
@@ -26,6 +29,17 @@ const getRegistrationsByCouncil = async (options) => {
     if (options.double_mode) {
       return registrationDbDouble(options.double_mode);
     }
+
+    if (
+      options.requestedCouncils.length === 1 &&
+      options.requestedCouncils[0] === options.subscriber
+    ) {
+      const validCouncils = await getCouncilsForSupplier(options.subscriber);
+      if (validCouncils.length > 0) {
+        options.requestedCouncils = validCouncils;
+      }
+    }
+
     const registrations = await getAllRegistrationsByCouncils(
       options.requestedCouncils,
       options.new,
