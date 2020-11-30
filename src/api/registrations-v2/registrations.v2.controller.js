@@ -30,11 +30,15 @@ const getRegistrationsByCouncil = async (options) => {
       return registrationDbDouble(options.double_mode);
     }
 
+    /*Check if single requested LA is the same as subscriber. This means it's either an LA requesting 
+    their own registrations or a non-LA subscriber not defining which councils they want returned. 
+    In the latter case all authorised registrations should be returned by default.*/
     if (
       options.requestedCouncils.length === 1 &&
       options.requestedCouncils[0] === options.subscriber
     ) {
       const validCouncils = await getCouncilsForSupplier(options.subscriber);
+      // validCouncils will return empty array if LA subscriber.
       if (validCouncils.length > 0) {
         options.requestedCouncils = validCouncils;
       }
