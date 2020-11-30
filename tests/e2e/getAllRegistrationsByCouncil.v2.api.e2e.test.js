@@ -55,6 +55,29 @@ describe("Retrieve all registrations through API", () => {
     });
   });
 
+  describe("Given supplier and no requested councils", () => {
+    let response;
+    beforeEach(async () => {
+      const requestOptions = {
+        uri: `${supplierUrl}?env=${process.env.NODE_ENV}`,
+        json: true,
+        resolveWithFullResponse: true,
+        headers: {
+          "Ocp-Apim-Subscription-Key": supplierAPIKey
+        }
+      };
+      response = await request(requestOptions);
+    });
+
+    it.only("should return all the new registrations for all authorised councils", () => {
+      console.log(response.body);
+      expect(response.body.length).toBeGreaterThanOrEqual(1);
+      expect(response.body[0].fsa_rn).toBeDefined();
+      expect(response.body[0].collected).toBe(false);
+      expect(response.statusCode).toBe(200);
+    });
+  });
+
   describe("Given supplier and multiple valid councils", () => {
     let response;
     beforeEach(async () => {
