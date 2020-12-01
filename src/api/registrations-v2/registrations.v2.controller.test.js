@@ -8,6 +8,9 @@ jest.mock(
     registrationDbDouble: jest.fn()
   })
 );
+jest.mock("../../connectors/configDb/configDb.connector", () => ({
+  getCouncilsForSupplier: jest.fn()
+}));
 
 jest.mock("../../services/logging.service");
 jest.mock("./registrations.v2.service");
@@ -27,6 +30,36 @@ const {
   getRegistrations,
   updateRegistration
 } = require("./registrations.v2.controller");
+const {
+  getCouncilsForSupplier
+} = require("../../connectors/configDb/configDb.connector");
+
+const localAuthorityOptions = {
+  subscriber: "cardiff",
+  requestedCouncils: ["cardiff"],
+  new: "true",
+  fields: [],
+  before: "2000-01-06",
+  after: "2000-01-01"
+};
+
+const nonLCSubscriberOptions = {
+  subscriber: "northgate",
+  requestedCouncils: ["cardiff", "bath"],
+  new: "true",
+  fields: [],
+  before: "2000-01-06",
+  after: "2000-01-01"
+};
+
+const nonLCSubscriberNoneRequestedOptions = {
+  subscriber: "northgate",
+  requestedCouncils: ["northgate"],
+  new: "true",
+  fields: [],
+  before: "2000-01-06",
+  after: "2000-01-01"
+};
 
 describe("registrations.v2.controller", () => {
   let result;
@@ -65,14 +98,72 @@ describe("registrations.v2.controller", () => {
         getAllRegistrationsByCouncils.mockImplementation(() => [
           { id: 1, data: "data" }
         ]);
-        result = await getRegistrationsByCouncil({
-          getNewRegistrations: "true",
-          council: "cardiff"
+      });
+      describe("When susbcriber is a local authority", () => {
+        beforeEach(async () => {
+          getCouncilsForSupplier.mockImplementation(() => []);
+          result = await getRegistrationsByCouncil(localAuthorityOptions);
+        });
+        it("Should call getAllRegistrationsByCouncils", () => {
+          expect(getAllRegistrationsByCouncils).toHaveBeenCalledWith(
+            ["cardiff"],
+            "true",
+            [],
+            "2000-01-06",
+            "2000-01-01"
+          );
+        });
+        it("Should return the result of getAllRegistrationsByCouncils", () => {
+          expect(result).toEqual([{ id: 1, data: "data" }]);
         });
       });
-
-      it("Should return the result of getAllRegistrationsByCouncils", () => {
-        expect(result).toEqual([{ id: 1, data: "data" }]);
+      describe("When susbcriber is not a local authority", () => {
+        describe("When requested councils is populated", () => {
+          beforeEach(async () => {
+            getCouncilsForSupplier.mockImplementation(() => [
+              "cardiff",
+              "bath",
+              "bristol"
+            ]);
+            result = await getRegistrationsByCouncil(nonLCSubscriberOptions);
+          });
+          it("Should call getAllRegistrationsByCouncils", () => {
+            expect(getAllRegistrationsByCouncils).toHaveBeenCalledWith(
+              ["cardiff", "bath"],
+              "true",
+              [],
+              "2000-01-06",
+              "2000-01-01"
+            );
+          });
+          it("Should return the result of getAllRegistrationsByCouncils", () => {
+            expect(result).toEqual([{ id: 1, data: "data" }]);
+          });
+        });
+        describe("When requested councils is not populated", () => {
+          beforeEach(async () => {
+            getCouncilsForSupplier.mockImplementation(() => [
+              "cardiff",
+              "bath",
+              "bristol"
+            ]);
+            result = await getRegistrationsByCouncil(
+              nonLCSubscriberNoneRequestedOptions
+            );
+          });
+          it("Should call getAllRegistrationsByCouncils", () => {
+            expect(getAllRegistrationsByCouncils).toHaveBeenCalledWith(
+              ["cardiff", "bath", "bristol"],
+              "true",
+              [],
+              "2000-01-06",
+              "2000-01-01"
+            );
+          });
+          it("Should return the result of getAllRegistrationsByCouncils", () => {
+            expect(result).toEqual([{ id: 1, data: "data" }]);
+          });
+        });
       });
     });
   });
