@@ -69,8 +69,7 @@ describe("Retrieve all registrations through API", () => {
       response = await request(requestOptions);
     });
 
-    it.only("should return all the new registrations for all authorised councils", () => {
-      console.log(response.body);
+    it("should return all the new registrations for all authorised councils", () => {
       expect(response.body.length).toBeGreaterThanOrEqual(1);
       expect(response.body[0].fsa_rn).toBeDefined();
       expect(response.body[0].collected).toBe(false);
