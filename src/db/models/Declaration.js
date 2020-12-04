@@ -12,7 +12,8 @@ module.exports = (sequelize, DataTypes) => {
       declaration3: { type: DataTypes.STRING }
     },
     {
-      timestamps: false
+      timestamps: false,
+      schema: "registrations"
     }
   );
   Declaration.associate = function (models) {

@@ -16,7 +16,8 @@ module.exports = (sequelize, DataTypes) => {
       establishment_type: { type: DataTypes.STRING }
     },
     {
-      timestamps: false
+      timestamps: false,
+      schema: "registrations"
     }
   );
   Premise.associate = function (models) {

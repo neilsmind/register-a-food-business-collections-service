@@ -19,20 +19,20 @@
           "operator_primary_number": "3757031885",
           "operator_secondary_number": "3562126616",
           "operator_email": "dbridgewater0@wix.com",
-          "operator_type": "Sole trader"
+          "operator_type": "SOLETRADER"
         },
         "premise": {
           "establishment_postcode": "CB22 4RX",
           "establishment_address_line_1": "2634",
           "establishment_address_line_2": "Moulton",
           "establishment_town": "Vermelha",
-          "establishment_type": "Home or domestic premises"
+          "establishment_type": "DOMESTIC"
         },
         "activities": {
-          "customer_type": "End consumer",
-          "business_type": "Fishmonger",
-          "import_export_activities": "Directly import and export",
-          "water_supply": "Public",
+          "customer_type": "END_CONSUMER",
+          "business_type": "043",
+          "import_export_activities": "BOTH",
+          "water_supply": "PUBLIC",
           "business_other_details": "Suspendisse potenti. Cras in purus eu magna vulputate luctus. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.",
           "opening_day_monday": true,
           "opening_day_tuesday": true,
@@ -82,7 +82,7 @@
           "operator_primary_number": "1439333058",
           "operator_secondary_number": "3607803759",
           "operator_email": "pfinlay1@simplemachines.org",
-          "operator_type": "Sole trader"
+          "operator_type": "SOLETRADER"
         },
         "premise": {
           "establishment_postcode": "CB22 4RX",
@@ -93,13 +93,13 @@
           "establishment_street": "Sunfield",
           "establishment_dependant_locality": "Bristol",
           "establishment_town": "Balungao",
-          "establishment_type": "Home or domestic premises"
+          "establishment_type": "DOMESTIC"
         },
         "activities": {
-          "customer_type": "End consumer",
-          "business_type": "Butcher",
-          "import_export_activities": "Directly import and export",
-          "water_supply": "Public",
+          "customer_type": "END_CONSUMER",
+          "business_type": "042",
+          "import_export_activities": "BOTH",
+          "water_supply": "PUBLIC",
           "business_other_details": "Duis ac nibh. Fusce lacus purus, aliquet at, feugiat non, pretium quis, lectus. Suspendisse potenti.",
           "opening_day_monday": true,
           "opening_day_tuesday": true,
