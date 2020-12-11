@@ -14,7 +14,9 @@ const clearTables = async () => {
   await connectToDb();
   await Registration.truncate({ cascade: true });
   closeConnection();
+  return true;
 };
 
 logEmitter.emit(INFO, `Clearing tables`);
-clearTables();
+clearTables()
+  .then((clearResult) => console.log(`Tables cleared: ${clearResult}`));;
