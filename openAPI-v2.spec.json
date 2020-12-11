@@ -647,7 +647,7 @@
           },
           "business_type": {
             "type": "string",
-            "description": "Predetermined values, see separate document for full business type list."
+            "description": "Predetermined values, see https://data.food.gov.uk/codes/business/rafb/establishment-type for full business type list."
           },
           "business_type_search_term": {
             "type": "string"
