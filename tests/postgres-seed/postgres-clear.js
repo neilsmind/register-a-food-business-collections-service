@@ -18,5 +18,6 @@ const clearTables = async () => {
 };
 
 logEmitter.emit(INFO, `Clearing tables`);
-clearTables()
-  .then((clearResult) => console.log(`Tables cleared: ${clearResult}`));;
+clearTables().then((clearResult) =>
+  console.log(`Tables cleared: ${clearResult}`)
+);
