@@ -174,6 +174,68 @@
             "description": "Internal server error."
           }
         }
+      },
+      "post": {
+        "summary": "Submit a single registration.",
+        "description": "Submits a single registration.",
+        "operationId": "submit-single-registration-for-local-authority",
+        "parameters": [
+          {
+            "name": "subscriber",
+            "in": "path",
+            "description": "The local authority or MIS provider name.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "double-mode",
+            "in": "header",
+            "description": "Return a hard-coded test result according to the value specified instead of querying the database.",
+            "schema": {
+              "enum": ["success", "fail"],
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "The registration details to submit.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DirectRegistration"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "fsa_rn": {
+                      "description": "The registration application reference.",
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request."
+          },
+          "404": {
+            "description": "Resource not found."
+          },
+          "500": {
+            "description": "Internal server error."
+          }
+        }
       }
     },
     "/{subscriber}/{fsa_rn}": {
@@ -347,10 +409,7 @@
         "type": "object",
         "properties": {
           "fsa_rn": {
-            "maximum": 20,
-            "minimum": 20,
-            "type": "string",
-            "description": "The unique registration application reference that identifies this registration."
+            "$ref": "#/components/schemas/fsa_rn"
           },
           "council": {
             "type": "string",
@@ -387,6 +446,29 @@
             "$ref": "#/components/schemas/Metadata"
           }
         }
+      },
+      "DirectRegistration": {
+		    "required": [
+          "establishment"
+        ],
+        "type": "object",
+        "properties": {
+          "fsa_rn": {
+            "$ref": "#/components/schemas/fsa_rn"
+          },
+          "establishment": {
+            "$ref": "#/components/schemas/Establishment"
+          },
+          "metadata": {
+            "$ref": "#/components/schemas/Metadata"
+          }
+        }
+      },
+      "fsa_rn": {
+        "maximum": 20,
+        "minimum": 20,
+        "type": "string",
+        "description": "The unique registration application reference that identifies this registration."
       },
       "Establishment": {
         "required": [
