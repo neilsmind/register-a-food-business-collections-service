@@ -2,7 +2,7 @@ require("dotenv").config();
 const request = require("request-promise-native");
 
 const baseUrl =
-  "https://integration-fsa-rof-gateway.azure-api.net/registrations/v1/";
+  "https://integration-fsa-rof-gateway.azure-api.net/registrations/v2/";
 const highgardenUrl = `${baseUrl}highgarden`;
 const highgardenAPIKey = "05adf7cb9d314f1e96e6df10fd5e2132";
 const saveToDbUrl = `https://${process.env.NODE_ENV}-register-a-food-business.azurewebsites.net/api/tasks/savetotempstore/`;
