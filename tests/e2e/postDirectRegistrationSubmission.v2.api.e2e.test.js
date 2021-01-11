@@ -78,7 +78,7 @@ describe("Submit a single registration through the API as a council", () => {
         uri: `${saveToDbUrl}${postResponse["fsa-rn"]}`,
         method: "get"
       };
-      saveToDbResponse = await request(saveToDbOptions);
+      await request(saveToDbOptions);
       //Retrieve registration from collections service
       const getRequestOptions = {
         uri: `${highgardenUrl}/${postResponse["fsa-rn"]}?env=${process.env.NODE_ENV}`,
@@ -94,11 +94,18 @@ describe("Submit a single registration through the API as a council", () => {
     it("should successfully submit the registration and return a fsa-rn", () => {
       expect(postResponse["fsa-rn"]).toBeDefined();
     });
-    it("should be retrievable the collcetions API", () => {
+    it("should be retrievable through the collcetions API", () => {
       expect(getResponse.fsa_rn).toBe(postResponse["fsa-rn"]);
       expect(getResponse.establishment).toBeDefined();
-      expect(getResponse.establishment.operator).toBeDefined();
-      expect(getResponse.establishment.premise).toBeDefined();
+      expect(getResponse.establishment.operator.operator_first_name).toBe(
+        registration.establishment.operator.operator_first_name
+      );
+      expect(getResponse.establishment.activities.water_supply).toBe(
+        registration.establishment.activities.water_supply
+      );
+      expect(getResponse.establishment.premise.establishment_town).toBe(
+        registration.establishment.premise.establishment_town
+      );
       expect(getResponse.metadata).toBeDefined();
     });
   });
