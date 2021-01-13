@@ -5,7 +5,7 @@ const baseUrl =
   "https://integration-fsa-rof-gateway.azure-api.net/registrations/v2/";
 const highgardenUrl = `${baseUrl}highgarden`;
 const highgardenAPIKey = "414d6fb61355434694c6a9fcd600e9e4";
-const saveToDbUrl = `https://${process.env.NODE_ENV}-register-a-food-business.azurewebsites.net/api/tasks/savetotempstore/`;
+const saveToDbUrl = `https://${process.env.NODE_ENV}-register-a-food-business-service.azurewebsites.net/api/tasks/savetotempstore/`;
 
 const registration = {
   establishment: {
