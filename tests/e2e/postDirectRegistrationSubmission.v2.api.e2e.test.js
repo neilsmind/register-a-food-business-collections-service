@@ -5,6 +5,7 @@ const baseUrl =
   "https://integration-fsa-rof-gateway.azure-api.net/registrations/v2/";
 const highgardenUrl = `${baseUrl}highgarden`;
 const highgardenAPIKey = "414d6fb61355434694c6a9fcd600e9e4";
+const cardiffAPIKey = "b175199d420448fc87baa714e458ce6e";
 const saveToDbUrl = `https://${process.env.NODE_ENV}-register-a-food-business-service.azurewebsites.net/api/tasks/savetotempstore/`;
 
 const registration = {
@@ -142,7 +143,7 @@ describe("Submit a single registration through the API as a council", () => {
         json: true,
         method: "post",
         headers: {
-          "Ocp-Apim-Subscription-Key": highgardenAPIKey
+          "Ocp-Apim-Subscription-Key": cardiffAPIKey
         },
         body: registration
       };
