@@ -190,6 +190,14 @@
             }
           },
           {
+            "name": "local-authority",
+            "in": "query",
+            "description": "The local authority for which to submit data, if different to the organisation supplied in the subscriber parameter.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
             "name": "double-mode",
             "in": "header",
             "description": "Return a hard-coded test result according to the value specified instead of querying the database.",
