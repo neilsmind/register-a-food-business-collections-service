@@ -1,6 +1,6 @@
 const mongodb = require("mongodb");
 const { supplierCollectionDouble } = require("./configDb.double");
-const { CONFIGDB_URL } = require("../../config");
+const { COSMOSDB_URL } = require("../../config");
 const { logEmitter } = require("../../services/logging.service");
 
 let client = undefined;
@@ -27,7 +27,7 @@ const establishConnectionToMongo = async (collectionName) => {
         if (client && client.topology !== undefined) {
           client.close();
         }
-        client = await mongodb.MongoClient.connect(CONFIGDB_URL, {
+        client = await mongodb.MongoClient.connect(COSMOSDB_URL, {
           useNewUrlParser: true,
           useUnifiedTopology: true
         });
@@ -42,7 +42,7 @@ const establishConnectionToMongo = async (collectionName) => {
       }
     }
 
-    configDB = client.db("register_a_food_business_config");
+    configDB = client.db("config");
     let collection = configDB.collection(collectionName);
     logEmitter.emit(
       "functionSuccess",
@@ -69,7 +69,7 @@ const getCouncilsForSupplier = async (url) => {
 
   try {
     const supplierConfigCollection = await establishConnectionToMongo(
-      "supplierConfig"
+      "suppliers"
     );
     const supplierConfig = await supplierConfigCollection.findOne({
       supplier_url: url

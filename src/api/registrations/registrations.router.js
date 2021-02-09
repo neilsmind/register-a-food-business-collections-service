@@ -46,18 +46,17 @@ const registrationsRouter = () => {
   router.get("/:lc", async (req, res, next) => {
     logEmitter.emit("functionCall", "registrations.router", "/:lc route");
     try {
-      let registrations;
       const fields = req.query.fields ? req.query.fields.split(",") : [];
       const options = {
         double_mode: req.headers["double-mode"] || "",
         new: req.query.new || "true",
         fields,
         council: req.params.lc,
-        after: req.query.after || "2000-01-01",
+        after: req.query.after || new Date("2000-01-01").toISOString(),
         before: req.query.before || new Date(Date.now()).toISOString()
       };
 
-      registrations = await getRegistrationsByCouncil(options);
+      const registrations = await getRegistrationsByCouncil(options);
 
       logEmitter.emit(
         "functionSuccess",

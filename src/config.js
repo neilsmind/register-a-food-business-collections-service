@@ -1,5 +1,5 @@
 require("dotenv").config();
 
 module.exports = {
-  CONFIGDB_URL: process.env.CONFIGDB_URL
+  COSMOSDB_URL: process.env.COSMOSDB_URL,
 };
