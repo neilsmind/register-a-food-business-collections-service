@@ -3,7 +3,7 @@ const {
   getAllRegistrationsByCouncil,
   getUnifiedRegistrations,
   updateRegistrationCollectedByCouncil
-} = require("../../connectors/registrationDb-v1/registrationsDb.v1.connector");
+} = require("../../connectors/registrationDb/registrationsDb.connector");
 
 const { validateOptions } = require("./registrations.service");
 const {

@@ -1,24 +1,20 @@
 const doubleResponse = [
   {
-    id: 69,
     fsa_rn: "PQQK8Q-SN9N8C-4ADETF",
-    council: "west-dorset",
+    council: "City of Cardiff Council",
+    competent_authority_id: 8015,
+    local_council_url: "cardiff",
     createdAt: "2018-10-30T14:51:47.303Z",
     updatedAt: "2018-10-30T14:51:47.303Z",
     collected: false,
     collectedAt: "2018-10-30T14:51:47.303Z",
     establishment: {
-      id: 68,
       establishment_trading_name: "Itsu",
       establishment_opening_date: "2018-06-07",
       establishment_primary_number: "329857245",
       establishment_secondary_number: "84345245",
       establishment_email: "django@email.com",
-      createdAt: "2018-10-30T14:51:47.321Z",
-      updatedAt: "2018-10-30T14:51:47.321Z",
-      registrationId: 69,
       operator: {
-        id: 68,
         operator_type: "Sole trader",
         operator_company_name: "name",
         operator_company_house_number: null,
@@ -30,7 +26,6 @@ const doubleResponse = [
         operator_address_line_2: "Pie Lane",
         operator_address_line_3: "Test",
         operator_postcode: "SW12 9RQ",
-        operator_street: "Some St.",
         operator_town: "London",
         operator_primary_number: "9827235",
         operator_secondary_number: null,
@@ -39,12 +34,11 @@ const doubleResponse = [
         contact_representative_role: null,
         contact_representative_number: null,
         contact_representative_email: null,
-        createdAt: "2018-10-30T14:51:47.327Z",
-        updatedAt: "2018-10-30T14:51:47.327Z",
-        establishmentId: 68
+        operator_first_line: "12",
+        operator_street: "Pie Lane",
+        operator_dependent_locality: "Test"
       },
       activities: {
-        id: 62,
         customer_type: "End consumer",
         business_type: "Livestock farm",
         business_type_search_term: null,
@@ -65,32 +59,24 @@ const doubleResponse = [
         opening_hours_thursday: "0930 - 1900",
         opening_hours_friday: "9:30 to 19:00",
         opening_hours_saturday: "09:30 to 19:00",
-        opening_hours_sunday: "From 9:30 to 19:00",
-        createdAt: "2018-10-30T14:51:47.332Z",
-        updatedAt: "2018-10-30T14:51:47.332Z",
-        establishmentId: 68
+        opening_hours_sunday: "From 9:30 to 19:00"
       },
       premise: {
-        id: 62,
         establishment_address_line_1: "12",
         establishment_address_line_2: "Street",
         establishment_address_line_3: "Test",
         establishment_town: "London",
         establishment_postcode: "SW12 9RQ",
         establishment_type: "Place",
-        createdAt: "2018-10-30T14:51:47.339Z",
-        updatedAt: "2018-10-30T14:51:47.339Z",
-        establishmentId: 68
+        establishment_first_line: "12",
+        establishment_street: "Street",
+        establishment_dependent_locality: "Test"
       }
     },
     metadata: {
-      id: 62,
       declaration1: "Declaration",
       declaration2: "Declaration",
-      declaration3: "Declaration",
-      createdAt: "2018-10-30T14:51:47.352Z",
-      updatedAt: "2018-10-30T14:51:47.352Z",
-      registrationId: 69
+      declaration3: "Declaration"
     }
   }
 ];
