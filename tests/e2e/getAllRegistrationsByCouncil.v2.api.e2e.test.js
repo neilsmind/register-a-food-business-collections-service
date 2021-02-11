@@ -100,8 +100,6 @@ describe("Retrieve all registrations through API", () => {
   });
 
   describe("Given supplier and invalid requested council", () => {
-    let response;
-
     it("Should return the appropriate error", async () => {
       const requestOptions = {
         uri: `${supplierUrl}?env=${process.env.NODE_ENV}&local-authorities=invalid`,
@@ -112,7 +110,7 @@ describe("Retrieve all registrations through API", () => {
         }
       };
       try {
-        response = await request(requestOptions);
+        await request(requestOptions);
       } catch (e) {
         expect(e.statusCode).toBe(400);
         expect(e.message).toContain(

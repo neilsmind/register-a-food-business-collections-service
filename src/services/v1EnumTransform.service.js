@@ -82,7 +82,7 @@ const transformToKey = (enumType, value) => {
   logEmitter.emit("functionCall", "v1EnumTransform.service", "transformToKey");
   let transformedValue = value;
   Object.keys(enumType).forEach(function (enumKey) {
-    if (enumType[enumKey].value === value) {
+    if (enumType[enumKey].value.en === value) {
       transformedValue = enumType[enumKey].key;
     }
   });
@@ -96,7 +96,7 @@ const transformToValue = (enumType, key) => {
     "v1EnumTransform.service",
     "transformToValue"
   );
-  return enumType[key] ? enumType[key].value : key;
+  return enumType[key] ? enumType[key].value.en : key;
 };
 
 const transformV2BusinessTypeString = (value) => {
