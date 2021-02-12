@@ -122,7 +122,7 @@ const transformRegForCollection = (registration) => {
         ? registration.hygiene.local_council
         : registration.hygieneAndStandards.local_council,
       competent_authority_id: registration.source_council_id,
-      local_council: registration.local_council_url,
+      local_council_url: registration.local_council_url,
       collected: registration.collected,
       collected_at: registration.collected_at
         ? registration.collected_at.toISOString()

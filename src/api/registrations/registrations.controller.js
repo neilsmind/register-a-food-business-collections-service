@@ -1,14 +1,14 @@
 const {
-  getFullRegistration,
+  getSingleRegistration,
   getAllRegistrationsByCouncil,
   getUnifiedRegistrations,
   updateRegistrationCollectedByCouncil
-} = require("../../connectors/registrationDb/registrationsDb.connector");
+} = require("../../connectors/registrationsDb/registrationsDb.connector");
 
 const { validateOptions } = require("./registrations.service");
 const {
   registrationDbDouble
-} = require("../../connectors/registrationDb/registrationDb.double");
+} = require("../../connectors/registrationsDb/registrationsDb.double");
 const {
   transformRegForCollection
 } = require("../../services/registrationTransform.service");
@@ -69,10 +69,10 @@ const getRegistration = async (options) => {
     if (options.double_mode) {
       return registrationDbDouble(options.double_mode);
     }
-    const registration = await getFullRegistration(options.fsa_rn, [
-      "establishment",
-      "metadata"
-    ]);
+    const registration = await getSingleRegistration(
+      options.fsa_rn,
+      options.council
+    );
 
     const formattedRegistration = transformRegForCollection(registration);
     transformEnums(version, formattedRegistration);

@@ -1,3 +1,12 @@
+const {
+  operatorTypeEnum,
+  establishmentTypeEnum,
+  customerTypeEnum,
+  importExportEnum,
+  waterSupplyEnum,
+  businessTypeEnum
+} = require("@slice-and-dice/register-a-food-business-validation");
+
 const doubleResponse = [
   {
     fsa_rn: "PQQK8Q-SN9N8C-4ADETF",
@@ -7,7 +16,7 @@ const doubleResponse = [
     createdAt: "2018-10-30T14:51:47.303Z",
     updatedAt: "2018-10-30T14:51:47.303Z",
     collected: false,
-    collectedAt: "2018-10-30T14:51:47.303Z",
+    collected_at: "2018-10-30T14:51:47.303Z",
     establishment: {
       establishment_trading_name: "Itsu",
       establishment_opening_date: "2018-06-07",
@@ -15,7 +24,7 @@ const doubleResponse = [
       establishment_secondary_number: "84345245",
       establishment_email: "django@email.com",
       operator: {
-        operator_type: "Sole trader",
+        operator_type: operatorTypeEnum.SOLETRADER.key,
         operator_company_name: "name",
         operator_company_house_number: null,
         operator_charity_name: null,
@@ -33,17 +42,14 @@ const doubleResponse = [
         contact_representative_name: null,
         contact_representative_role: null,
         contact_representative_number: null,
-        contact_representative_email: null,
-        operator_first_line: "12",
-        operator_street: "Pie Lane",
-        operator_dependent_locality: "Test"
+        contact_representative_email: null
       },
       activities: {
-        customer_type: "End consumer",
-        business_type: "Livestock farm",
+        customer_type: customerTypeEnum.END_CONSUMER.key,
+        business_type: businessTypeEnum["001"].key,
         business_type_search_term: null,
-        import_export_activities: "None",
-        water_supply: "Public",
+        import_export_activities: importExportEnum.BOTH.key,
+        water_supply: waterSupplyEnum.PUBLIC.key,
         business_other_details: null,
         opening_days_irregular: null,
         opening_day_monday: true,
@@ -67,10 +73,7 @@ const doubleResponse = [
         establishment_address_line_3: "Test",
         establishment_town: "London",
         establishment_postcode: "SW12 9RQ",
-        establishment_type: "Place",
-        establishment_first_line: "12",
-        establishment_street: "Street",
-        establishment_dependent_locality: "Test"
+        establishment_type: establishmentTypeEnum.DOMESTIC.key
       }
     },
     metadata: {

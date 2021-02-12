@@ -43,6 +43,11 @@ const establishConnectionToRegistrations = async () => {
   return collection;
 };
 
+const clearMongoConnection = () => {
+  client = undefined;
+  registrationsDB = undefined;
+};
+
 const getRegistrationsByCouncil = async (council, collected, before, after) => {
   logEmitter.emit(
     "functionCall",
@@ -52,15 +57,17 @@ const getRegistrationsByCouncil = async (council, collected, before, after) => {
   try {
     const registrationsCollection = await establishConnectionToRegistrations();
     const registrations = await registrationsCollection
-      .find({
-        $and: [
-          { local_council_url: council },
-          { collected: { $in: collected } },
-          { createdAt: { $gte: new Date(after) } },
-          { createdAt: { $lte: new Date(before) } }
-        ]
-      })
-      .project({ _id: 0, "fsa-rn": 1 })
+      .find(
+        {
+          $and: [
+            { local_council_url: council },
+            { collected: { $in: collected } },
+            { createdAt: { $gte: new Date(after) } },
+            { createdAt: { $lte: new Date(before) } }
+          ]
+        },
+        { projection: { _id: 0, "fsa-rn": 1 } }
+      )
       .toArray();
 
     logEmitter.emit(
@@ -84,28 +91,33 @@ const getAllRegistrations = async (before, after) => {
   logEmitter.emit(
     "functionCall",
     "registrationsDb.v1.connector",
-    "getRegistrationTable"
+    "getAllRegistrations"
   );
   try {
     let registrationsCollection = await establishConnectionToRegistrations();
 
     const registrations = await registrationsCollection
-      .find({
-        $and: [{ createdAt: { $gte: after } }, { createdAt: { $lte: before } }]
-      })
-      .project({ _id: 0, "fsa-rn": 1 })
+      .find(
+        {
+          $and: [
+            { createdAt: { $gte: after } },
+            { createdAt: { $lte: before } }
+          ]
+        },
+        { projection: { _id: 0, "fsa-rn": 1 } }
+      )
       .toArray();
     logEmitter.emit(
       "functionSuccess",
       "registrationsDb.v1.connector",
-      "getRegistrationTable"
+      "getAllRegistrations"
     );
     return registrations;
   } catch (err) {
     logEmitter.emit(
       "functionFail",
       "registrationsDb.v1.connector",
-      "getRegistrationTable",
+      "getAllRegistrations",
       err
     );
     throw err;
@@ -118,34 +130,84 @@ const getFullRegistration = async (fsa_rn, fields = []) => {
     "registrationsDb.v1.connector",
     "getFullRegistration"
   );
+  try {
+    const projection = Object.assign(
+      {
+        _id: 0,
+        "fsa-rn": 1,
+        collected: 1,
+        collected_at: 1,
+        createdAt: 1,
+        updatedAt: 1
+      },
+      fields.includes("establishment") ? { establishment: 1 } : {},
+      fields.includes("metadata") ? { metadata: 1 } : {},
+      {
+        "hygiene.local_council": 1,
+        "hygieneAndStandards.local_council": 1,
+        local_council_url: 1,
+        source_council_id: 1
+      }
+    );
 
-  const projection = Object.assign(
-    {
-      _id: 0,
-      "fsa-rn": 1,
-      collected: 1,
-      collected_at: 1,
-      createdAt: 1,
-      updatedAt: 1
-    },
-    fields.includes("establishment") ? { establishment: 1 } : {},
-    fields.includes("metadata") ? { metadata: 1 } : {},
-    {
-      "hygiene.local_council": 1,
-      "hygieneAndStandards.local_council": 1,
-      local_council_url: 1,
-      source_council_id: 1
-    }
+    let registrationsCollection = await establishConnectionToRegistrations();
+
+    const registration = await registrationsCollection.findOne(
+      {
+        "fsa-rn": fsa_rn
+      },
+      { projection: projection }
+    );
+
+    logEmitter.emit(
+      "functionSuccess",
+      "registrationsDb.v1.connector",
+      "getFullRegistration"
+    );
+
+    return registration;
+  } catch (err) {
+    logEmitter.emit(
+      "functionFail",
+      "registrationsDb.v2.connector",
+      "getFullRegistration",
+      err
+    );
+    throw err;
+  }
+};
+
+const getSingleRegistration = async (fsa_rn, council) => {
+  logEmitter.emit(
+    "functionCall",
+    "registrationsDb.v1.connector",
+    "getSingleRegistration"
   );
+
+  const projection = Object.assign({
+    _id: 0,
+    "fsa-rn": 1,
+    collected: 1,
+    collected_at: 1,
+    createdAt: 1,
+    updatedAt: 1,
+    establishment: 1,
+    metadata: 1,
+    "hygiene.local_council": 1,
+    "hygieneAndStandards.local_council": 1,
+    local_council_url: 1,
+    source_council_id: 1
+  });
 
   let registrationsCollection = await establishConnectionToRegistrations();
 
-  const registration = await registrationsCollection
-    .find({
-      "fsa-rn": fsa_rn
-    })
-    .project(projection)
-    .toArray(); // toArray needed to transform from mongo db cursor
+  const registration = await registrationsCollection.findOne(
+    {
+      "fsa-rn": fsa_rn,
+      local_council_url: council
+    },
+    { projection: projection }
+  );
 
   if (registration === null) {
     const error = new Error("getRegistrationNotFoundError");
@@ -153,7 +215,7 @@ const getFullRegistration = async (fsa_rn, fields = []) => {
     logEmitter.emit(
       "functionFail",
       "registrationsDb.v1.connector",
-      "getRegistrationCollected",
+      "getSingleRegistration",
       error
     );
     throw error;
@@ -161,18 +223,13 @@ const getFullRegistration = async (fsa_rn, fields = []) => {
   logEmitter.emit(
     "functionSuccess",
     "registrationsDb.v1.connector",
-    "getFullRegistration"
+    "getSingleRegistration"
   );
 
-  // Extract registration object from the array
-  return registration[0];
+  return registration;
 };
 
-const getUnifiedRegistrations = async (
-  before,
-  after,
-  fields = ["establishment", "metadata"]
-) => {
+const getUnifiedRegistrations = async (before, after) => {
   logEmitter.emit(
     "functionCall",
     "registrationsDb.v1.connector",
@@ -187,7 +244,10 @@ const getUnifiedRegistrations = async (
 
   const fullRegistrations = await Promise.all(
     registrations.map(async (registration) => {
-      return getFullRegistration(registration["fsa-rn"], fields);
+      return getFullRegistration(registration["fsa-rn"], [
+        "establishment",
+        "metadata"
+      ]);
     })
   );
 
@@ -280,8 +340,9 @@ const updateRegistrationCollectedByCouncil = async (
 };
 
 module.exports = {
+  clearMongoConnection,
   getUnifiedRegistrations,
   getAllRegistrationsByCouncil,
-  getFullRegistration,
+  getSingleRegistration,
   updateRegistrationCollectedByCouncil
 };

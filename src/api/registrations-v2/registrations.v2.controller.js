@@ -1,14 +1,14 @@
 const {
-  getFullRegistration,
+  getSingleRegistration,
   getAllRegistrationsByCouncils,
   getUnifiedRegistrations,
   updateRegistrationCollectedByCouncil
-} = require("../../connectors/registrationDb-v2/registrationsDb.v2.connector");
+} = require("../../connectors/registrationsDb-v2/registrationsDb.v2.connector");
 
 const { validateOptions } = require("./registrations.v2.service");
 const {
   registrationDbDouble
-} = require("../../connectors/registrationDb-v2/registrationDb.v2.double");
+} = require("../../connectors/registrationsDb-v2/registrationsDb.v2.double");
 const {
   transformRegForCollection
 } = require("../../services/v2RegistrationTransform.service");
@@ -85,10 +85,10 @@ const getRegistration = async (options) => {
     if (options.double_mode) {
       return registrationDbDouble(options.double_mode);
     }
-    const registration = await getFullRegistration(options.fsa_rn, [
-      "establishment",
-      "metadata"
-    ]);
+    const registration = await getSingleRegistration(
+      options.fsa_rn,
+      options.requestedCouncil
+    );
 
     const formattedRegistration = transformRegForCollection(registration);
 
