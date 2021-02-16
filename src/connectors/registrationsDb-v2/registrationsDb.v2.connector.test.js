@@ -9,7 +9,7 @@ const {
   getSingleRegistration,
   updateRegistrationCollectedByCouncil
 } = require("./registrationsDb.v2.connector");
-const { clearMongoConnection } = require("../cosmos.client");
+const { clearCosmosConnection } = require("../cosmos.client");
 
 const fullRegistration = {
   "fsa-rn": "PQQK8Q-SN9N8C-4ADETF",
@@ -108,7 +108,7 @@ const fsa_rn = "PQQK8Q-SN9N8C-4ADETF";
 describe("Function: getSingleRegistration", () => {
   describe("given the request throws an error", () => {
     beforeEach(async () => {
-      clearMongoConnection();
+      clearCosmosConnection();
       mongodb.MongoClient.connect.mockImplementation(() => {
         throw new Error("example mongo error");
       });
@@ -131,7 +131,7 @@ describe("Function: getSingleRegistration", () => {
   describe("given the request is successful", () => {
     describe("given no registrations match the fsa-rn and council", () => {
       beforeEach(async () => {
-        clearMongoConnection();
+        clearCosmosConnection();
         mongodb.MongoClient.connect.mockImplementation(() => ({
           db: () => ({
             collection: () => ({
@@ -154,7 +154,7 @@ describe("Function: getSingleRegistration", () => {
 
     describe("given a record is found", () => {
       beforeEach(async () => {
-        clearMongoConnection();
+        clearCosmosConnection();
         mongodb.MongoClient.connect.mockImplementation(() => ({
           db: () => ({
             collection: () => ({
@@ -175,7 +175,7 @@ describe("Function: getSingleRegistration", () => {
 describe("Function: getUnifiedRegistrations", () => {
   describe("given the request throws an error", () => {
     beforeEach(async () => {
-      clearMongoConnection();
+      clearCosmosConnection();
       mongodb.MongoClient.connect.mockImplementation(() => {
         throw new Error("example mongo error");
       });
@@ -201,7 +201,7 @@ describe("Function: getUnifiedRegistrations", () => {
   describe("given the request is successful", () => {
     let results;
     beforeEach(async () => {
-      clearMongoConnection();
+      clearCosmosConnection();
       mongodb.MongoClient.connect.mockImplementation(() => ({
         db: () => ({
           collection: () => ({
@@ -232,7 +232,7 @@ describe("Function: getAllRegistrationsByCouncils", () => {
   const after = "2018-10-25T09:00:00Z";
   describe("given the request throws an error", () => {
     beforeEach(async () => {
-      clearMongoConnection();
+      clearCosmosConnection();
       mongodb.MongoClient.connect.mockImplementation(() => {
         throw new Error("example mongo error");
       });
@@ -262,7 +262,7 @@ describe("Function: getAllRegistrationsByCouncils", () => {
     describe("without fields specified", () => {
       let results;
       beforeEach(async () => {
-        clearMongoConnection();
+        clearCosmosConnection();
         mongodb.MongoClient.connect.mockImplementation(() => ({
           db: () => ({
             collection: () => ({
@@ -290,7 +290,7 @@ describe("Function: getAllRegistrationsByCouncils", () => {
     describe("with fields specified", () => {
       let results;
       beforeEach(async () => {
-        clearMongoConnection();
+        clearCosmosConnection();
         mongodb.MongoClient.connect.mockImplementation(() => ({
           db: () => ({
             collection: () => ({
@@ -318,7 +318,7 @@ describe("Function: getAllRegistrationsByCouncils", () => {
     describe("with new registrations set to false", () => {
       let results;
       beforeEach(async () => {
-        clearMongoConnection();
+        clearCosmosConnection();
         mongodb.MongoClient.connect.mockImplementation(() => ({
           db: () => ({
             collection: () => ({
@@ -351,7 +351,7 @@ describe("Function: updateRegistrationCollectedByCouncil", () => {
   const council = "cardiff";
   describe("given the request throws an error", () => {
     beforeEach(async () => {
-      clearMongoConnection();
+      clearCosmosConnection();
       mongodb.MongoClient.connect.mockImplementation(() => {
         throw new Error("example mongo error");
       });
@@ -374,7 +374,7 @@ describe("Function: updateRegistrationCollectedByCouncil", () => {
   describe("given the request is successful", () => {
     describe("given no registration is found", () => {
       beforeEach(async () => {
-        clearMongoConnection();
+        clearCosmosConnection();
         mongodb.MongoClient.connect.mockImplementation(() => ({
           db: () => ({
             collection: () => ({
@@ -399,7 +399,7 @@ describe("Function: updateRegistrationCollectedByCouncil", () => {
     });
     describe("given a registration is found and updated", () => {
       beforeEach(async () => {
-        clearMongoConnection();
+        clearCosmosConnection();
         mongodb.MongoClient.connect.mockImplementation(() => ({
           db: () => ({
             collection: () => ({

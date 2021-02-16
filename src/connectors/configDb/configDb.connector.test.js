@@ -3,7 +3,7 @@ jest.mock("./configDb.double");
 
 const mongodb = require("mongodb");
 const { getCouncilsForSupplier } = require("./configDb.connector");
-const { clearMongoConnection } = require("../cosmos.client");
+const { clearCosmosConnection } = require("../cosmos.client");
 const mockSupplierConfig = require("./mockSupplierConfig.json");
 
 let result;
@@ -13,7 +13,7 @@ describe("Function: getCouncilsForSupplier", () => {
 
   describe("given the request throws an error", () => {
     beforeEach(async () => {
-      clearMongoConnection();
+      clearCosmosConnection();
       mongodb.MongoClient.connect.mockImplementation(() => {
         throw new Error("example mongo error");
       });
@@ -35,7 +35,7 @@ describe("Function: getCouncilsForSupplier", () => {
 
   describe("given the request is successful", () => {
     beforeEach(() => {
-      clearMongoConnection();
+      clearCosmosConnection();
       mongodb.MongoClient.connect.mockImplementation(() => ({
         db: () => ({
           collection: () => ({
