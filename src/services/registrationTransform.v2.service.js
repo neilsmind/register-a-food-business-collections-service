@@ -4,7 +4,7 @@ const transformRegForCollection = (registration) => {
   // Transform the registrations returned from cosmos to the collections API expected format
   logEmitter.emit(
     "functionCall",
-    "v2RegistrationTransform.service",
+    "registrationTransform.v2.service",
     "transformRegForCollection"
   );
 
@@ -135,14 +135,14 @@ const transformRegForCollection = (registration) => {
 
     logEmitter.emit(
       "functionSuccess",
-      "v2RegistrationTransform.service",
+      "registrationTransform.v2.service",
       "transformRegForCollection"
     );
     return formattedRegistration;
   } catch (err) {
     logEmitter.emit(
       "functionFail",
-      "v2RegistrationTransform.service",
+      "registrationTransform.v2.service",
       "transformRegForCollection",
       err
     );

@@ -11,7 +11,7 @@ jest.mock("../../connectors/configDb/configDb.connector", () => ({
   getCouncilsForSupplier: jest.fn()
 }));
 
-jest.mock("../../services/v2RegistrationTransform.service", () => ({
+jest.mock("../../services/registrationTransform.v2.service", () => ({
   transformRegForCollection: jest.fn()
 }));
 
@@ -38,7 +38,7 @@ const {
 } = require("../../connectors/configDb/configDb.connector");
 const {
   transformRegForCollection
-} = require("../../services/v2RegistrationTransform.service");
+} = require("../../services/registrationTransform.v2.service");
 
 const localAuthorityOptions = {
   subscriber: "cardiff",

@@ -11,7 +11,7 @@ const {
 } = require("../../connectors/registrationsDb-v2/registrationsDb.v2.double");
 const {
   transformRegForCollection
-} = require("../../services/v2RegistrationTransform.service");
+} = require("../../services/registrationTransform.v2.service");
 
 const { logEmitter } = require("../../services/logging.service");
 const {

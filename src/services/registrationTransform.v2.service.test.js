@@ -1,6 +1,6 @@
 const {
   transformRegForCollection
-} = require("./v2RegistrationTransform.service");
+} = require("./registrationTransform.v2.service");
 
 const fullRegistration = {
   "fsa-rn": "PQQK8Q-SN9N8C-4ADETF",
