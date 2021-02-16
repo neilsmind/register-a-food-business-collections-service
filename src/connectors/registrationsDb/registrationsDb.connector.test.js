@@ -7,9 +7,9 @@ const {
   getUnifiedRegistrations,
   getAllRegistrationsByCouncil,
   getSingleRegistration,
-  updateRegistrationCollectedByCouncil,
-  clearMongoConnection
+  updateRegistrationCollectedByCouncil
 } = require("./registrationsDb.connector");
+const { clearMongoConnection } = require("../cosmos.client");
 
 const fullRegistration = {
   "fsa-rn": "PQQK8Q-SN9N8C-4ADETF",

@@ -1,52 +1,5 @@
-const mongodb = require("mongodb");
-const { COSMOSDB_URL } = require("../../config");
 const { logEmitter } = require("../../services/logging.service");
-
-let client = undefined;
-let registrationsDB = undefined;
-
-const establishConnectionToRegistrations = async () => {
-  logEmitter.emit(
-    "functionCall",
-    "registrationDb.v2.connector",
-    "establishConnectionToRegistrations"
-  );
-
-  // If no connection or connection is not valid after downtime
-  if (!client || !client.topology || !client.topology.isConnected()) {
-    try {
-      if (client && client.topology !== undefined) {
-        client.close();
-      }
-      client = await mongodb.MongoClient.connect(COSMOSDB_URL, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true
-      });
-    } catch (err) {
-      logEmitter.emit(
-        "functionFail",
-        "registrationDb.v2.connector",
-        "establishConnectionToRegistrations",
-        err
-      );
-      throw err;
-    }
-  }
-
-  registrationsDB = client.db("registrations");
-  let collection = registrationsDB.collection("registrations");
-  logEmitter.emit(
-    "functionSuccess",
-    "registrationDb.v2.connector",
-    "establishConnectionToRegistrations"
-  );
-  return collection;
-};
-
-const clearMongoConnection = () => {
-  client = undefined;
-  registrationsDB = undefined;
-};
+const { establishConnectionToCosmos } = require("../cosmos.client");
 
 const getRegistrationsByCouncil = async (council, collected, before, after) => {
   logEmitter.emit(
@@ -55,7 +8,10 @@ const getRegistrationsByCouncil = async (council, collected, before, after) => {
     "getRegistrationsByCouncil"
   );
   try {
-    const registrationsCollection = await establishConnectionToRegistrations();
+    const registrationsCollection = await establishConnectionToCosmos(
+      "registrations",
+      "registrations"
+    );
     const registrations = await registrationsCollection
       .find(
         {
@@ -94,7 +50,10 @@ const getAllRegistrations = async (before, after) => {
     "getAllRegistrations"
   );
   try {
-    let registrationsCollection = await establishConnectionToRegistrations();
+    let registrationsCollection = await establishConnectionToCosmos(
+      "registrations",
+      "registrations"
+    );
 
     const registrations = await registrationsCollection
       .find(
@@ -150,7 +109,10 @@ const getFullRegistration = async (fsa_rn, fields = []) => {
       }
     );
 
-    let registrationsCollection = await establishConnectionToRegistrations();
+    let registrationsCollection = await establishConnectionToCosmos(
+      "registrations",
+      "registrations"
+    );
 
     const registration = await registrationsCollection.findOne(
       {
@@ -199,7 +161,10 @@ const getSingleRegistration = async (fsa_rn, council) => {
     source_council_id: 1
   });
 
-  let registrationsCollection = await establishConnectionToRegistrations();
+  let registrationsCollection = await establishConnectionToCosmos(
+    "registrations",
+    "registrations"
+  );
 
   const registration = await registrationsCollection.findOne(
     {
@@ -305,7 +270,10 @@ const updateRegistrationCollectedByCouncil = async (
     "updateRegistrationCollectedByCouncil"
   );
 
-  let registrationsCollection = await establishConnectionToRegistrations();
+  let registrationsCollection = await establishConnectionToCosmos(
+    "registrations",
+    "registrations"
+  );
 
   const response = await registrationsCollection.updateOne(
     {
@@ -340,7 +308,6 @@ const updateRegistrationCollectedByCouncil = async (
 };
 
 module.exports = {
-  clearMongoConnection,
   getUnifiedRegistrations,
   getAllRegistrationsByCouncil,
   getSingleRegistration,

@@ -1,62 +1,5 @@
-const mongodb = require("mongodb");
-const { supplierCollectionDouble } = require("./configDb.double");
-const { COSMOSDB_URL } = require("../../config");
 const { logEmitter } = require("../../services/logging.service");
-
-let client = undefined;
-let configDB = undefined;
-
-const establishConnectionToMongo = async (collectionName) => {
-  if (process.env.DOUBLE_MODE === "true") {
-    logEmitter.emit(
-      "doubleMode",
-      "configDb.connector",
-      "establishConnectionToMongo"
-    );
-    return supplierCollectionDouble;
-  } else {
-    logEmitter.emit(
-      "functionCall",
-      "configDb.connector",
-      "establishConnectionToMongo"
-    );
-
-    // If no connection or connection is not valid after downtime
-    if (!client || !client.topology || !client.topology.isConnected()) {
-      try {
-        if (client && client.topology !== undefined) {
-          client.close();
-        }
-        client = await mongodb.MongoClient.connect(COSMOSDB_URL, {
-          useNewUrlParser: true,
-          useUnifiedTopology: true
-        });
-      } catch (err) {
-        logEmitter.emit(
-          "functionFail",
-          "configDb.connector",
-          "establishConnectionToMongo",
-          err
-        );
-        throw err;
-      }
-    }
-
-    configDB = client.db("config");
-    let collection = configDB.collection(collectionName);
-    logEmitter.emit(
-      "functionSuccess",
-      "configDb.connector",
-      "establishConnectionToMongo"
-    );
-    return collection;
-  }
-};
-
-const clearMongoConnection = () => {
-  client = undefined;
-  configDB = undefined;
-};
+const { establishConnectionToCosmos } = require("../cosmos.client");
 
 const getCouncilsForSupplier = async (url) => {
   logEmitter.emit(
@@ -68,7 +11,8 @@ const getCouncilsForSupplier = async (url) => {
   let councils = [];
 
   try {
-    const supplierConfigCollection = await establishConnectionToMongo(
+    const supplierConfigCollection = await establishConnectionToCosmos(
+      "config",
       "suppliers"
     );
     const supplierConfig = await supplierConfigCollection.findOne({
@@ -100,8 +44,5 @@ const getCouncilsForSupplier = async (url) => {
 };
 
 module.exports = {
-  mongodb,
-  establishConnectionToMongo,
-  clearMongoConnection,
   getCouncilsForSupplier
 };

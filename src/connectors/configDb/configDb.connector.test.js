@@ -2,10 +2,8 @@ jest.mock("mongodb");
 jest.mock("./configDb.double");
 
 const mongodb = require("mongodb");
-const {
-  getCouncilsForSupplier,
-  clearMongoConnection
-} = require("./configDb.connector");
+const { getCouncilsForSupplier } = require("./configDb.connector");
+const { clearMongoConnection } = require("../cosmos.client");
 const mockSupplierConfig = require("./mockSupplierConfig.json");
 
 let result;
