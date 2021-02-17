@@ -8,9 +8,12 @@ describe("GET to /api/registrations/:lc/:fsa_rn", () => {
   describe("Given no extra parameters", () => {
     let response;
     beforeEach(async () => {
-      // await resetDB();
+      const before = new Date();
+      let after = new Date();
+      after.setSeconds(after.getSeconds() - 30);
+
       const summaryRequestOptions = {
-        uri: url,
+        uri: `${url}?before=${before.toISOString()}&after=${after.toISOString()}&new=false`,
         json: true
       };
       const summaryResponse = await request(summaryRequestOptions);
@@ -22,8 +25,10 @@ describe("GET to /api/registrations/:lc/:fsa_rn", () => {
     });
 
     it("should return all the full details of that registration", () => {
-      expect(response.establishment.establishment_trading_name).toBeDefined();
-      expect(response.metadata.declaration1).toBeDefined();
+      expect(response.establishment.establishment_trading_name).toBe(
+        "Blanda Inc"
+      );
+      expect(response.metadata).toBeDefined();
     });
   });
 
@@ -87,7 +92,7 @@ describe("GET to /api/registrations/:lc/:fsa_rn", () => {
     });
 
     it("should return the double mode response", () => {
-      expect(response.establishment.id).toBe(68);
+      expect(response.establishment.establishment_trading_name).toBe("Itsu");
     });
   });
 });

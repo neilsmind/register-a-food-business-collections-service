@@ -17,7 +17,10 @@ describe("GET to /api/registrations/:lc", () => {
     });
 
     it("should return all the new registrations for that council", () => {
-      expect(response.length).toBe(1);
+      expect(response.length).toBeGreaterThanOrEqual(1);
+      response.forEach((record) => {
+        expect(record.collected).toBe(false);
+      });
     });
   });
 
@@ -89,7 +92,7 @@ describe("GET to /api/registrations/:lc", () => {
     });
 
     it("should return all the registrations for the council", () => {
-      expect(response.length).toBe(1);
+      expect(response.length).toBeGreaterThanOrEqual(1);
     });
   });
 
@@ -108,7 +111,7 @@ describe("GET to /api/registrations/:lc", () => {
 
     it("should return the double mode response", () => {
       expect(response.length).toBe(1);
-      expect(response[0].establishment.id).toBe(68);
+      expect(response[0].establishment.establishment_trading_name).toBe("Itsu");
     });
   });
 });

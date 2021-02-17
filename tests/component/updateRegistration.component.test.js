@@ -9,7 +9,7 @@ describe("PUT to /api/registrations/:lc/:fsa_rn", () => {
     let response;
     beforeEach(async () => {
       const summaryRequestOptions = {
-        uri: url,
+        uri: `${url}?new=false`,
         json: true
       };
       const summaryResponse = await request(summaryRequestOptions);

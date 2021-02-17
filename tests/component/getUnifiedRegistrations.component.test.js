@@ -10,7 +10,7 @@ describe("GET to /api/registrations/unified", () => {
     beforeEach(async () => {
       const before = new Date();
       let after = new Date();
-      after.setDate(after.getDate() - 5);
+      after.setSeconds(after.getSeconds() - 30);
 
       const requestOptions = {
         uri: `${url}?before=${before.toISOString()}&after=${after.toISOString()}`,
@@ -21,7 +21,7 @@ describe("GET to /api/registrations/unified", () => {
 
     it("should return all the new registrations", () => {
       expect(Array.isArray(response)).toBe(true);
-      expect(response.length).toBe(2);
+      expect(response.length).toBeGreaterThanOrEqual(2);
     });
   });
 
@@ -86,7 +86,7 @@ describe("GET to /api/registrations/unified", () => {
 
     it("should return the double mode response", () => {
       expect(response.length).toBe(1);
-      expect(response[0].establishment.id).toBe(68);
+      expect(response[0].establishment.establishment_trading_name).toBe("Itsu");
     });
   });
 
