@@ -101,7 +101,7 @@ const fullRegistration = {
       establishment_type: "DOMESTIC"
     }
   },
-  metadata: {
+  declaration: {
     declaration1: "Declaration",
     declaration2: "Declaration",
     declaration3: "Declaration"
@@ -119,7 +119,7 @@ const shortRegistration = {
   createdAt: "2018-10-30T14:51:47.303Z",
   updatedAt: "2018-10-30T14:51:47.303Z",
   establishment: {},
-  metadata: {},
+  declaration: {},
   hygieneAndStandards: {
     local_council: "City of Cardiff Council"
   },

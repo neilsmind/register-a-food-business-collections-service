@@ -130,7 +130,7 @@ const transformRegForCollection = (registration) => {
       createdAt: registration.createdAt.toISOString(),
       updatedAt: registration.updatedAt.toISOString(),
       establishment: establishmentObject,
-      metadata: registration.metadata ? registration.metadata : {}
+      metadata: registration.declaration ? registration.declaration : {}
     };
 
     logEmitter.emit(

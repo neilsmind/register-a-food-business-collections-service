@@ -107,7 +107,7 @@ const getFullRegistration = async (fsa_rn, fields = []) => {
         updatedAt: 1
       },
       fields.includes("establishment") ? { establishment: 1 } : {},
-      fields.includes("metadata") ? { metadata: 1 } : {},
+      fields.includes("metadata") ? { declaration: 1 } : {},
       {
         "hygiene.local_council": 1,
         "hygieneAndStandards.local_council": 1,
@@ -161,7 +161,7 @@ const getSingleRegistration = async (fsa_rn, council) => {
     createdAt: 1,
     updatedAt: 1,
     establishment: 1,
-    metadata: 1,
+    declaration: 1,
     "hygiene.local_council": 1,
     "hygieneAndStandards.local_council": 1,
     local_council_url: 1,

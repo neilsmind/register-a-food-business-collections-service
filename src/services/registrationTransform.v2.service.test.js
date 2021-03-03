@@ -69,7 +69,7 @@ const fullRegistration = {
       establishment_type: "DOMESTIC"
     }
   },
-  metadata: {
+  declaration: {
     declaration1: "Declaration",
     declaration2: "Declaration",
     declaration3: "Declaration"
@@ -121,7 +121,7 @@ describe("Function: transformRegistration", () => {
       expect(result.establishment.premise).toBeDefined();
     });
     it("should return metadata unchanged", () => {
-      expect(result.metadata).toBe(fullRegistration.metadata);
+      expect(result.metadata).toBe(fullRegistration.declaration);
     });
     it("should return supplied establishment fields populated and the rest as null", () => {
       const fields = Object.keys(fullRegistration.establishment.activities);
