@@ -18,8 +18,8 @@ const getRegistrationsByCouncil = async (council, collected, before, after) => {
           $and: [
             { local_council_url: council },
             { collected: { $in: collected } },
-            { createdAt: { $gte: new Date(after) } },
-            { createdAt: { $lte: new Date(before) } }
+            { reg_submission_date: { $gte: new Date(after) } },
+            { reg_submission_date: { $lte: new Date(before) } }
           ]
         },
         { projection: { _id: 0, "fsa-rn": 1 } }
@@ -59,8 +59,8 @@ const getAllRegistrations = async (before, after) => {
       .find(
         {
           $and: [
-            { createdAt: { $gte: after } },
-            { createdAt: { $lte: before } }
+            { reg_submission_date: { $gte: after } },
+            { reg_submission_date: { $lte: before } }
           ]
         },
         { projection: { _id: 0, "fsa-rn": 1 } }
@@ -96,8 +96,7 @@ const getFullRegistration = async (fsa_rn, fields = []) => {
         "fsa-rn": 1,
         collected: 1,
         collected_at: 1,
-        createdAt: 1,
-        updatedAt: 1
+        reg_submission_date: 1
       },
       fields.includes("establishment") ? { establishment: 1 } : {},
       fields.includes("metadata") ? { declaration: 1 } : {},
@@ -151,8 +150,7 @@ const getSingleRegistration = async (fsa_rn, council) => {
     "fsa-rn": 1,
     collected: 1,
     collected_at: 1,
-    createdAt: 1,
-    updatedAt: 1,
+    reg_submission_date: 1,
     establishment: 1,
     declaration: 1,
     "hygiene.local_council": 1,

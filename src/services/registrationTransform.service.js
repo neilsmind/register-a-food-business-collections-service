@@ -133,8 +133,10 @@ const transformRegForCollection = (registration) => {
     collected_at: registration.collected_at
       ? registration.collected_at.toISOString()
       : null,
-    createdAt: registration.createdAt.toISOString(),
-    updatedAt: registration.updatedAt.toISOString(),
+    createdAt: registration.reg_submission_date.toISOString(),
+    updatedAt: registration.collected_at
+      ? registration.collected_at.toISOString()
+      : registration.reg_submission_date.toISOString(),
     establishment: establishmentObject,
     metadata: registration.declaration ? registration.declaration : {}
   };

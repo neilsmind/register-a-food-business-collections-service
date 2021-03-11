@@ -6,8 +6,7 @@ const fullRegistration = {
   "fsa-rn": "PQQK8Q-SN9N8C-4ADETF",
   collected: false,
   collected_at: null,
-  createdAt: new Date("2018-10-30T14:51:47.303Z"),
-  updatedAt: new Date("2018-10-30T14:51:47.303Z"),
+  reg_submission_date: new Date("2018-10-30T14:51:47.303Z"),
   establishment: {
     establishment_details: {
       establishment_trading_name: "Itsu",
@@ -84,8 +83,7 @@ const shortRegistration = {
   "fsa-rn": "PQQK8Q-SN9N8C-4ADETF",
   collected: true,
   collected_at: new Date("2018-10-30T14:51:47.303Z"),
-  createdAt: new Date("2018-10-30T14:51:47.303Z"),
-  updatedAt: new Date("2018-10-30T14:51:47.303Z"),
+  reg_submission_date: new Date("2018-10-30T14:51:47.303Z"),
   hygieneAndStandards: {
     local_council: "City of Cardiff Council"
   },

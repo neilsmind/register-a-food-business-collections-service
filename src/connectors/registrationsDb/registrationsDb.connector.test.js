@@ -15,8 +15,7 @@ const fullRegistration = {
   "fsa-rn": "PQQK8Q-SN9N8C-4ADETF",
   collected: false,
   collected_at: "2018-10-30T14:51:47.303Z",
-  createdAt: "2018-10-30T14:51:47.303Z",
-  updatedAt: "2018-10-30T14:51:47.303Z",
+  reg_submission_date: "2018-10-30T14:51:47.303Z",
   establishment: {
     establishment_trading_name: "Itsu",
     establishment_opening_date: "2018-06-07",
@@ -91,8 +90,7 @@ const shortRegistration = {
   "fsa-rn": "PQQK8Q-SN9N8C-4ADETF",
   collected: false,
   collected_at: "2018-10-30T14:51:47.303Z",
-  createdAt: "2018-10-30T14:51:47.303Z",
-  updatedAt: "2018-10-30T14:51:47.303Z",
+  reg_submission_date: "2018-10-30T14:51:47.303Z",
   establishment: {},
   declaration: {},
   hygieneAndStandards: {
