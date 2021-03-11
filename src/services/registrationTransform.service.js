@@ -88,6 +88,8 @@ const transformRegForCollection = (registration) => {
     operator_keys.forEach((key) => {
       operator[key] = registration.establishment.operator[key]
         ? registration.establishment.operator[key]
+        : key === "partners"
+        ? []
         : null;
     });
 
