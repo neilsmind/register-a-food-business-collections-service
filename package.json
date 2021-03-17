@@ -20,7 +20,7 @@
     "test:integration": "jest ./tests/integration/*.js",
     "test:integration:ci": "export TEST_TYPE=integration && jest ./tests/integration/*.js --runInBand",
     "test:contract": "npm run seed-cosmos && jest ./tests/contract/*.js",
-    "test:contract:ci": "export TEST_TYPE=contract && npm run reset-postgres && jest ./tests/contract/*.js --runInBand",
+    "test:contract:ci": "export TEST_TYPE=contract && jest ./tests/contract/*.js --runInBand",
     "test:api:e2e": "jest ./tests/e2e/*.js --runInBand",
     "lint": "eslint ./src",
     "lint:fix": "eslint --fix ./src ",
