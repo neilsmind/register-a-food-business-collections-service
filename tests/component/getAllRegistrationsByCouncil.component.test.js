@@ -4,6 +4,8 @@ const request = require("request-promise-native");
 const baseUrl = process.env.COMPONENT_TEST_BASE_URL || "http://localhost:4001";
 const url = `${baseUrl}/api/registrations/cardiff`;
 
+jest.setTimeout(30000);
+
 describe("GET to /api/registrations/:lc", () => {
   describe("Given no extra parameters", () => {
     let response;

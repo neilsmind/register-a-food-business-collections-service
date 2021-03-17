@@ -4,6 +4,8 @@ const request = require("request-promise-native");
 const baseUrl = process.env.COMPONENT_TEST_BASE_URL || "http://localhost:4001";
 const url = `${baseUrl}/api/registrations/unified`;
 
+jest.setTimeout(30000);
+
 describe("GET to /api/registrations/unified", () => {
   describe("Given successful parameters", () => {
     let response;
@@ -51,8 +53,8 @@ describe("GET to /api/registrations/unified", () => {
     beforeEach(async () => {
       let before = new Date();
       let after = new Date();
-      before.setDate(before.getDate() - 15);
-      after.setDate(after.getDate() - 20);
+      before.setMinutes(before.getMinutes() - 1);
+      after.setMinutes(after.getMinutes() - 2);
 
       const requestOptions = {
         uri: `${url}?before=${before.toISOString()}&after=${after.toISOString()}`,

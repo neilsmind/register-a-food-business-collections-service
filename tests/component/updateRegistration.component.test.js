@@ -4,6 +4,8 @@ require("dotenv").config();
 const baseUrl = process.env.COMPONENT_TEST_BASE_URL || "http://localhost:4001";
 const url = `${baseUrl}/api/registrations/the-vale-of-glamorgan`;
 
+jest.setTimeout(30000);
+
 describe("PUT to /api/registrations/:lc/:fsa_rn", () => {
   describe("Given no extra parameters", () => {
     let response;
