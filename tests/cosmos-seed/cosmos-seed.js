@@ -10,7 +10,7 @@ const council_urls = ["cardiff", "the-vale-of-glamorgan"];
 let responses = [];
 
 const directSubmitRegistrations = async () => {
-  const url = process.env.SERVICE_API_URL;
+  const url = process.env.SERVICE_BASE_URL;
   try {
     for (let index in mockRegistrationData) {
       const requestOptions = {
@@ -19,8 +19,10 @@ const directSubmitRegistrations = async () => {
         json: true,
         body: mockRegistrationData[index],
         headers: {
+          "Content-Type": "application/json",
           "client-name": process.env.DIRECT_API_NAME,
-          "api-secret": process.env.DIRECT_API_SECRET
+          "api-secret": process.env.DIRECT_API_SECRET,
+          "registration-data-version": "2.1.0"
         }
       };
 
