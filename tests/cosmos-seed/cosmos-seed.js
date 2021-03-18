@@ -32,11 +32,17 @@ const directSubmitRegistrations = async () => {
   } catch (err) {
     logEmitter.emit(
       "functionFail",
+      "cosmos-seed",
       "directSubmitRegistrations",
-      "getStoredStatus",
       err
     );
   }
 };
 
-directSubmitRegistrations().then((result) => console.log(result));
+directSubmitRegistrations()
+  .then((result) =>
+    logEmitter.emit("info", `Direct submisison result - ${result}`)
+  )
+  .catch((err) => {
+    logEmitter.emit("info", `Cosmos-seed failed - ${err}`);
+  });
