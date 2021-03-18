@@ -16,7 +16,7 @@
     "test:raw": "export TEST_TYPE=unit && jest ",
     "test:unit:ci": "export TEST_TYPE=unit && jest ./src --coverage --runInBand",
     "test:component": "npm run seed-cosmos && jest ./tests/component/*.js --runInBand",
-    "test:component:ci": "export TEST_TYPE=component && seed-cosmos && jest ./tests/component/*.js --runInBand",
+    "test:component:ci": "export TEST_TYPE=component && jest ./tests/component/*.js --runInBand",
     "test:integration": "jest ./tests/integration/*.js",
     "test:integration:ci": "export TEST_TYPE=integration && jest ./tests/integration/*.js --runInBand",
     "test:contract": "npm run seed-cosmos && jest ./tests/contract/*.js",
