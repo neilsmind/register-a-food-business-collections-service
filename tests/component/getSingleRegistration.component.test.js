@@ -1,26 +1,51 @@
 require("dotenv").config();
 const request = require("request-promise-native");
+const { logEmitter } = require("../../src/services/logging.service");
+const mockRegistrationData = require("./mock-registration-data.json");
 
 const baseUrl = process.env.COMPONENT_TEST_BASE_URL || "http://localhost:4001";
 const url = `${baseUrl}/api/registrations/cardiff`;
+const submitUrl = process.env.SERVICE_BASE_URL;
+let submitResponse;
 
 jest.setTimeout(30000);
 
+const frontendSubmitRegistration = async () => {
+  try {
+    const requestOptions = {
+      uri: `${submitUrl}/api/registration/createNewRegistration`,
+      method: "POST",
+      json: true,
+      body: mockRegistrationData[0],
+      headers: {
+        "Content-Type": "application/json",
+        "client-name": process.env.FRONT_END_NAME,
+        "api-secret": process.env.FRONT_END_SECRET,
+        "registration-data-version": "2.1.0"
+      }
+    };
+
+    const response = await request(requestOptions);
+    return response;
+  } catch (err) {
+    logEmitter.emit(
+      "functionFail",
+      "getSingleRegistration",
+      "frontendSubmitRegistration",
+      err
+    );
+  }
+};
+
 describe("GET to /api/registrations/:lc/:fsa_rn", () => {
+  beforeAll(async () => {
+    submitResponse = await frontendSubmitRegistration();
+  });
   describe("Given no extra parameters", () => {
     let response;
     beforeEach(async () => {
-      const before = new Date();
-      let after = new Date();
-      after.setSeconds(after.getSeconds() - 30);
-
-      const summaryRequestOptions = {
-        uri: `${url}?before=${before.toISOString()}&after=${after.toISOString()}&new=false`,
-        json: true
-      };
-      const summaryResponse = await request(summaryRequestOptions);
       const requestOptions = {
-        uri: `${url}/${summaryResponse[0].fsa_rn}`,
+        uri: `${url}/${submitResponse["fsa-rn"]}`,
         json: true
       };
       response = await request(requestOptions);

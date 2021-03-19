@@ -1,22 +1,50 @@
 const request = require("request-promise-native");
 require("dotenv").config();
+const { logEmitter } = require("../../src/services/logging.service");
+const mockRegistrationData = require("./mock-registration-data.json");
 
 const baseUrl = process.env.COMPONENT_TEST_BASE_URL || "http://localhost:4001";
 const url = `${baseUrl}/api/registrations/the-vale-of-glamorgan`;
+const submitUrl = process.env.SERVICE_BASE_URL;
+let submitResponse;
 
 jest.setTimeout(30000);
 
+const frontendSubmitRegistration = async () => {
+  try {
+    const requestOptions = {
+      uri: `${submitUrl}/api/registration/createNewRegistration`,
+      method: "POST",
+      json: true,
+      body: mockRegistrationData[1],
+      headers: {
+        "Content-Type": "application/json",
+        "client-name": process.env.FRONT_END_NAME,
+        "api-secret": process.env.FRONT_END_SECRET,
+        "registration-data-version": "2.1.0"
+      }
+    };
+
+    const response = await request(requestOptions);
+    return response;
+  } catch (err) {
+    logEmitter.emit(
+      "functionFail",
+      "getSingleRegistration",
+      "frontendSubmitRegistration",
+      err
+    );
+  }
+};
 describe("PUT to /api/registrations/:lc/:fsa_rn", () => {
+  beforeAll(async () => {
+    submitResponse = await frontendSubmitRegistration();
+  });
   describe("Given no extra parameters", () => {
     let response;
     beforeEach(async () => {
-      const summaryRequestOptions = {
-        uri: `${url}?new=false`,
-        json: true
-      };
-      const summaryResponse = await request(summaryRequestOptions);
       const requestOptions = {
-        uri: `${url}/${summaryResponse[0].fsa_rn}`,
+        uri: `${url}/${submitResponse["fsa-rn"]}`,
         json: true,
         method: "PUT",
         body: {
@@ -26,7 +54,7 @@ describe("PUT to /api/registrations/:lc/:fsa_rn", () => {
       response = await request(requestOptions);
     });
 
-    it("should return all the fsa_rn and collected", () => {
+    it("should return the fsa_rn and collected", () => {
       expect(response.fsa_rn).toBeDefined();
       expect(response.collected).toBe(true);
     });
