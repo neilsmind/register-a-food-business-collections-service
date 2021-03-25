@@ -1,16 +1,54 @@
 require("dotenv").config();
 const request = require("request-promise-native");
+const { logEmitter } = require("../../src/services/logging.service");
+const mockRegistrationData = require("./mock-registration-data.json");
 
 const baseUrl = process.env.COMPONENT_TEST_BASE_URL || "http://localhost:4001";
 const url = `${baseUrl}/api/registrations/unified`;
+const submitUrl = process.env.SERVICE_BASE_URL;
+let submitResponses = [];
+
+jest.setTimeout(30000);
+
+const frontendSubmitRegistration = async () => {
+  try {
+    for (let index in mockRegistrationData) {
+      const requestOptions = {
+        uri: `${submitUrl}/api/registration/createNewRegistration`,
+        method: "POST",
+        json: true,
+        body: mockRegistrationData[index],
+        headers: {
+          "Content-Type": "application/json",
+          "client-name": process.env.FRONT_END_NAME,
+          "api-secret": process.env.FRONT_END_SECRET,
+          "registration-data-version": "2.1.0"
+        }
+      };
+
+      const response = await request(requestOptions);
+      submitResponses.push(response);
+    }
+  } catch (err) {
+    logEmitter.emit(
+      "functionFail",
+      "getSingleRegistration",
+      "frontendSubmitRegistration",
+      err
+    );
+  }
+};
 
 describe("GET to /api/registrations/unified", () => {
+  beforeAll(async () => {
+    await frontendSubmitRegistration();
+  });
   describe("Given successful parameters", () => {
     let response;
     beforeEach(async () => {
       const before = new Date();
       let after = new Date();
-      after.setDate(after.getDate() - 5);
+      after.setMinutes(after.getMinutes() - 1);
 
       const requestOptions = {
         uri: `${url}?before=${before.toISOString()}&after=${after.toISOString()}`,
@@ -21,7 +59,15 @@ describe("GET to /api/registrations/unified", () => {
 
     it("should return all the new registrations", () => {
       expect(Array.isArray(response)).toBe(true);
-      expect(response.length).toBe(2);
+      expect(response.length).toBeGreaterThanOrEqual(2);
+      response.forEach((record) => {
+        expect(record.collected).toBe(false);
+      });
+      expect(response.map((record) => record.fsa_rn)).toEqual(
+        expect.arrayContaining(
+          submitResponses.map((record) => record["fsa-rn"])
+        )
+      );
     });
   });
 
@@ -42,17 +88,17 @@ describe("GET to /api/registrations/unified", () => {
 
     it("should return zero new registrations", () => {
       expect(Array.isArray(response)).toBe(true);
-      expect(response.length).toBe(0);
+      expect(response).toHaveLength(0);
     });
   });
 
-  describe("Given before and after are both before records began", () => {
+  describe("Given before and after are both before records were submitted", () => {
     let response;
     beforeEach(async () => {
       let before = new Date();
       let after = new Date();
-      before.setDate(before.getDate() - 15);
-      after.setDate(after.getDate() - 20);
+      before.setMinutes(before.getMinutes() - 5);
+      after.setMinutes(after.getMinutes() - 10);
 
       const requestOptions = {
         uri: `${url}?before=${before.toISOString()}&after=${after.toISOString()}`,
@@ -61,9 +107,13 @@ describe("GET to /api/registrations/unified", () => {
       response = await request(requestOptions);
     });
 
-    it("should return zero new registrations", () => {
+    it("should return neither of the new registrations", () => {
       expect(Array.isArray(response)).toBe(true);
-      expect(response.length).toBe(0);
+      expect(response.map((record) => record.fsa_rn)).not.toEqual(
+        expect.arrayContaining(
+          submitResponses.map((record) => record["fsa-rn"])
+        )
+      );
     });
   });
 
@@ -85,8 +135,8 @@ describe("GET to /api/registrations/unified", () => {
     });
 
     it("should return the double mode response", () => {
-      expect(response.length).toBe(1);
-      expect(response[0].establishment.id).toBe(68);
+      expect(response).toHaveLength(1);
+      expect(response[0].establishment.establishment_trading_name).toBe("Itsu");
     });
   });
 

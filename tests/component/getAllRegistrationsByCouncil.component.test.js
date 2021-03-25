@@ -1,10 +1,48 @@
 require("dotenv").config();
 const request = require("request-promise-native");
+const { logEmitter } = require("../../src/services/logging.service");
+const mockRegistrationData = require("./mock-registration-data.json");
 
 const baseUrl = process.env.COMPONENT_TEST_BASE_URL || "http://localhost:4001";
 const url = `${baseUrl}/api/registrations/cardiff`;
+const submitUrl = process.env.SERVICE_BASE_URL;
+let submitResponses = [];
+
+jest.setTimeout(30000);
+
+const frontendSubmitRegistration = async () => {
+  try {
+    for (let index in mockRegistrationData) {
+      const requestOptions = {
+        uri: `${submitUrl}/api/registration/createNewRegistration`,
+        method: "POST",
+        json: true,
+        body: mockRegistrationData[index],
+        headers: {
+          "Content-Type": "application/json",
+          "client-name": process.env.FRONT_END_NAME,
+          "api-secret": process.env.FRONT_END_SECRET,
+          "registration-data-version": "2.1.0"
+        }
+      };
+
+      const response = await request(requestOptions);
+      submitResponses.push(response);
+    }
+  } catch (err) {
+    logEmitter.emit(
+      "functionFail",
+      "getSingleRegistration",
+      "frontendSubmitRegistration",
+      err
+    );
+  }
+};
 
 describe("GET to /api/registrations/:lc", () => {
+  beforeAll(async () => {
+    await frontendSubmitRegistration();
+  });
   describe("Given no extra parameters", () => {
     let response;
     beforeEach(async () => {
@@ -16,8 +54,20 @@ describe("GET to /api/registrations/:lc", () => {
       response = await request(requestOptions);
     });
 
-    it("should return all the new registrations for that council", () => {
-      expect(response.length).toBe(1);
+    it("should return all the new registrations for that council including the one just submitted", () => {
+      expect(
+        response.find(
+          (record) => record.fsa_rn === submitResponses[0]["fsa-rn"]
+        )
+      ).toBeDefined();
+      expect(
+        response.find(
+          (record) => record.fsa_rn === submitResponses[1]["fsa-rn"]
+        )
+      ).toBeUndefined();
+      response.forEach((record) => {
+        expect(record.collected).toBe(false);
+      });
     });
   });
 
@@ -89,7 +139,7 @@ describe("GET to /api/registrations/:lc", () => {
     });
 
     it("should return all the registrations for the council", () => {
-      expect(response.length).toBe(1);
+      expect(response.length).toBeGreaterThanOrEqual(1);
     });
   });
 
@@ -108,7 +158,7 @@ describe("GET to /api/registrations/:lc", () => {
 
     it("should return the double mode response", () => {
       expect(response.length).toBe(1);
-      expect(response[0].establishment.id).toBe(68);
+      expect(response[0].establishment.establishment_trading_name).toBe("Itsu");
     });
   });
 });

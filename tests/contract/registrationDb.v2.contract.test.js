@@ -7,20 +7,24 @@ const {
   updateRegistration
 } = require("../../src/api/registrations-v2/registrations.v2.controller");
 
-const { closeConnection } = require("../../src/db/db");
+const { clearCosmosConnection } = require("../../src/connectors/cosmos.client");
 
 let doubleResult;
 let realResult;
 
 afterAll(async () => {
-  await closeConnection();
+  await clearCosmosConnection();
 });
 
-describe("registrationDb.v2.connector integration: getRegistrationsByCouncil", () => {
+describe("registrationsDb.v2.connector integration: getRegistrationsByCouncil", () => {
   beforeEach(async () => {
     doubleResult = await getRegistrationsByCouncil({ double_mode: "success" });
     realResult = await getRegistrationsByCouncil({
-      council: "cardiff",
+      subscriber: "cardiff",
+      new: "false",
+      after: new Date("2000-01-01").toISOString(),
+      before: new Date(Date.now()).toISOString(),
+      requestedCouncils: ["cardiff"],
       fields: ["establishment", "metadata"]
     });
   });
@@ -54,14 +58,20 @@ describe("registrationDb.v2.connector integration: getRegistrationsByCouncil", (
   });
 });
 
-describe("registrationDb.v2.connector integration: getSingleRegistrations", () => {
+describe("registrationsDb.v2.connector integration: getSingleRegistrations", () => {
   beforeEach(async () => {
     doubleResult = await getRegistration({ double_mode: "single" });
     const realSummaryResult = await getRegistrationsByCouncil({
-      council: "cardiff"
+      subscriber: "cardiff",
+      new: "false",
+      after: new Date("2000-01-01").toISOString(),
+      before: new Date(Date.now()).toISOString(),
+      requestedCouncils: ["cardiff"],
+      fields: ["establishment", "metadata"]
     });
     realResult = await getRegistration({
-      council: "cardiff",
+      subscriber: "cardiff",
+      requestedCouncil: "cardiff",
       fsa_rn: realSummaryResult[0].fsa_rn
     });
   });
@@ -85,7 +95,7 @@ describe("registrationDb.v2.connector integration: getSingleRegistrations", () =
   });
 });
 
-describe("registrationDb.v2.connector integration: getRegistrations", () => {
+describe("registrationsDb.v2.connector integration: getRegistrations", () => {
   beforeEach(async () => {
     const before = new Date();
     let after = new Date();
@@ -127,14 +137,20 @@ describe("registrationDb.v2.connector integration: getRegistrations", () => {
   });
 });
 
-describe("registrationDb.v2.connector integration: updateRegistrationCollected", () => {
+describe("registrationsDb.v2.connector integration: updateRegistrationCollected", () => {
   beforeEach(async () => {
     doubleResult = await updateRegistration({ double_mode: "update" });
     const realSummaryResult = await getRegistrationsByCouncil({
-      council: "the-vale-of-glamorgan"
+      subscriber: "cardiff",
+      new: "false",
+      after: new Date("2000-01-01").toISOString(),
+      before: new Date(Date.now()).toISOString(),
+      requestedCouncils: ["cardiff"],
+      fields: ["establishment", "metadata"]
     });
     realResult = await updateRegistration({
-      council: "the-vale-of-glamorgan",
+      subscriber: "cardiff",
+      requestedCouncil: "cardiff",
       fsa_rn: realSummaryResult[0].fsa_rn,
       collected: true
     });

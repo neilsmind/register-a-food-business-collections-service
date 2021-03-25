@@ -51,12 +51,13 @@
         }
       },
       "declaration": {
-        "declaration1": "Vivamus vel nulla eget eros elementum pellentesque.",
-        "declaration2": "In hac habitasse platea dictumst. Etiam faucibus cursus urna.",
-        "declaration3": "Nullam varius. Nulla facilisi."
+        "declaration1": "I declare that the information I have given on this form is correct and complete to the best of my knowledge and belief.",
+        "declaration2": "I, or the operator, will notify food authorities of any significant changes to the business activity, including closure, within 28 days of the change happening.",
+        "declaration3": "I, or the operator, understands the operator is legally responsible for the safety and authenticity of the food being produced or served at this establishment."
       }
     },
-    "local_council_url": "cardiff"
+    "local_council_url": "cardiff",
+    "submission_language": "en"
   },
   {
     "registration": {
@@ -118,11 +119,12 @@
         }
       },
       "declaration": {
-        "declaration1": "In hac habitasse platea dictumst. Aliquam augue quam, sollicitudin vitae, consectetuer eget, rutrum at, lorem.",
-        "declaration2": "Integer ac leo. Pellentesque ultrices mattis odio.",
-        "declaration3": "Nunc purus."
+        "declaration1": "I declare that the information I have given on this form is correct and complete to the best of my knowledge and belief.",
+        "declaration2": "I, or the operator, will notify food authorities of any significant changes to the business activity, including closure, within 28 days of the change happening.",
+        "declaration3": "I, or the operator, understands the operator is legally responsible for the safety and authenticity of the food being produced or served at this establishment."
       }
     },
-    "local_council_url": "the-vale-of-glamorgan"
+    "local_council_url": "the-vale-of-glamorgan",
+    "submission_language": "en"
   }
 ]
