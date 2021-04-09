@@ -12,7 +12,7 @@ const fullRegistration = {
       establishment_trading_name: "Itsu",
       establishment_opening_date: "2018-06-07",
       establishment_primary_number: "329857245",
-      establishment_secondary_number: "84345245",
+      establishment_secondary_number: "",
       establishment_email: "django@email.com"
     },
     operator: {
@@ -130,6 +130,23 @@ describe("Function: transformRegistration", () => {
             )
           : expect(result.establishment.activities[field]).toBeNull();
       });
+    });
+  });
+  describe("given partners isn't populated", () => {
+    beforeEach(() => {
+      result = transformRegForCollection(fullRegistration);
+    });
+    it("should return an empty array", () => {
+      expect(result.establishment.operator.partners).toStrictEqual([]);
+    });
+  });
+  describe("given secondary numbers are not populated", () => {
+    beforeEach(() => {
+      result = transformRegForCollection(fullRegistration);
+    });
+    it("should return secondary numbers as empty strings", () => {
+      expect(result.establishment.establishment_secondary_number).toBe("");
+      expect(result.establishment.operator.operator_secondary_number).toBe("");
     });
   });
   describe("given a registration without establishment or metadata supplied", () => {

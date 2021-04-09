@@ -87,6 +87,8 @@ const transformRegForCollection = (registration) => {
           key
         ]
           ? registration.establishment.establishment_details[key]
+          : key === "establishment_secondary_number"
+          ? ""
           : null;
       });
       operator_keys.forEach((key) => {
@@ -94,6 +96,8 @@ const transformRegForCollection = (registration) => {
           ? registration.establishment.operator[key]
           : key === "partners"
           ? []
+          : key === "operator_secondary_number"
+          ? ""
           : null;
       });
 
