@@ -81,32 +81,44 @@ const transformRegForCollection = (registration) => {
     let premise = {};
 
     establishment_keys.forEach((key) => {
-      establishment[key] = registration.establishment.establishment_details[key]
-        ? registration.establishment.establishment_details[key]
-        : key === "establishment_secondary_number"
-        ? ""
-        : null;
+      establishment[key] =
+        registration.establishment.establishment_details[key] ||
+        registration.establishment.establishment_details[key] === "" ||
+        registration.establishment.establishment_details[key] === false
+          ? registration.establishment.establishment_details[key]
+          : key === "establishment_secondary_number"
+          ? ""
+          : null;
     });
     operator_keys.forEach((key) => {
-      operator[key] = registration.establishment.operator[key]
-        ? registration.establishment.operator[key]
-        : key === "partners"
-        ? []
-        : key === "operator_secondary_number"
-        ? ""
-        : null;
+      operator[key] =
+        registration.establishment.operator[key] ||
+        registration.establishment.operator[key] === "" ||
+        registration.establishment.operator[key] === false
+          ? registration.establishment.operator[key]
+          : key === "partners"
+          ? []
+          : key === "operator_secondary_number"
+          ? ""
+          : null;
     });
 
     activities_keys.forEach((key) => {
-      activities[key] = registration.establishment.activities[key]
-        ? registration.establishment.activities[key]
-        : null;
+      activities[key] =
+        registration.establishment.activities[key] ||
+        registration.establishment.activities[key] === "" ||
+        registration.establishment.activities[key] === false
+          ? registration.establishment.activities[key]
+          : null;
     });
 
     premise_keys.forEach((key) => {
-      premise[key] = registration.establishment.premise[key]
-        ? registration.establishment.premise[key]
-        : null;
+      premise[key] =
+        registration.establishment.premise[key] ||
+        registration.establishment.premise[key] === "" ||
+        registration.establishment.premise[key] === false
+          ? registration.establishment.premise[key]
+          : null;
     });
 
     // Add first_line, street and dependent_locality to addresses
