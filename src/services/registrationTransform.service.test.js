@@ -160,15 +160,6 @@ describe("Function: transformRegistration", () => {
       expect(result.establishment.operator.partners).toStrictEqual([]);
     });
   });
-  describe("given secondary numbers are not populated", () => {
-    beforeEach(() => {
-      result = transformRegForCollection(fullRegistration);
-    });
-    it("should return secondary numbers as empty strings", () => {
-      expect(result.establishment.establishment_secondary_number).toBe("");
-      expect(result.establishment.operator.operator_secondary_number).toBe("");
-    });
-  });
   describe("given opening days are false", () => {
     beforeEach(() => {
       result = transformRegForCollection(fullRegistration);
