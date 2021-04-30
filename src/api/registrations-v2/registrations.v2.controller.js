@@ -1,15 +1,17 @@
 const {
-  getUnifiedRegistrations,
-  getAllRegistrationsByCouncils,
   getSingleRegistration,
+  getAllRegistrationsByCouncils,
+  getUnifiedRegistrations,
   updateRegistrationCollectedByCouncil
-} = require("../../connectors/registrationDb-v2/registrationDb.v2.connector");
+} = require("../../connectors/registrationsDb-v2/registrationsDb.v2.connector");
 
 const { validateOptions } = require("./registrations.v2.service");
-
 const {
   registrationDbDouble
-} = require("../../connectors/registrationDb-v2/registrationDb.v2.double");
+} = require("../../connectors/registrationsDb-v2/registrationsDb.v2.double");
+const {
+  transformRegForCollection
+} = require("../../services/registrationTransform.v2.service");
 
 const { logEmitter } = require("../../services/logging.service");
 const {
@@ -51,12 +53,17 @@ const getRegistrationsByCouncil = async (options) => {
       options.before,
       options.after
     );
+
+    const formattedRegistrations = registrations.map((registration) => {
+      return transformRegForCollection(registration);
+    });
     logEmitter.emit(
       "functionSuccess",
       "registrations.v2.controller",
       "getRegistrationsByCouncil"
     );
-    return registrations;
+
+    return formattedRegistrations;
   } else {
     const error = new Error("");
     error.name = "optionsValidationError";
@@ -82,12 +89,15 @@ const getRegistration = async (options) => {
       options.fsa_rn,
       options.requestedCouncil
     );
+
+    const formattedRegistration = transformRegForCollection(registration);
+
     logEmitter.emit(
       "functionSuccess",
       "registrations.v2.controller",
       "getRegistration"
     );
-    return registration;
+    return formattedRegistration;
   } else {
     const error = new Error("");
     error.name = "optionsValidationError";
@@ -115,12 +125,16 @@ const getRegistrations = async (options) => {
       options.after,
       ["establishment", "metadata"]
     );
+
+    const formattedRegistrations = registrations.map((registration) => {
+      return transformRegForCollection(registration);
+    });
     logEmitter.emit(
       "functionSuccess",
       "registrations.v2.controller",
       "getRegistrations"
     );
-    return registrations;
+    return formattedRegistrations;
   } else {
     const error = new Error("");
     error.name = "optionsValidationError";

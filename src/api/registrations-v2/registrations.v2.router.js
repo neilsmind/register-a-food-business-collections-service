@@ -50,21 +50,20 @@ const registrationsV2Router = () => {
       "/:subscriber route"
     );
     try {
-      let registrations;
       const fields = req.query.fields ? req.query.fields.split(",") : [];
       const options = {
         double_mode: req.headers["double-mode"] || "",
         new: req.query.new || "true",
         fields,
         subscriber: req.params.subscriber,
-        after: req.query.after || "2000-01-01",
+        after: req.query.after || new Date("2000-01-01").toISOString(),
         before: req.query.before || new Date(Date.now()).toISOString(),
         requestedCouncils: req.query["local-authorities"]
           ? req.query["local-authorities"].split(",")
           : [req.params.subscriber]
       };
 
-      registrations = await getRegistrationsByCouncil(options);
+      const registrations = await getRegistrationsByCouncil(options);
 
       logEmitter.emit(
         "functionSuccess",

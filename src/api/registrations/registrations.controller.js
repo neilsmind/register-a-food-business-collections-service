@@ -1,18 +1,19 @@
 const {
-  getUnifiedRegistrations,
-  getAllRegistrationsByCouncil,
   getSingleRegistration,
+  getAllRegistrationsByCouncil,
+  getUnifiedRegistrations,
   updateRegistrationCollectedByCouncil
-} = require("../../connectors/registrationDb/registrationDb.connector");
+} = require("../../connectors/registrationsDb/registrationsDb.connector");
 
 const { validateOptions } = require("./registrations.service");
-
 const {
   registrationDbDouble
-} = require("../../connectors/registrationDb/registrationDb.double");
+} = require("../../connectors/registrationsDb/registrationsDb.double");
+const {
+  transformRegForCollection
+} = require("../../services/registrationTransform.service");
 
 const { logEmitter } = require("../../services/logging.service");
-
 const { transformEnums } = require("../../services/v1EnumTransform.service");
 const version = 1;
 
@@ -23,26 +24,30 @@ const getRegistrationsByCouncil = async (options) => {
     "getRegistrationsByCouncil"
   );
 
-  const validationResult = validateOptions(options, true);
+  const validationResult = await validateOptions(options, true);
 
   if (validationResult === true) {
     if (options.double_mode) {
       return registrationDbDouble(options.double_mode);
     }
-    let registrations = await getAllRegistrationsByCouncil(
+    const registrations = await getAllRegistrationsByCouncil(
       options.council,
       options.new,
       options.fields,
       options.before,
       options.after
     );
-    transformEnums(version, registrations);
+
+    const formattedRegistrations = registrations.map((registration) => {
+      return transformRegForCollection(registration);
+    });
+    transformEnums(version, formattedRegistrations);
     logEmitter.emit(
       "functionSuccess",
       "registrations.controller",
       "getRegistrationsByCouncil"
     );
-    return registrations;
+    return formattedRegistrations;
   } else {
     const error = new Error("");
     error.name = "optionsValidationError";
@@ -58,23 +63,25 @@ const getRegistration = async (options) => {
     "getRegistration"
   );
 
-  const validationResult = validateOptions(options);
+  const validationResult = await validateOptions(options);
 
   if (validationResult === true) {
     if (options.double_mode) {
       return registrationDbDouble(options.double_mode);
     }
-    let registration = await getSingleRegistration(
+    const registration = await getSingleRegistration(
       options.fsa_rn,
       options.council
     );
-    transformEnums(version, registration);
+
+    const formattedRegistration = transformRegForCollection(registration);
+    transformEnums(version, formattedRegistration);
     logEmitter.emit(
       "functionSuccess",
       "registrations.controller",
       "getRegistration"
     );
-    return registration;
+    return formattedRegistration;
   } else {
     const error = new Error("");
     error.name = "optionsValidationError";
@@ -90,25 +97,29 @@ const getRegistrations = async (options) => {
     "getRegistrations"
   );
 
-  const validationResult = validateOptions(options);
+  const validationResult = await validateOptions(options);
 
   if (validationResult === true) {
     if (options.double_mode) {
       return registrationDbDouble(options.double_mode);
     }
 
-    let registrations = await getUnifiedRegistrations(
+    const registrations = await getUnifiedRegistrations(
       options.before,
       options.after,
       ["establishment", "metadata"]
     );
-    transformEnums(version, registrations);
+
+    const formattedRegistrations = registrations.map((registration) => {
+      return transformRegForCollection(registration);
+    });
+    transformEnums(version, formattedRegistrations);
     logEmitter.emit(
       "functionSuccess",
       "registrations.controller",
       "getRegistrations"
     );
-    return registrations;
+    return formattedRegistrations;
   } else {
     const error = new Error("");
     error.name = "optionsValidationError";
@@ -124,7 +135,7 @@ const updateRegistration = async (options) => {
     "updateRegistration"
   );
 
-  const validationResult = validateOptions(options);
+  const validationResult = await validateOptions(options);
 
   if (validationResult === true) {
     if (options.double_mode) {

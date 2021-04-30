@@ -6,7 +6,6 @@ const baseUrl =
 const highgardenUrl = `${baseUrl}highgarden`;
 const highgardenAPIKey = "414d6fb61355434694c6a9fcd600e9e4";
 const cardiffAPIKey = "b175199d420448fc87baa714e458ce6e";
-const saveToDbUrl = `https://${process.env.NODE_ENV}-register-a-food-business-service.azurewebsites.net/api/tasks/savetotempstore/`;
 
 const registration = {
   establishment: {
@@ -74,12 +73,6 @@ describe("Submit a single registration through the API as a council", () => {
         body: registration
       };
       postResponse = await request(postRequestOptions);
-      //Trigger save to database
-      const saveToDbOptions = {
-        uri: `${saveToDbUrl}${postResponse["fsa-rn"]}`,
-        method: "get"
-      };
-      await request(saveToDbOptions);
       //Retrieve registration from collections service
       const getRequestOptions = {
         uri: `${highgardenUrl}/${postResponse["fsa-rn"]}?env=${process.env.NODE_ENV}`,

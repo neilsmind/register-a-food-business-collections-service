@@ -7,13 +7,13 @@ const {
   updateRegistration
 } = require("../../src/api/registrations/registrations.controller");
 
-const { closeConnection } = require("../../src/db/db");
+const { clearCosmosConnection } = require("../../src/connectors/cosmos.client");
 
 let doubleResult;
 let realResult;
 
 afterAll(async () => {
-  await closeConnection();
+  await clearCosmosConnection();
 });
 
 describe("registrationDb.connector integration: getRegistrationsByCouncil", () => {
@@ -21,6 +21,9 @@ describe("registrationDb.connector integration: getRegistrationsByCouncil", () =
     doubleResult = await getRegistrationsByCouncil({ double_mode: "success" });
     realResult = await getRegistrationsByCouncil({
       council: "cardiff",
+      new: "false",
+      after: new Date("2000-01-01").toISOString(),
+      before: new Date(Date.now()).toISOString(),
       fields: ["establishment", "metadata"]
     });
   });
@@ -58,7 +61,11 @@ describe("registrationDb.connector integration: getSingleRegistrations", () => {
   beforeEach(async () => {
     doubleResult = await getRegistration({ double_mode: "single" });
     const realSummaryResult = await getRegistrationsByCouncil({
-      council: "cardiff"
+      council: "cardiff",
+      new: "false",
+      after: new Date("2000-01-01").toISOString(),
+      before: new Date(Date.now()).toISOString(),
+      fields: ["establishment", "metadata"]
     });
     realResult = await getRegistration({
       council: "cardiff",
@@ -131,10 +138,14 @@ describe("registrationDb.connector integration: updateRegistrationCollected", ()
   beforeEach(async () => {
     doubleResult = await updateRegistration({ double_mode: "update" });
     const realSummaryResult = await getRegistrationsByCouncil({
-      council: "the-vale-of-glamorgan"
+      council: "cardiff",
+      new: "false",
+      after: new Date("2000-01-01").toISOString(),
+      before: new Date(Date.now()).toISOString(),
+      fields: ["establishment", "metadata"]
     });
     realResult = await updateRegistration({
-      council: "the-vale-of-glamorgan",
+      council: "cardiff",
       fsa_rn: realSummaryResult[0].fsa_rn,
       collected: true
     });
