@@ -12,7 +12,7 @@ const fullRegistration = {
       establishment_trading_name: "Itsu",
       establishment_opening_date: "2018-06-07",
       establishment_primary_number: "329857245",
-      establishment_secondary_number: "84345245",
+      establishment_secondary_number: "",
       establishment_email: "django@email.com"
     },
     operator: {
@@ -50,14 +50,14 @@ const fullRegistration = {
       opening_day_thursday: true,
       opening_day_friday: true,
       opening_day_saturday: true,
-      opening_day_sunday: true,
+      opening_day_sunday: false,
       opening_hours_monday: "9:30 - 19:00",
       opening_hours_tuesday: "09:30 - 19:00",
       opening_hours_wednesday: "9:30am - 7pm",
       opening_hours_thursday: "0930 - 1900",
       opening_hours_friday: "9:30 to 19:00",
       opening_hours_saturday: "09:30 to 19:00",
-      opening_hours_sunday: "From 9:30 to 19:00"
+      opening_hours_sunday: null
     },
     premise: {
       establishment_address_line_1: "12",
@@ -122,14 +122,32 @@ describe("Function: transformRegistration", () => {
       expect(result.metadata).toBe(fullRegistration.declaration);
     });
     it("should return supplied establishment fields populated and the rest as null", () => {
-      const fields = Object.keys(fullRegistration.establishment.activities);
+      const fields = Object.keys(fullRegistration.establishment.premise);
       fields.forEach((field) => {
-        fullRegistration.establishment.activities[field]
-          ? expect(result.establishment.activities[field]).toBe(
-              fullRegistration.establishment.activities[field]
+        fullRegistration.establishment.premise[field]
+          ? expect(result.establishment.premise[field]).toBe(
+              fullRegistration.establishment.premise[field]
             )
-          : expect(result.establishment.activities[field]).toBeNull();
+          : expect(result.establishment.premise[field]).toBeNull();
       });
+    });
+  });
+  describe("given partners isn't populated", () => {
+    beforeEach(() => {
+      result = transformRegForCollection(fullRegistration);
+    });
+    it("should return an empty array", () => {
+      expect(result.establishment.operator.partners).toStrictEqual([]);
+    });
+  });
+  describe("given opening days are false", () => {
+    beforeEach(() => {
+      result = transformRegForCollection(fullRegistration);
+    });
+    it("should return the opening days as false, not null", () => {
+      expect(result.establishment.activities.opening_day_sunday).toStrictEqual(
+        false
+      );
     });
   });
   describe("given a registration without establishment or metadata supplied", () => {
